@@ -422,6 +422,69 @@
     .copy-tooltip { font-size: 10px; font-weight: 700; color: #10b981; opacity: 0; transition: opacity 0.2s; }
     .crypto-box.copied .copy-tooltip { opacity: 1; }
 
+    /* MOBILE MENU */
+    .mobile-menu-toggle {
+      display: none;
+      width: 32px;
+      height: 32px;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 101;
+    }
+    
+    .mobile-menu-toggle span {
+      width: 100%;
+      height: 3px;
+      background: var(--text-main);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translate(8px, 8px);
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+    
+    .mobile-menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(8px, -8px);
+    }
+    
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(250,250,250,0.98);
+      backdrop-filter: blur(20px);
+      z-index: 100;
+      padding: 80px 20px 40px;
+      overflow-y: auto;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .mobile-nav.active {
+      transform: translateX(0);
+    }
+    
+    .mobile-nav .nav {
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .mobile-nav .nav-link {
+      padding: 16px;
+      font-size: 16px;
+      border-radius: 12px;
+    }
+
     /* LANG SWITCHER */
     .lang-switcher {
       position: fixed; top: 24px; right: 24px; z-index: 100;
@@ -463,25 +526,15 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.04);
       }
       .logo { margin-bottom: 0; font-size: 18px; }
-      .nav { 
-        display: flex; 
-        overflow-x: auto; 
-        padding-bottom: 0; 
-        -ms-overflow-style: none; 
-        scrollbar-width: none; 
-        width: 100%; 
-        margin-top: 10px;
-        gap: 4px;
+      .sidebar .nav { 
+        display: none; 
       }
-      .nav::-webkit-scrollbar { display: none; }
-      .sidebar { flex-direction: column; align-items: flex-start; gap: 10px;}
-      .nav-link { 
-        padding: 10px 12px; 
-        font-size: 13px; 
-        white-space: nowrap;
-        min-width: fit-content;
+      .mobile-menu-toggle {
+        display: flex;
       }
-      .nav-link span:not(.badge) { font-size: 13px; }
+      .mobile-nav {
+        display: block;
+      }
       
       .main { padding: 30px 20px 60px; max-width: 100%; }
       h1 { font-size: 36px; line-height: 1.1; margin-bottom: 24px; }
@@ -531,10 +584,10 @@
       }
       
       .lang-switcher { 
-        top: auto; 
-        bottom: 16px; 
-        right: 16px; 
+        top: 16px; 
+        right: 60px; 
         padding: 3px;
+        z-index: 101;
       }
       .lang-btn { 
         padding: 6px 12px; 
@@ -576,8 +629,15 @@
 
   <div class="page-wrapper">
     <aside class="sidebar">
-      <div class="logo">
-        Uzor<span>Game</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <div class="logo">
+          Uzor<span>Game</span>
+        </div>
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
       <nav class="nav">
         <a href="#home" class="nav-link active">
@@ -602,6 +662,32 @@
         </a>
       </nav>
     </aside>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-nav" id="mobile-nav">
+      <nav class="nav">
+        <a href="#home" class="nav-link active">
+          <span data-i18n="nav.home">Home</span>
+        </a>
+        <a href="#apps" class="nav-link">
+          <span data-i18n="nav.apps">Apps</span>
+          <span class="badge">1</span>
+        </a>
+        <a href="#games" class="nav-link">
+          <span data-i18n="nav.games">Games</span>
+          <span class="badge" style="background: #10b981; color: #fff;">New</span>
+        </a>
+        <a href="#other" class="nav-link">
+          <span data-i18n="nav.other">Other</span>
+        </a>
+        <a href="#about" class="nav-link">
+          <span data-i18n="nav.about">About</span>
+        </a>
+        <a href="#donate" class="nav-link">
+          <span data-i18n="nav.donate">Donate</span>
+        </a>
+      </nav>
+    </div>
 
     <main class="main">
       <section id="home" class="section">
@@ -878,21 +964,60 @@
       function setActiveNavLink(id) {
         if(currentActiveId === id) return; // Avoid unnecessary updates
         currentActiveId = id;
-        navLinks.forEach(link => link.classList.remove("active"));
-        const link = document.querySelector(`.nav-link[href="#${id}"]`);
-        if(link) link.classList.add("active");
+        // Update both desktop and mobile nav links
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove("active"));
+        document.querySelectorAll(`.nav-link[href="#${id}"]`).forEach(link => link.classList.add("active"));
       }
       
       // Handle click on nav links
+      function handleNavClick(link) {
+        const href = link.getAttribute("href");
+        if(href.startsWith("#")) {
+          const id = href.substring(1);
+          setActiveNavLink(id);
+          
+          // Close mobile menu if open
+          const mobileNav = document.getElementById('mobile-nav');
+          const mobileToggle = document.getElementById('mobile-menu-toggle');
+          if(mobileNav && mobileNav.classList.contains('active')) {
+            mobileNav.classList.remove('active');
+            if(mobileToggle) mobileToggle.classList.remove('active');
+          }
+        }
+      }
+      
       navLinks.forEach(link => {
         link.addEventListener("click", (e) => {
-          const href = link.getAttribute("href");
-          if(href.startsWith("#")) {
-            const id = href.substring(1);
-            setActiveNavLink(id);
-          }
+          handleNavClick(link);
         });
       });
+      
+      // Mobile menu links
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav .nav-link');
+      mobileNavLinks.forEach(link => {
+        link.addEventListener("click", (e) => {
+          handleNavClick(link);
+        });
+      });
+      
+      // Mobile menu toggle
+      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      const mobileNav = document.getElementById('mobile-nav');
+      
+      if(mobileMenuToggle && mobileNav) {
+        mobileMenuToggle.addEventListener('click', () => {
+          mobileNav.classList.toggle('active');
+          mobileMenuToggle.classList.toggle('active');
+        });
+        
+        // Close menu when clicking outside
+        mobileNav.addEventListener('click', (e) => {
+          if(e.target === mobileNav) {
+            mobileNav.classList.remove('active');
+            mobileMenuToggle.classList.remove('active');
+          }
+        });
+      }
       
       // Smooth scroll detection function
       function updateActiveSection() {
