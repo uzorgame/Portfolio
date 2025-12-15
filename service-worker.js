@@ -5,7 +5,7 @@ const urlsToCache = [
   '/favicon.svg',
   '/Currency Converter+.png',
   '/Sudoku.png',
-  '/SolarIcon.png'
+  '/SolarIcon.jpg'
 ];
 
 // Install event
@@ -21,14 +21,27 @@ self.addEventListener('install', (event) => {
 
 // Fetch event
 self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  const url = new URL(request.url);
+  
+  // Skip caching for unsupported schemes (chrome-extension, data, blob, etc.)
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+    return fetch(request);
+  }
+  
+  // Only cache GET requests
+  if (request.method !== 'GET') {
+    return fetch(request);
+  }
+  
   event.respondWith(
-    caches.match(event.request)
+    caches.match(request)
       .then((response) => {
         // Cache hit - return response
         if (response) {
           return response;
         }
-        return fetch(event.request).then(
+        return fetch(request).then(
           (response) => {
             // Check if we received a valid response
             if(!response || response.status !== 200 || response.type !== 'basic') {
@@ -43,7 +56,13 @@ self.addEventListener('fetch', (event) => {
 
             caches.open(CACHE_NAME)
               .then((cache) => {
-                cache.put(event.request, responseToCache);
+                // Double check before caching
+                const requestUrl = new URL(request.url);
+                if (requestUrl.protocol === 'http:' || requestUrl.protocol === 'https:') {
+                  cache.put(request, responseToCache).catch((err) => {
+                    console.log('Cache put failed:', err);
+                  });
+                }
               });
 
             return response;
