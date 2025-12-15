@@ -1,0 +1,21 @@
+{
+  "name": "UzorGame — Minimalist mobile apps & games",
+  "short_name": "UzorGame",
+  "description": "Minimalist mobile apps and games built with Flutter",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#FAFAFA",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["games", "entertainment", "utilities"],
+  "lang": "en"
+}
+
