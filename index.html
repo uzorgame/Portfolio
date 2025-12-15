@@ -948,28 +948,6 @@
         font-size: 14px; 
       }
       
-      /* Hide desktop switchers on mobile - use more specific selectors */
-      body .lang-switcher,
-      body .theme-switcher {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        position: fixed !important;
-        top: -9999px !important;
-        left: -9999px !important;
-      }
-      
-      /* Ensure mobile menu toggle is visible and styled correctly */
-      .mobile-menu-toggle {
-        display: flex !important;
-        background: var(--card-bg) !important;
-        border: 1px solid var(--card-border) !important;
-      }
-      .mobile-menu-toggle span {
-        background: var(--text-main) !important;
-      }
-      
       .donate-row { gap: 10px; }
       .crypto-box { 
         padding: 14px; 
@@ -979,6 +957,31 @@
       .social-icon {
         width: 36px;
         height: 36px;
+      }
+      
+      /* CRITICAL: Hide desktop switchers on mobile - MUST be at the end of media query */
+      html body .lang-switcher,
+      html body .theme-switcher {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        position: fixed !important;
+        top: -9999px !important;
+        left: -9999px !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+      }
+      
+      /* CRITICAL: Ensure mobile menu toggle is visible and styled correctly */
+      html body .mobile-menu-toggle {
+        display: flex !important;
+        background: var(--card-bg) !important;
+        border: 1px solid var(--card-border) !important;
+      }
+      html body .mobile-menu-toggle span {
+        background: var(--text-main) !important;
       }
     }
     
