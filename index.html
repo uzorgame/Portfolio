@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -67,6 +67,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
+  <!-- Immediate theme application to prevent flash -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+      if(metaThemeColor) {
+        metaThemeColor.content = savedTheme === 'dark' ? '#0F0F0F' : '#FAFAFA';
+      }
+    })();
+  </script>
+
   <style>
     :root {
       /* --- Palette: Clean Technical Light --- */
@@ -95,20 +107,6 @@
     }
 
     /* Dark Theme - Темний фон з білими точками (інверсія світлої теми) */
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) {
-        --bg: #0F0F0F;
-        --bg-dots: rgba(255, 255, 255, 0.15);
-        --text-main: #EDEDED;
-        --text-muted: #B0B0B0;
-        --text-light: #6B6B6B;
-        --accent: #F5F5F5;
-        --card-bg: rgba(22, 22, 22, 0.85);
-        --card-border: rgba(255, 255, 255, 0.08);
-        --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3);
-      }
-    }
-
     [data-theme="dark"] {
       --bg: #0F0F0F;
       --bg-dots: rgba(255, 255, 255, 0.15);
@@ -158,14 +156,6 @@
         linear-gradient(135deg, #0F0F0F 0%, #080808 50%, #0F0F0F 100%),
         radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
       background-size: 100% 100%, 24px 24px;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root:not([data-theme="light"]) body {
-        background-image: 
-          linear-gradient(135deg, #0F0F0F 0%, #080808 50%, #0F0F0F 100%),
-          radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
-        background-size: 100% 100%, 24px 24px;
-      }
     }
 
     /* Focus styles for accessibility */
@@ -763,6 +753,11 @@
       border: 1px solid rgba(0,0,0,0.08);
       box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     }
+    [data-theme="dark"] .lang-switcher {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-color: var(--card-border);
+    }
     .lang-btn {
       border: none; background: none; font-size: 11px; font-weight: 700;
       padding: 8px 16px; border-radius: 20px; color: var(--text-muted); cursor: pointer;
@@ -877,8 +872,10 @@
       }
       
       .lang-switcher { 
-        top: 16px; 
-        right: 16px; 
+        top: auto !important;
+        bottom: 16px !important; 
+        left: 16px !important;
+        right: auto !important;
         padding: 3px;
         z-index: 101;
       }
@@ -924,9 +921,8 @@
   <a href="#home" class="skip-link">Skip to main content</a>
 
   <div class="theme-switcher" role="group" aria-label="Theme switcher">
-    <button class="theme-btn" data-theme="light" aria-label="Light theme" title="Light theme">Light</button>
+    <button class="theme-btn active" data-theme="light" aria-label="Light theme" title="Light theme">Light</button>
     <button class="theme-btn" data-theme="dark" aria-label="Dark theme" title="Dark theme">Dark</button>
-    <button class="theme-btn active" data-theme="auto" aria-label="Auto theme" title="Auto theme">Auto</button>
   </div>
 
   <div class="lang-switcher" role="group" aria-label="Language switcher">
@@ -1525,26 +1521,15 @@
       }
     };
 
-    // 4. THEME MANAGEMENT
-    function getSystemTheme() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-
+    // 4. THEME MANAGEMENT - світла тема за замовчуванням
     function applyTheme(theme) {
       const root = document.documentElement;
-      if(theme === 'auto') {
-        const systemTheme = getSystemTheme();
-        root.setAttribute('data-theme', systemTheme);
-        root.setAttribute('data-theme-preference', 'auto');
-      } else {
-        root.setAttribute('data-theme', theme);
-        root.setAttribute('data-theme-preference', theme);
-      }
+      root.setAttribute('data-theme', theme);
       
       // Update theme color meta tag
       const metaThemeColor = document.querySelector('meta[name="theme-color"]');
       if(metaThemeColor) {
-        metaThemeColor.content = root.getAttribute('data-theme') === 'dark' ? '#0F0F0F' : '#FAFAFA';
+        metaThemeColor.content = theme === 'dark' ? '#0F0F0F' : '#FAFAFA';
       }
       
       // Update active button
@@ -1559,8 +1544,9 @@
       localStorage.setItem('theme', theme);
     }
 
-    // Initialize theme
-    const savedTheme = localStorage.getItem('theme') || 'auto';
+    // Initialize theme - світла за замовчуванням, але перевіряємо localStorage
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    // Застосовуємо тему одразу, щоб уникнути мерехтіння
     applyTheme(savedTheme);
 
     // Theme switcher buttons
@@ -1572,14 +1558,6 @@
       });
     });
 
-    // Listen for system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-      const currentPreference = document.documentElement.getAttribute('data-theme-preference');
-      if(currentPreference === 'auto') {
-        applyTheme('auto');
-      }
-    });
-
     // 5. LOCALIZATION with localStorage and browser detection
     function detectBrowserLanguage() {
       const browserLang = navigator.language || navigator.userLanguage;
@@ -1589,6 +1567,8 @@
       return 'en';
     }
 
+    const langButtons = document.querySelectorAll(".lang-btn");
+    
     function applyLanguage(lang) {
       document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.dataset.i18n;
@@ -1616,7 +1596,6 @@
     const savedLang = localStorage.getItem('language') || detectBrowserLanguage();
     applyLanguage(savedLang);
 
-    const langButtons = document.querySelectorAll(".lang-btn");
     langButtons.forEach(btn => {
       btn.addEventListener("click", () => {
         const lang = btn.dataset.lang;
