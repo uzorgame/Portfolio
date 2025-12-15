@@ -389,10 +389,73 @@
       display: flex; align-items: center; justify-content: center;
       box-shadow: 0 4px 12px rgba(0,0,0,0.03);
       transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      overflow: hidden; /* Обмежує вихід іконок за межі */
+      position: relative; /* Для позиціонування */
     }
     [data-theme="dark"] .icon-box {
       background: rgba(255, 255, 255, 0.03);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Базові розміри іконок для світлої теми */
+    .icon-box img,
+    .icon-box svg {
+      width: auto;
+      height: auto;
+      max-width: 85%;
+      max-height: 85%;
+      object-fit: contain;
+      display: block;
+    }
+    
+    /* Конкретні розміри для світлої теми */
+    .icon-box img[src="Currency Converter+.png"] {
+      width: 48px;
+      height: 48px;
+      max-width: 85%;
+      max-height: 85%;
+    }
+    
+    .icon-box img[src="Sudoku.png"] {
+      width: 44px;
+      height: 44px;
+      max-width: 85%;
+      max-height: 85%;
+    }
+    
+    .icon-box img[src="SolarIcon.png"] {
+      width: 32px;
+      height: 32px;
+      max-width: 85%;
+      max-height: 85%;
+    }
+    
+    /* Збільшені іконки для темної теми - заповнюють простір */
+    [data-theme="dark"] .icon-box img[src="SolarIcon.png"] {
+      width: 90% !important;
+      height: 90% !important;
+      max-width: 90% !important;
+      max-height: 90% !important;
+      min-width: 50px;
+      min-height: 50px;
+    }
+    
+    [data-theme="dark"] .icon-box img[src="Sudoku.png"] {
+      width: 85% !important;
+      height: 85% !important;
+      max-width: 85% !important;
+      max-height: 85% !important;
+      min-width: 47px;
+      min-height: 47px;
+    }
+    
+    [data-theme="dark"] .icon-box img[src="Currency Converter+.png"] {
+      width: 85% !important;
+      height: 85% !important;
+      max-width: 85% !important;
+      max-height: 85% !important;
+      min-width: 47px;
+      min-height: 47px;
     }
     
     .card:hover .icon-box {
@@ -1115,7 +1178,7 @@
             <div class="card-inner">
               <div class="card-header">
                 <div class="icon-box">
-                  <img src="Currency Converter+.png" alt="Currency Converter+ app icon" loading="lazy" style="width: 48px; height: 48px; object-fit: contain;">
+                  <img src="Currency Converter+.png" alt="Currency Converter+ app icon" loading="lazy">
                 </div>
                 <span class="status-badge st-gray" data-i18n="apps.currency.tag">In Dev</span>
               </div>
@@ -1143,7 +1206,7 @@
             <div class="card-inner">
               <div class="card-header">
                 <div class="icon-box">
-                  <img src="Sudoku.png" alt="Sudoku game icon" loading="lazy" style="width: 44px; height: 44px; object-fit: contain;">
+                  <img src="Sudoku.png" alt="Sudoku game icon" loading="lazy">
                 </div>
                 <span class="status-badge st-green" data-i18n="games.sudoku.tag">Available</span>
               </div>
@@ -1190,7 +1253,7 @@
             <div class="card-inner">
               <div class="card-header">
                 <div class="icon-box">
-                  <img src="SolarIcon.png" alt="3D Solar System web experience icon" loading="lazy" style="width: 32px; height: 32px; object-fit: contain;">
+                  <img src="SolarIcon.png" alt="3D Solar System web experience icon" loading="lazy">
                 </div>
                 <span class="status-badge st-green" data-i18n="other.solar.tag">Available</span>
               </div>
