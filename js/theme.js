@@ -8,13 +8,7 @@ function applyTheme(theme) {
   // Update theme color meta tag
   const metaThemeColor = document.querySelector('meta[name="theme-color"]');
   if(metaThemeColor) {
-    if(theme === 'dark') {
-      metaThemeColor.content = '#0F0F0F';
-    } else if(theme === 'lion') {
-      metaThemeColor.content = '#667eea';
-    } else {
-      metaThemeColor.content = '#FAFAFA';
-    }
+    metaThemeColor.content = theme === 'dark' ? '#0F0F0F' : '#FAFAFA';
   }
   
   // Update active button (desktop and mobile)

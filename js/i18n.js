@@ -4,7 +4,7 @@
 const translations = {
   en: {
     "nav.home": "Home", "nav.apps": "Apps", "nav.games": "Games", "nav.other": "Other", "nav.about": "About", "nav.donate": "Donate", "nav.feedback": "Feedback",
-    "theme.light": "Light", "theme.dark": "Dark", "theme.lion": "Lion",
+    "theme.light": "Light", "theme.dark": "Dark",
     "hero.title": "Code with purpose.<br>Design with soul.",
     "hero.subtitle": "UzorGame — I work alone for a bowl of rice",
     "tags.works": "If it works — don't touch",
@@ -29,7 +29,7 @@ const translations = {
   },
   uk: {
     "nav.home": "Головна", "nav.apps": "Софт", "nav.games": "Ігри", "nav.other": "Інше", "nav.about": "Інфо", "nav.donate": "Донат", "nav.feedback": "Зв'язок",
-    "theme.light": "Світла", "theme.dark": "Темна", "theme.lion": "Лев",
+    "theme.light": "Світла", "theme.dark": "Темна",
     "hero.title": "Код зі змістом.<br>Дизайн з душею.",
     "hero.subtitle": "UzorGame — я тут працюю один за миску рису",
     "tags.works": "Якщо працює — не чіпай",
