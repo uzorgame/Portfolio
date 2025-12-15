@@ -742,6 +742,229 @@
       }
     }
 
+    /* PRIVACY MODAL */
+    .privacy-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    
+    .privacy-modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    .privacy-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.85) translateY(20px);
+      width: 90%;
+      max-width: 800px;
+      max-height: calc(90vh - 40px);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      z-index: 1001;
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), top 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    .privacy-modal.active {
+      transform: translate(-50%, -50%) scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    
+    /* Ensure modal stays within viewport */
+    @media (max-height: 600px) {
+      .privacy-modal {
+        top: 20px;
+        transform: translate(-50%, 0) scale(0.85) translateY(20px);
+        max-height: calc(100vh - 40px);
+      }
+      
+      .privacy-modal.active {
+        transform: translate(-50%, 0) scale(1) translateY(0);
+      }
+    }
+    
+    .privacy-modal-header {
+      padding: 24px 32px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    
+    .privacy-modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    
+    .privacy-modal-close {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text-main);
+    }
+    
+    .privacy-modal-close:hover {
+      background: var(--card-border);
+      transform: scale(1.1);
+    }
+    
+    .privacy-modal-content {
+      padding: 32px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      flex: 1;
+      color: var(--text-main);
+      line-height: 1.7;
+      scrollbar-width: thin;
+      scrollbar-color: var(--card-border) transparent;
+    }
+    
+    /* Custom scrollbar for webkit browsers */
+    .privacy-modal-content::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .privacy-modal-content::-webkit-scrollbar-track {
+      background: transparent;
+      border-radius: 4px;
+    }
+    
+    .privacy-modal-content::-webkit-scrollbar-thumb {
+      background: var(--card-border);
+      border-radius: 4px;
+      transition: background 0.2s ease;
+    }
+    
+    .privacy-modal-content::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+    
+    [data-theme="dark"] .privacy-modal-content::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    
+    [data-theme="dark"] .privacy-modal-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+    
+    [data-theme="dark"] .privacy-modal-content {
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    }
+    
+    .privacy-modal-content h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-main);
+    }
+    
+    .privacy-modal-content h2 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+    
+    .privacy-modal-content p {
+      margin-bottom: 16px;
+      color: var(--text-muted);
+    }
+    
+    .privacy-modal-content ul,
+    .privacy-modal-content ol {
+      margin-bottom: 16px;
+      padding-left: 24px;
+      color: var(--text-muted);
+    }
+    
+    .privacy-modal-content li {
+      margin-bottom: 8px;
+    }
+    
+    .privacy-modal-content strong {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+    
+    .privacy-modal-content a {
+      color: var(--text-main);
+      text-decoration: underline;
+    }
+    
+    .privacy-modal-content hr {
+      border: none;
+      border-top: 1px solid var(--card-border);
+      margin: 24px 0;
+    }
+    
+    @media (max-width: 900px) {
+      .privacy-modal {
+        width: 95%;
+        max-height: calc(95vh - 20px);
+        border-radius: 20px;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0.85) translateY(20px);
+      }
+      
+      .privacy-modal.active {
+        transform: translate(-50%, -50%) scale(1) translateY(0);
+      }
+      
+      .privacy-modal-header {
+        padding: 20px 24px;
+      }
+      
+      .privacy-modal-content {
+        padding: 24px;
+      }
+      
+      .privacy-modal-title {
+        font-size: 20px;
+      }
+    }
+    
+    @media (max-width: 900px) and (max-height: 600px) {
+      .privacy-modal {
+        top: 10px;
+        transform: translate(-50%, 0) scale(0.85) translateY(20px);
+        max-height: calc(100vh - 20px);
+      }
+      
+      .privacy-modal.active {
+        transform: translate(-50%, 0) scale(1) translateY(0);
+      }
+    }
+
     /* DONATE */
     .donate-row {
       display: flex; flex-direction: column; gap: 12px;
@@ -1260,7 +1483,7 @@
               </p>
               <div class="btn-group">
                 <button class="btn btn-primary" style="opacity: 0.5; cursor: default;" data-i18n="common.googlePlay">In development</button>
-                <a href="https://uzorgame.github.io/privacy-policy-converter" class="btn btn-ghost" data-i18n="common.privacyPolicy">Privacy</a>
+                <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="converter">Privacy</button>
               </div>
             </div>
           </article>
@@ -1288,7 +1511,7 @@
               </p>
               <div class="btn-group">
                 <a href="https://play.google.com/store/apps/details?id=com.sudoku.uzor" target="_blank" class="btn btn-primary" data-i18n="common.googlePlay">Google Play</a>
-                <a href="https://uzorgame.github.io/privacy-policy-sudoku" class="btn btn-ghost" data-i18n="common.privacyPolicy">Privacy</a>
+                <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="sudoku">Privacy</button>
               </div>
             </div>
           </article>
@@ -1307,7 +1530,7 @@
               </p>
               <div class="btn-group">
                 <button class="btn btn-primary" style="opacity: 0.5; cursor: default;">In development</button>
-                <a href="https://uzorgame.github.io/privacy-policy-retro-arcade" class="btn btn-ghost" data-i18n="common.privacyPolicy">Privacy</a>
+                <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="retro-arcade">Privacy</button>
               </div>
             </div>
           </article>
@@ -1335,7 +1558,7 @@
               </p>
               <div class="btn-group">
                 <a href="https://uzorgame.github.io/Solar-System/" target="_blank" class="btn btn-primary" data-i18n="common.open">Open</a>
-                <a href="https://uzorgame.github.io/privacy-policy-3D-Solar-System" class="btn btn-ghost" data-i18n="common.privacyPolicy">Privacy</a>
+                <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="3D-Solar-System">Privacy</button>
               </div>
             </div>
           </article>
@@ -1470,6 +1693,23 @@
       </section>
 
     </main>
+  </div>
+
+  <!-- Privacy Modal -->
+  <div class="privacy-modal-overlay" id="privacy-modal-overlay"></div>
+  <div class="privacy-modal" id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title">
+    <div class="privacy-modal-header">
+      <h2 class="privacy-modal-title" id="privacy-modal-title">Privacy Policy</h2>
+      <button class="privacy-modal-close" id="privacy-modal-close" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="privacy-modal-content" id="privacy-modal-content">
+      <p>Loading...</p>
+    </div>
   </div>
 
   <script>
@@ -1894,6 +2134,194 @@
     //       });
     //   });
     // }
+
+    // 8. PRIVACY MODAL
+    const privacyModal = document.getElementById('privacy-modal');
+    const privacyModalOverlay = document.getElementById('privacy-modal-overlay');
+    const privacyModalClose = document.getElementById('privacy-modal-close');
+    const privacyModalContent = document.getElementById('privacy-modal-content');
+    const privacyModalTitle = document.getElementById('privacy-modal-title');
+    
+    const privacyPolicies = {
+      'converter': 'privacy-policy-converter.md',
+      'sudoku': 'privacy-policy-sudoku.md',
+      'retro-arcade': 'privacy-policy-retro-arcade.md',
+      '3D-Solar-System': 'privacy-policy-3D-Solar-System.md'
+    };
+    
+    function markdownToHTML(markdown) {
+      let html = markdown;
+      // Headers
+      html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+      html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+      html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+      // Bold and italic
+      html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+      html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+      // Links
+      html = html.replace(/\[([^\]]+)\]\(([^\)]+)\)/gim, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+      // Horizontal rule
+      html = html.replace(/^---$/gim, '<hr>');
+      // Process lists - wrap consecutive list items
+      const lines = html.split('\n');
+      let inList = false;
+      let listItems = [];
+      let processedLines = [];
+      
+      lines.forEach((line, index) => {
+        const isListItem = /^[\-\*] (.+)$/.test(line.trim()) || /^\d+\. (.+)$/.test(line.trim());
+        
+        if (isListItem) {
+          if (!inList) {
+            inList = true;
+            listItems = [];
+          }
+          const content = line.replace(/^[\-\*] /, '').replace(/^\d+\. /, '');
+          listItems.push('<li>' + content + '</li>');
+        } else {
+          if (inList) {
+            processedLines.push('<ul>' + listItems.join('') + '</ul>');
+            listItems = [];
+            inList = false;
+          }
+          if (line.trim()) {
+            processedLines.push(line);
+          }
+        }
+      });
+      
+      if (inList && listItems.length > 0) {
+        processedLines.push('<ul>' + listItems.join('') + '</ul>');
+      }
+      
+      html = processedLines.join('\n');
+      
+      // Process paragraphs
+      html = html.split('\n\n').map(para => {
+        para = para.trim();
+        if (!para) return '';
+        if (para.startsWith('<h') || para.startsWith('<ul') || para.startsWith('<hr')) {
+          return para;
+        }
+        return '<p>' + para + '</p>';
+      }).join('\n');
+      
+      // Clean up
+      html = html.replace(/<p><h/gim, '<h');
+      html = html.replace(/<\/h([1-6])><\/p>/gim, '</h$1>');
+      html = html.replace(/<p><ul>/gim, '<ul>');
+      html = html.replace(/<\/ul><\/p>/gim, '</ul>');
+      html = html.replace(/<p><hr><\/p>/gim, '<hr>');
+      html = html.replace(/<p><\/p>/gim, '');
+      return html;
+    }
+    
+    async function loadPrivacyPolicy(type) {
+      const fileName = privacyPolicies[type];
+      if (!fileName) return;
+      
+      privacyModalContent.innerHTML = '<p>Loading...</p>';
+      
+      try {
+        const response = await fetch(fileName);
+        if (!response.ok) throw new Error('Failed to load');
+        const markdown = await response.text();
+        const html = markdownToHTML(markdown);
+        privacyModalContent.innerHTML = html;
+        
+        const titleMatch = markdown.match(/^# (.+)$/m);
+        if (titleMatch) {
+          privacyModalTitle.textContent = titleMatch[1];
+        }
+      } catch (error) {
+        privacyModalContent.innerHTML = '<p>Error loading privacy policy. Please try again later.</p>';
+      }
+    }
+    
+    function openPrivacyModal(type) {
+      // Prevent body scroll without shifting content
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = scrollbarWidth + 'px';
+      
+      loadPrivacyPolicy(type);
+      
+      // Ensure modal is positioned correctly after content loads
+      setTimeout(() => {
+        const viewportHeight = window.innerHeight;
+        const modalMaxHeight = Math.min(viewportHeight * 0.9, viewportHeight - 40);
+        privacyModal.style.maxHeight = modalMaxHeight + 'px';
+        
+        // Use CSS centering but ensure it doesn't go below viewport
+        privacyModal.style.top = '';
+        privacyModal.style.transform = 'translate(-50%, -50%) scale(1) translateY(0)';
+        
+        // Check if modal would go below viewport and adjust if needed
+        requestAnimationFrame(() => {
+          const modalRect = privacyModal.getBoundingClientRect();
+          if (modalRect.bottom > viewportHeight - 20) {
+            const overflow = modalRect.bottom - (viewportHeight - 20);
+            privacyModal.style.top = `calc(50% - ${overflow}px)`;
+          }
+        });
+      }, 100);
+      
+      privacyModal.classList.add('active');
+      privacyModalOverlay.classList.add('active');
+      privacyModal.setAttribute('aria-hidden', 'false');
+    }
+    
+    function closePrivacyModal() {
+      privacyModal.classList.remove('active');
+      privacyModalOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      privacyModal.setAttribute('aria-hidden', 'true');
+    }
+    
+    document.querySelectorAll('[data-privacy]').forEach(button => {
+      button.addEventListener('click', (e) => {
+        e.preventDefault();
+        const type = button.getAttribute('data-privacy');
+        openPrivacyModal(type);
+      });
+    });
+    
+    if (privacyModalClose) {
+      privacyModalClose.addEventListener('click', closePrivacyModal);
+    }
+    if (privacyModalOverlay) {
+      privacyModalOverlay.addEventListener('click', closePrivacyModal);
+    }
+    
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && privacyModal && privacyModal.classList.contains('active')) {
+        closePrivacyModal();
+      }
+    });
+    
+    // Handle window resize to keep modal in viewport
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      if (privacyModal && privacyModal.classList.contains('active')) {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          const viewportHeight = window.innerHeight;
+          const modalMaxHeight = Math.min(viewportHeight * 0.9, viewportHeight - 40);
+          privacyModal.style.maxHeight = modalMaxHeight + 'px';
+          
+          requestAnimationFrame(() => {
+            const modalRect = privacyModal.getBoundingClientRect();
+            if (modalRect.bottom > viewportHeight - 20) {
+              const overflow = modalRect.bottom - (viewportHeight - 20);
+              privacyModal.style.top = `calc(50% - ${overflow}px)`;
+            } else {
+              privacyModal.style.top = '';
+            }
+          });
+        }, 150);
+      }
+    });
   </script>
 </body>
 </html>
