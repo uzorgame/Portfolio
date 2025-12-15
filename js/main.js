@@ -201,5 +201,45 @@ document.addEventListener("DOMContentLoaded", () => {
   }, 100);
 });
 
+// Service Worker Registration with Auto-Update
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js', {
+      scope: '/'
+    })
+    .then((registration) => {
+      console.log('[SW] Service Worker registered:', registration.scope);
+      
+      // Check for updates every hour
+      setInterval(() => {
+        registration.update();
+      }, 3600000); // 1 hour
+      
+      // Listen for updates
+      registration.addEventListener('updatefound', () => {
+        const newWorker = registration.installing;
+        if (newWorker) {
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New service worker available, reload page to activate
+              console.log('[SW] New service worker available, reloading...');
+              window.location.reload();
+            }
+          });
+        }
+      });
+    })
+    .catch((error) => {
+      console.error('[SW] Service Worker registration failed:', error);
+    });
+    
+    // Listen for controller change (when new SW takes control)
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      console.log('[SW] New service worker activated, reloading...');
+      window.location.reload();
+    });
+  });
+}
+
 
 
