@@ -639,9 +639,9 @@
     .copy-tooltip { font-size: 10px; font-weight: 700; color: #10b981; opacity: 0; transition: opacity 0.3s; }
     .crypto-box.copied .copy-tooltip { opacity: 1; }
 
-    /* Theme Switcher - стиль як у lang-switcher */
+    /* Theme Switcher - в правому нижньому куті */
     .theme-switcher {
-      position: fixed; top: 24px; right: 100px; z-index: 100;
+      position: fixed; bottom: 24px; right: 24px; z-index: 100;
       background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
       padding: 4px; border-radius: 100px;
       border: 1px solid rgba(0,0,0,0.08);
@@ -878,13 +878,13 @@
       
       .lang-switcher { 
         top: 16px; 
-        right: 100px; 
+        right: 16px; 
         padding: 3px;
         z-index: 101;
       }
       .theme-switcher {
-        top: 16px;
-        right: 180px;
+        bottom: 16px;
+        right: 16px;
         padding: 3px;
         z-index: 101;
       }
