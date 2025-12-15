@@ -664,33 +664,48 @@
     /* MOBILE MENU */
     .mobile-menu-toggle {
       display: none;
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
       flex-direction: column;
-      justify-content: space-between;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
-      padding: 4px;
+      padding: 8px;
       z-index: 101;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: all 0.2s ease;
+    }
+    .mobile-menu-toggle:hover {
+      background: var(--card-border);
+    }
+    [data-theme="dark"] .mobile-menu-toggle {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     
     .mobile-menu-toggle span {
-      width: 100%;
-      height: 3px;
+      width: 20px;
+      height: 2px;
       background: var(--text-main);
       border-radius: 2px;
       transition: all 0.3s ease;
+      display: block;
+      margin: 2.5px 0;
     }
     
     .mobile-menu-toggle.active span:nth-child(1) {
-      transform: rotate(45deg) translate(8px, 8px);
+      transform: rotate(45deg) translate(5px, 5px);
     }
     
     .mobile-menu-toggle.active span:nth-child(2) {
       opacity: 0;
+      transform: scaleX(0);
     }
     
     .mobile-menu-toggle.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(8px, -8px);
+      transform: rotate(-45deg) translate(5px, -5px);
     }
     
     .mobile-nav {
@@ -752,6 +767,8 @@
       padding: 4px; border-radius: 100px;
       border: 1px solid rgba(0,0,0,0.08);
       box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      display: flex;
+      align-items: center;
     }
     [data-theme="dark"] .lang-switcher {
       background: var(--card-bg);
@@ -762,6 +779,10 @@
       border: none; background: none; font-size: 11px; font-weight: 700;
       padding: 8px 16px; border-radius: 20px; color: var(--text-muted); cursor: pointer;
       transition: all 0.2s;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .lang-btn.active { 
       background: var(--text-main); 
@@ -887,7 +908,16 @@
       }
       .lang-btn { 
         padding: 6px 12px; 
-        font-size: 10px; 
+        font-size: 10px;
+        min-width: 40px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .lang-switcher {
+        display: flex;
+        align-items: center;
       }
       
       .donate-row { gap: 10px; }
@@ -921,8 +951,8 @@
   <a href="#home" class="skip-link">Skip to main content</a>
 
   <div class="theme-switcher" role="group" aria-label="Theme switcher">
-    <button class="theme-btn active" data-theme="light" aria-label="Light theme" title="Light theme">Light</button>
-    <button class="theme-btn" data-theme="dark" aria-label="Dark theme" title="Dark theme">Dark</button>
+    <button class="theme-btn active" data-theme="light" aria-label="Light theme" title="Light theme" data-i18n="theme.light">Light</button>
+    <button class="theme-btn" data-theme="dark" aria-label="Dark theme" title="Dark theme" data-i18n="theme.dark">Dark</button>
   </div>
 
   <div class="lang-switcher" role="group" aria-label="Language switcher">
@@ -1473,6 +1503,7 @@
     const translations = {
       en: {
         "nav.home": "Home", "nav.apps": "Apps", "nav.games": "Games", "nav.other": "Other", "nav.about": "About", "nav.donate": "Donate", "nav.feedback": "Feedback",
+        "theme.light": "Light", "theme.dark": "Dark",
         "hero.title": "Code with purpose.<br>Design with soul.",
         "hero.subtitle": "UzorGame — I work alone here. If something broke — blame the intern (they don't exist).",
         "tags.works": "If it works — don't touch",
@@ -1497,6 +1528,7 @@
       },
       uk: {
         "nav.home": "Головна", "nav.apps": "Софт", "nav.games": "Ігри", "nav.other": "Інше", "nav.about": "Інфо", "nav.donate": "Донат", "nav.feedback": "Зв'язок",
+        "theme.light": "Світла", "theme.dark": "Темна",
         "hero.title": "Код зі змістом.<br>Дизайн з душею.",
         "hero.subtitle": "UzorGame — я тут працюю один. Якщо щось зламалося — звинувачуйте стажера (його не існує).",
         "tags.works": "Якщо працює — не чіпай",
@@ -1580,6 +1612,20 @@
           }
         }
       });
+      
+      // Update theme buttons aria-label and title
+      const lightBtn = document.querySelector('.theme-btn[data-theme="light"]');
+      const darkBtn = document.querySelector('.theme-btn[data-theme="dark"]');
+      if(lightBtn) {
+        const lightText = translations[lang]?.["theme.light"] || "Light";
+        lightBtn.setAttribute('aria-label', `${lightText} theme`);
+        lightBtn.setAttribute('title', `${lightText} theme`);
+      }
+      if(darkBtn) {
+        const darkText = translations[lang]?.["theme.dark"] || "Dark";
+        darkBtn.setAttribute('aria-label', `${darkText} theme`);
+        darkBtn.setAttribute('title', `${darkText} theme`);
+      }
       
       // Update HTML lang attribute
       document.documentElement.setAttribute('lang', lang === 'uk' ? 'uk' : 'en');
