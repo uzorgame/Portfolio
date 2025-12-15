@@ -672,27 +672,34 @@
       cursor: pointer;
       padding: 8px;
       z-index: 101;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
+      background: var(--card-bg) !important;
+      border: 1px solid var(--card-border) !important;
       border-radius: 12px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
       transition: all 0.2s ease;
+      position: relative;
     }
     .mobile-menu-toggle:hover {
-      background: var(--card-border);
+      background: var(--card-border) !important;
     }
     [data-theme="dark"] .mobile-menu-toggle {
+      background: var(--card-bg) !important;
+      border-color: var(--card-border) !important;
       box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    [data-theme="dark"] .mobile-menu-toggle:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
     }
     
     .mobile-menu-toggle span {
       width: 20px;
       height: 2px;
-      background: var(--text-main);
+      background: var(--text-main) !important;
       border-radius: 2px;
       transition: all 0.3s ease;
       display: block;
       margin: 2.5px 0;
+      position: relative;
     }
     
     .mobile-menu-toggle.active span:nth-child(1) {
@@ -941,22 +948,26 @@
         font-size: 14px; 
       }
       
-      .lang-switcher,
-      .theme-switcher {
+      /* Hide desktop switchers on mobile - use more specific selectors */
+      body .lang-switcher,
+      body .theme-switcher {
         display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        position: fixed !important;
+        top: -9999px !important;
+        left: -9999px !important;
       }
-      .lang-btn { 
-        padding: 6px 12px; 
-        font-size: 10px;
-        min-width: 40px;
-        height: 28px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      
+      /* Ensure mobile menu toggle is visible and styled correctly */
+      .mobile-menu-toggle {
+        display: flex !important;
+        background: var(--card-bg) !important;
+        border: 1px solid var(--card-border) !important;
       }
-      .lang-switcher {
-        display: flex;
-        align-items: center;
+      .mobile-menu-toggle span {
+        background: var(--text-main) !important;
       }
       
       .donate-row { gap: 10px; }
