@@ -55,3 +55,5 @@ window.addEventListener('load', () => {
 // Make copyToClip globally available
 window.copyToClip = copyToClip;
 
+
+
