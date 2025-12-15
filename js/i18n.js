@@ -25,7 +25,7 @@ const translations = {
     "roadmap.currency.title": "Currency Converter+ — In Progress", "roadmap.currency.desc": "Offline-first currency converter",
     "roadmap.retro.title": "Retro Arcade — Planned", "roadmap.retro.desc": "Classic arcade games collection",
     "donate.title": "Donate", "donate.note": "Independent development is fueled by coffee and crypto. Tap to copy.", "common.googlePlay": "Google Play", "common.open": "Open",
-    "common.privacyPolicy": "Privacy", "footer.text": "© 2025 UzorGame. Built with enthusiasm."
+    "common.privacyPolicy": "Privacy", "common.website": "Website", "footer.text": "© 2025 UzorGame. Built with enthusiasm."
   },
   uk: {
     "nav.home": "Головна", "nav.apps": "Софт", "nav.games": "Ігри", "nav.other": "Інше", "nav.about": "Інфо", "nav.donate": "Донат", "nav.feedback": "Зв'язок",
@@ -50,7 +50,7 @@ const translations = {
     "roadmap.currency.title": "Currency Converter+ — В розробці", "roadmap.currency.desc": "Офлайн конвертер валют",
     "roadmap.retro.title": "Retro Arcade — Заплановано", "roadmap.retro.desc": "Колекція класичних аркадних ігор",
     "donate.title": "Підтримка", "donate.note": "Інді-розробка працює на каві та крипті. Натисни, щоб скопіювати.", "common.googlePlay": "Google Play", "common.open": "Відкрити",
-    "common.privacyPolicy": "Приватність", "footer.text": "© 2025 UzorGame. Зроблено з точністю."
+    "common.privacyPolicy": "Приватність", "common.website": "Сайт", "footer.text": "© 2025 UzorGame. Зроблено з точністю."
   }
 };
 
