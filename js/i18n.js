@@ -22,7 +22,7 @@ const translations = {
     "roadmap.title": "Roadmap",
     "roadmap.sudoku.title": "Sudoku — Released", "roadmap.sudoku.desc": "Legendary Sudoku game",
     "roadmap.solar.title": "3D Solar System — Released", "roadmap.solar.desc": "Interactive web experience available",
-    "roadmap.currency.title": "Currency Converter+ — Released", "roadmap.currency.desc": "Available on Google Play",
+    "roadmap.currency.title": "Currency Converter+ — Released", "roadmap.currency.desc": "Easy and fast currency conversion",
     "roadmap.retro.title": "Retro Arcade — Planned", "roadmap.retro.desc": "Classic arcade games collection",
     "donate.title": "Donate", "donate.note": "Independent development is fueled by coffee and crypto. Tap to copy.", "common.googlePlay": "Google Play", "common.open": "Open",
     "common.privacyPolicy": "Privacy", "common.website": "Website", "footer.text": "© 2025 UzorGame. Built with enthusiasm."
@@ -47,7 +47,7 @@ const translations = {
     "roadmap.title": "План розробки",
     "roadmap.sudoku.title": "Sudoku — Випущено", "roadmap.sudoku.desc": "Легендарна гра Sudoku",
     "roadmap.solar.title": "3D Сонячна Система — Випущено", "roadmap.solar.desc": "Інтерактивний веб-досвід доступний",
-    "roadmap.currency.title": "Currency Converter+ — Випущено", "roadmap.currency.desc": "Доступно в Google Play",
+    "roadmap.currency.title": "Currency Converter+ — Випущено", "roadmap.currency.desc": "Легка та швидка конвертація вашої валюти",
     "roadmap.retro.title": "Retro Arcade — Заплановано", "roadmap.retro.desc": "Колекція класичних аркадних ігор",
     "donate.title": "Підтримка", "donate.note": "Інді-розробка працює на каві та крипті. Натисни, щоб скопіювати.", "common.googlePlay": "Google Play", "common.open": "Відкрити",
     "common.privacyPolicy": "Приватність", "common.website": "Сайт", "footer.text": "© 2025 UzorGame. Зроблено з точністю."
