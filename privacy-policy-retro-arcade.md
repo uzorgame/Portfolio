@@ -2,7 +2,7 @@
 
 **Last updated:** December 2025
 
-This Privacy Policy explains how **UzorGame** (“we”, “our”, “us”) handles information in the mobile game **Retro Arcade**.
+This Privacy Policy explains how **Uzor** (“we”, “our”, “us”) handles information in the mobile game **Retro Arcade**.
 
 We respect your privacy. The app is designed to work **offline**, **without accounts**, **without ads**, and **without tracking**. We do not collect, store, or share any personal data.
 
@@ -42,4 +42,4 @@ We may update this Privacy Policy from time to time if our practices change or l
 If you have any questions about this Privacy Policy, please contact us:
 
 * **Email:** uzorplay@gmail.com
-* **Developer:** UzorGame
+* **Developer:** Uzor

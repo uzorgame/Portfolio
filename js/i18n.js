@@ -6,7 +6,7 @@ const translations = {
     "nav.home": "Home", "nav.apps": "Apps", "nav.games": "Games", "nav.other": "Other", "nav.about": "About", "nav.donate": "Donate", "nav.feedback": "Feedback",
     "theme.light": "Light", "theme.dark": "Dark",
     "hero.title": "Code with purpose.<br>Design with soul.",
-    "hero.subtitle": "UzorGame — I work alone for a bowl of rice",
+    "hero.subtitle": "Uzor — I work alone for a bowl of rice",
     "tags.works": "If it works — don't touch",
     "tags.crashes": "If it crashes — say it's a feature",
     "tags.flutter": "My back hurts",
@@ -25,13 +25,13 @@ const translations = {
     "roadmap.currency.title": "Currency Converter+ — Released", "roadmap.currency.desc": "Easy and fast currency conversion",
     "roadmap.retro.title": "Retro Arcade — Planned", "roadmap.retro.desc": "Classic arcade games collection",
     "donate.title": "Donate", "donate.note": "Independent development is fueled by coffee and crypto. Tap to copy.", "common.googlePlay": "Google Play", "common.open": "Open",
-    "common.privacyPolicy": "Privacy", "common.website": "Website", "footer.text": "© 2025 UzorGame. Built with enthusiasm."
+    "common.privacyPolicy": "Privacy", "common.website": "Website", "footer.text": "© 2025 Uzor. Built with enthusiasm."
   },
   uk: {
     "nav.home": "Головна", "nav.apps": "Софт", "nav.games": "Ігри", "nav.other": "Інше", "nav.about": "Інфо", "nav.donate": "Донат", "nav.feedback": "Зв'язок",
     "theme.light": "Світла", "theme.dark": "Темна",
     "hero.title": "Код зі змістом.<br>Дизайн з душею.",
-    "hero.subtitle": "UzorGame — я тут працюю один за миску рису",
+    "hero.subtitle": "Uzor — я тут працюю один за миску рису",
     "tags.works": "Якщо працює — не чіпай",
     "tags.crashes": "Якщо зламалося — скажи, що це фіча",
     "tags.flutter": "Болить спина",
@@ -50,7 +50,7 @@ const translations = {
     "roadmap.currency.title": "Currency Converter+ — Випущено", "roadmap.currency.desc": "Легка та швидка конвертація вашої валюти",
     "roadmap.retro.title": "Retro Arcade — Заплановано", "roadmap.retro.desc": "Колекція класичних аркадних ігор",
     "donate.title": "Підтримка", "donate.note": "Інді-розробка працює на каві та крипті. Натисни, щоб скопіювати.", "common.googlePlay": "Google Play", "common.open": "Відкрити",
-    "common.privacyPolicy": "Приватність", "common.website": "Сайт", "footer.text": "© 2025 UzorGame. Зроблено з точністю."
+    "common.privacyPolicy": "Приватність", "common.website": "Сайт", "footer.text": "© 2025 Uzor. Зроблено з точністю."
   }
 };
 

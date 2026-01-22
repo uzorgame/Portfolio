@@ -1,6 +1,6 @@
 {
-  "name": "UzorGame — Minimalist mobile apps & games",
-  "short_name": "UzorGame",
+  "name": "Uzor — Minimalist mobile apps & games",
+  "short_name": "Uzor",
   "description": "Minimalist mobile apps and games built with Flutter",
   "start_url": "/",
   "display": "standalone",
