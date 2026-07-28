@@ -1,5 +1,5 @@
 // Version - UPDATE THIS WHEN YOU UPDATE THE SITE
-const CACHE_VERSION = 'v2.2.7';
+const CACHE_VERSION = 'v2.2.8';
 const CACHE_NAME = `uzor-${CACHE_VERSION}`;
 
 // Static assets to cache (images, fonts, etc.)
