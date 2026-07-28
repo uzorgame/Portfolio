@@ -1,6 +1,6 @@
 // Version - UPDATE THIS WHEN YOU UPDATE THE SITE
-const CACHE_VERSION = 'v2.0.1';
-const CACHE_NAME = `uzorgame-${CACHE_VERSION}`;
+const CACHE_VERSION = 'v2.2.4';
+const CACHE_NAME = `uzor-${CACHE_VERSION}`;
 
 // Static assets to cache (images, fonts, etc.)
 const STATIC_CACHE_URLS = [
@@ -85,6 +85,27 @@ self.addEventListener('fetch', (event) => {
           // Network failed, try cache
           return caches.match(request);
         })
+    );
+    return;
+  }
+
+  if (request.destination === 'script' ||
+      request.destination === 'style' ||
+      url.pathname.endsWith('.js') ||
+      url.pathname.endsWith('.css')) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            return response;
+          }
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, responseToCache).catch(() => {});
+          });
+          return response;
+        })
+        .catch(() => caches.match(request))
     );
     return;
   }

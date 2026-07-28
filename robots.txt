@@ -1,0 +1,9 @@
+# robots.txt for uz-or.com
+User-agent: *
+Allow: /
+
+# Disallow service worker and other technical files
+Disallow: /service-worker.js
+
+# Sitemap
+Sitemap: https://uz-or.com/sitemap.xml

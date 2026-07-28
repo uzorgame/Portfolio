@@ -1,8 +1,8 @@
-# Privacy Policy — Sudoku (by UzorGame)
+# Privacy Policy — Sudoku (by Nahreba Mykhailo)
 
 **Last updated:** October 28, 2025
 
-This Privacy Policy explains how UzorGame (“we”, “our”, “us”) handles information in the mobile game **“Sudoku”**.  
+This Privacy Policy explains how Nahreba Mykhailo (“we”, “our”, “us”) handles information in the mobile game **“Sudoku”**.  
 We designed the app to work **without creating accounts** and **without uploading your gameplay data to our servers**. Game progress and settings are stored **locally on your device**.
 
 ---
@@ -80,14 +80,14 @@ We don’t run user databases. Ad delivery and measurement are handled by Google
 ## 9) Changes to this policy
 
 We may update this Policy from time to time. The latest version is always available at:  
-**https://uzorgame.github.io/privacy-policy.html**
+**https://uz-or.com/**
 
 ---
 
 ## 10) Contact
 
 If you have questions or requests, contact us: **uzorplay@gmail.com**  
-Developer: **UzorGame**
+Developer: **Nahreba Mykhailo**
 
 ---
 

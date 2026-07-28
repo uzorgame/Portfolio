@@ -10,24 +10,25 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
   <!-- Primary Meta Tags -->
-  <title>UzorGame — Minimalist mobile apps & games</title>
-  <meta name="title" content="UzorGame — Minimalist mobile apps & games" />
-  <meta name="description" content="UzorGame — minimalist mobile apps and games built with Flutter. Sudoku, Currency Converter+, Retro Arcade, and more." />
+  <title>Uzor — Minimalist mobile apps & games</title>
+  <meta name="title" content="Uzor — Minimalist mobile apps & games" />
+  <meta name="description" content="Uzor — minimalist mobile apps and games built with Flutter. Sudoku, Currency Converter+, Retro Arcade, and more." />
   <meta name="keywords" content="uzorgame, mobile apps, games, flutter, sudoku, currency converter, indie developer" />
-  <meta name="author" content="UzorGame" />
+  <meta name="author" content="Uzor" />
   <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://uz-or.com/" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://uzorgame.github.io/" />
-  <meta property="og:title" content="UzorGame — Minimalist mobile apps & games" />
+  <meta property="og:url" content="https://uz-or.com/" />
+  <meta property="og:title" content="Uzor — Minimalist mobile apps & games" />
   <meta property="og:description" content="Minimalist mobile apps and games built with Flutter. Code with purpose. Design with soul." />
-  <meta property="og:site_name" content="UzorGame" />
+  <meta property="og:site_name" content="Uzor" />
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://uzorgame.github.io/" />
-  <meta property="twitter:title" content="UzorGame — Minimalist mobile apps & games" />
+  <meta property="twitter:url" content="https://uz-or.com/" />
+  <meta property="twitter:title" content="Uzor — Minimalist mobile apps & games" />
   <meta property="twitter:description" content="Minimalist mobile apps and games built with Flutter. Code with purpose. Design with soul." />
 
   <!-- Structured Data (Schema.org) -->
@@ -36,11 +37,10 @@
     "@context": "https://schema.org",
     "@type": "Person",
     "name": "Uzor",
-    "url": "https://uzorgame.github.io/",
+    "url": "https://uz-or.com/",
     "sameAs": [
       "https://github.com/uzorgame",
-      "https://www.instagram.com/uzor.nm",
-      "https://www.linkedin.com/in/uzornm/"
+      "https://www.instagram.com/uzor.nm"
     ],
     "jobTitle": "Indie Developer",
     "knowsAbout": ["Flutter", "Mobile App Development", "Game Development"]
@@ -50,8 +50,8 @@
   {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "UzorGame",
-    "url": "https://uzorgame.github.io/",
+    "name": "Uzor",
+    "url": "https://uz-or.com/",
     "description": "Minimalist mobile apps and games built with Flutter",
     "author": {
       "@type": "Person",
@@ -65,11 +65,11 @@
   <meta name="theme-color" content="#FAFAFA" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="UzorGame" />
+  <meta name="apple-mobile-web-app-title" content="Uzor" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Immediate theme application to prevent flash -->
   <script>
@@ -83,1286 +83,8 @@
     })();
   </script>
 
-  <link rel="stylesheet" href="styles.css?v=2.0.1">
-  <!--
-  <style>
-    :root {
-      /* --- Palette: Clean Technical Light --- */
-      --bg: #FAFAFA; /* Чуть теплее белого, чтобы не резало глаз */
-      --bg-dots: #E5E5E5;
-      
-      --text-main: #0a0a0a; /* Почти черный, максимальный контраст */
-      --text-muted: #525252;
-      --text-light: #A3A3A3;
-      
-      --accent: #111111;
-      
-      --card-bg: rgba(255, 255, 255, 0.7);
-      --card-border: rgba(0, 0, 0, 0.06);
-      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-      
-      --font-main: 'Inter', sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+  <link rel="stylesheet" href="styles.css?v=2.2.4">
 
-      /* Spotlight Variables */
-      --cursor-x: 0px;
-      --cursor-y: 0px;
-
-      /* Loading spinner */
-      --loading-opacity: 0;
-    }
-
-    /* Dark Theme - Темний фон з білими точками (інверсія світлої теми) */
-    [data-theme="dark"] {
-      --bg: #0F0F0F;
-      --bg-dots: rgba(255, 255, 255, 0.15);
-      --text-main: #EDEDED;
-      --text-muted: #B0B0B0;
-      --text-light: #6B6B6B;
-      --accent: #F5F5F5;
-      --card-bg: rgba(22, 22, 22, 0.85);
-      --card-border: rgba(255, 255, 255, 0.08);
-      --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-
-    [data-theme="light"] {
-      --bg: #FAFAFA;
-      --bg-dots: #E5E5E5;
-      --text-main: #0a0a0a;
-      --text-muted: #525252;
-      --text-light: #A3A3A3;
-      --accent: #111111;
-      --card-bg: rgba(255, 255, 255, 0.7);
-      --card-border: rgba(0, 0, 0, 0.06);
-      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
-    
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--font-main);
-      background-color: var(--bg);
-      color: var(--text-main);
-      min-height: 100vh;
-      overflow-x: hidden;
-      line-height: 1.6;
-      /* Background Grid Pattern */
-      background-image: 
-        radial-gradient(var(--bg-dots) 1px, transparent 1px);
-      background-size: 24px 24px;
-      background-attachment: fixed;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    /* Додаткові стилі для темної теми - градієнт від темного до ще темнішого з білими точками */
-    [data-theme="dark"] body {
-      background-image: 
-        linear-gradient(135deg, #0F0F0F 0%, #080808 50%, #0F0F0F 100%),
-        radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
-      background-size: 100% 100%, 24px 24px;
-    }
-
-    /* Focus styles for accessibility */
-    *:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-      border-radius: 4px;
-    }
-
-    /* Skip to main content link */
-    .skip-link {
-      position: absolute;
-      top: -40px;
-      left: 0;
-      background: var(--text-main);
-      color: var(--bg);
-      padding: 8px 16px;
-      text-decoration: none;
-      z-index: 1000;
-      border-radius: 0 0 4px 0;
-    }
-    .skip-link:focus {
-      top: 0;
-    }
-
-    /* --- LAYOUT --- */
-    .page-wrapper {
-      display: flex;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-      position: relative;
-    }
-
-    /* --- SIDEBAR --- */
-    .sidebar {
-      width: 260px;
-      height: 100vh;
-      position: sticky;
-      top: 0;
-      padding: 60px 20px 40px 0;
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid var(--card-border);
-    }
-
-    .logo {
-      font-family: var(--font-main);
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.05em;
-      margin-bottom: 60px;
-      display: flex; align-items: center; gap: 6px;
-      color: var(--text-main);
-    }
-    .logo span { color: var(--text-light); font-weight: 400; }
-
-    .nav { display: flex; flex-direction: column; gap: 4px; }
-    
-    .nav-link {
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: all 0.2s ease;
-      display: flex; justify-content: space-between; align-items: center;
-      position: relative;
-    }
-    
-    .nav-link:hover {
-      color: var(--text-main);
-      background: rgba(0,0,0,0.03);
-    }
-    [data-theme="dark"] .nav-link:hover {
-      background: rgba(255, 255, 255, 0.04);
-    }
-    
-    .nav-link.active {
-      color: var(--text-main);
-      background: var(--card-bg);
-      font-weight: 600;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      border: 1px solid var(--card-border);
-    }
-    [data-theme="dark"] .nav-link.active {
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-    
-    /* Active indicator dot */
-    .nav-link.active::before {
-      content: '';
-      position: absolute;
-      left: 6px;
-      top: 50%; transform: translateY(-50%);
-      width: 4px; height: 4px;
-      background: var(--text-main);
-      border-radius: 50%;
-    }
-
-    .badge {
-      font-family: var(--font-mono);
-      font-size: 10px; font-weight: 600; 
-      padding: 2px 6px; border-radius: 4px;
-      background: var(--card-bg); 
-      color: var(--text-muted);
-      border: 1px solid var(--card-border);
-    }
-    [data-theme="dark"] .badge {
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    /* --- MAIN CONTENT --- */
-    .main { 
-      flex: 1; 
-      padding: 100px 60px 120px; 
-      max-width: 900px; /* Немного шире для воздуха */
-    }
-
-    /* SECTIONS */
-    .section { margin-bottom: 140px; }
-    .section-head { margin-bottom: 32px; }
-    
-    h1 {
-      font-size: 72px;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 0.95;
-      color: var(--text-main);
-      margin-bottom: 32px;
-    }
-    
-    h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
-    
-    .subtitle { font-size: 16px; color: var(--text-muted); max-width: 500px; }
-
-    /* HERO */
-    .hero-text {
-      font-size: 20px;
-      color: var(--text-muted);
-      max-width: 540px;
-      margin-bottom: 40px;
-      font-weight: 400;
-    }
-
-    .tags-row { display: flex; gap: 8px; flex-wrap: wrap; }
-    .tag-pill {
-      font-family: var(--font-mono);
-      font-size: 12px; font-weight: 500;
-      padding: 8px 12px;
-      border-radius: 8px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-    }
-    [data-theme="dark"] .tag-pill {
-      background: rgba(255, 255, 255, 0.04);
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    /* --- CARDS (The Upgrade) --- */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 32px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s, opacity 0.6s ease, transform 0.6s ease;
-      box-shadow: var(--card-shadow);
-      backdrop-filter: blur(20px); /* Эффект матового стекла */
-      -webkit-backdrop-filter: blur(20px);
-      /* Initial state for animation */
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    
-    .card.animate-in {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 16px 32px rgba(0,0,0,0.08);
-      border-color: rgba(0,0,0,0.12);
-      z-index: 10;
-    }
-    [data-theme="dark"] .card:hover {
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 8px 16px rgba(0, 0, 0, 0.4);
-      border-color: rgba(255, 255, 255, 0.12);
-    }
-    
-    .card:active {
-      transform: translateY(-4px) scale(1.01);
-      transition: transform 0.1s;
-    }
-
-    /* Spotlight Glow */
-    .card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      border-radius: 24px;
-      pointer-events: none;
-      background: radial-gradient(600px circle at var(--cursor-x) var(--cursor-y), rgba(0,0,0,0.05), transparent 40%);
-      opacity: 0; transition: opacity 0.3s;
-      z-index: 1;
-    }
-    .card:hover::before { opacity: 1; }
-    [data-theme="dark"] .card::before {
-      background: radial-gradient(600px circle at var(--cursor-x) var(--cursor-y), rgba(255,255,255,0.03), transparent 40%);
-    }
-
-    .card-inner { padding: 32px; position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; }
-
-    .card-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 24px; }
-
-    /* Icons */
-    .icon-box {
-      width: 56px; height: 56px;
-      border-radius: 16px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-      transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-      overflow: hidden; /* Обмежує вихід іконок за межі */
-      position: relative; /* Для позиціонування */
-    }
-    [data-theme="dark"] .icon-box {
-      background: rgba(255, 255, 255, 0.03);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-    
-    /* Базові розміри іконок для світлої теми */
-    .icon-box img,
-    .icon-box svg {
-      width: 96% !important;
-      height: 96% !important;
-      max-width: 96% !important;
-      max-height: 96% !important;
-      object-fit: contain;
-      display: block;
-    }
-    
-    /* Конкретні розміри для світлої теми - використовуємо alt атрибут для надійності */
-    .icon-box img[alt*="Currency Converter"] {
-      width: 165% !important;
-      height: 165% !important;
-      max-width: 165% !important;
-      max-height: 165% !important;
-      object-fit: cover !important;
-    }
-    
-    .icon-box img[alt*="Sudoku"] {
-      width: 101% !important;
-      height: 101% !important;
-      max-width: 101% !important;
-      max-height: 101% !important;
-    }
-    
-    .icon-box img[alt*="3D Solar System"] {
-      width: 102% !important;
-      height: 102% !important;
-      max-width: 102% !important;
-      max-height: 102% !important;
-    }
-    
-    /* Альтернативний селектор за src (на випадок) */
-    .icon-box img[src$="Currency Converter+.png"],
-    .icon-box img[src*="Currency Converter"] {
-      width: 165% !important;
-      height: 165% !important;
-      max-width: 165% !important;
-      max-height: 165% !important;
-      object-fit: cover !important;
-    }
-    
-    .icon-box img[src$="Sudoku.png"],
-    .icon-box img[src*="Sudoku.png"] {
-      width: 101% !important;
-      height: 101% !important;
-      max-width: 101% !important;
-      max-height: 101% !important;
-    }
-    
-    .icon-box img[src$="SolarIcon.jpg"],
-    .icon-box img[src*="SolarIcon"] {
-      width: 102% !important;
-      height: 102% !important;
-      max-width: 102% !important;
-      max-height: 102% !important;
-    }
-    
-    /* Збільшені іконки для темної теми - заповнюють простір */
-    [data-theme="dark"] .icon-box img[alt*="3D Solar System"] {
-      width: 102% !important;
-      height: 102% !important;
-      max-width: 102% !important;
-      max-height: 102% !important;
-    }
-    
-    [data-theme="dark"] .icon-box img[alt*="Sudoku"] {
-      width: 101% !important;
-      height: 101% !important;
-      max-width: 101% !important;
-      max-height: 101% !important;
-    }
-    
-    [data-theme="dark"] .icon-box img[alt*="Currency Converter"] {
-      width: 165% !important;
-      height: 165% !important;
-      max-width: 165% !important;
-      max-height: 165% !important;
-      object-fit: cover !important;
-    }
-    
-    /* Альтернативний селектор за src для темної теми */
-    [data-theme="dark"] .icon-box img[src$="SolarIcon.jpg"],
-    [data-theme="dark"] .icon-box img[src*="SolarIcon"] {
-      width: 102% !important;
-      height: 102% !important;
-      max-width: 102% !important;
-      max-height: 102% !important;
-    }
-    
-    [data-theme="dark"] .icon-box img[src$="Sudoku.png"],
-    [data-theme="dark"] .icon-box img[src*="Sudoku.png"] {
-      width: 101% !important;
-      height: 101% !important;
-      max-width: 101% !important;
-      max-height: 101% !important;
-    }
-    
-    [data-theme="dark"] .icon-box img[src$="Currency Converter+.png"],
-    [data-theme="dark"] .icon-box img[src*="Currency Converter"] {
-      width: 165% !important;
-      height: 165% !important;
-      max-width: 165% !important;
-      max-height: 165% !important;
-      object-fit: cover !important;
-    }
-    
-    .card:hover .icon-box {
-      transform: scale(1.1) rotate(5deg);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.08);
-    }
-    [data-theme="dark"] .card:hover .icon-box {
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    /* Custom CSS Icons */
-    .ico-currency { font-weight: 800; font-family: var(--font-mono); font-size: 20px; color: #111; }
-    .ico-sudoku { 
-      display: grid; grid-template-columns: 10px 10px; gap: 4px; 
-    }
-    .ico-sudoku div { width: 10px; height: 10px; background: #e5e5e5; border-radius: 2px;}
-    .ico-sudoku div.fill { background: #111; }
-
-    .ico-retro { font-weight: 800; letter-spacing: -1px; font-size: 18px; }
-
-    .card-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
-    .card-desc { font-size: 15px; color: var(--text-muted); line-height: 1.5; margin-bottom: 24px; flex-grow: 1; }
-
-    .status-badge {
-      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
-      padding: 6px 10px; border-radius: 100px;
-      transition: all 0.3s ease;
-    }
-    
-    .card:hover .status-badge {
-      transform: scale(1.1);
-    }
-    .st-green { background: #ecfdf5; color: #047857; }
-    .st-gray { background: var(--card-bg); color: var(--text-muted); border: 1px solid var(--card-border); }
-    [data-theme="dark"] .st-green {
-      background: rgba(16, 185, 129, 0.12);
-      color: #5EEAD4;
-      border: 1px solid rgba(16, 185, 129, 0.25);
-    }
-    [data-theme="dark"] .st-gray {
-      background: rgba(255, 255, 255, 0.05);
-      color: #B0B0B0;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    /* Buttons */
-    .btn-group { display: flex; gap: 12px; margin-top: auto; }
-    
-    .btn {
-      padding: 10px 18px;
-      border-radius: 10px;
-      font-size: 13px; font-weight: 600;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-      cursor: pointer;
-      display: inline-flex; align-items: center; justify-content: center;
-    }
-    
-    .btn-primary {
-      background: var(--text-main); color: var(--bg);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      position: relative;
-      overflow: hidden;
-    }
-    [data-theme="dark"] .btn-primary {
-      background: #F0F0F0;
-      color: #0F0F0F;
-      box-shadow: 0 4px 16px rgba(240, 240, 240, 0.2);
-    }
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 0; height: 0;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      transform: translate(-50%, -50%);
-      transition: width 0.6s, height 0.6s;
-    }
-    .btn-primary:hover::before {
-      width: 300px;
-      height: 300px;
-    }
-    .btn-primary:hover:not(:disabled) { 
-      transform: translateY(-2px) scale(1.05); 
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-    [data-theme="dark"] .btn-primary:hover:not(:disabled) {
-      box-shadow: 0 8px 24px rgba(240, 240, 240, 0.3);
-    }
-    .btn-primary:active:not(:disabled) {
-      transform: translateY(0) scale(1);
-      transition: transform 0.1s;
-    }
-    .btn-primary:disabled,
-    .btn-primary.loading {
-      opacity: 0.6;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-    .btn-primary.loading::after {
-      content: '';
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      top: 50%;
-      left: 50%;
-      margin-left: -8px;
-      margin-top: -8px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.6s linear infinite;
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    .btn-ghost {
-      background: var(--card-bg); color: var(--text-main);
-      border: 1px solid var(--card-border);
-      position: relative;
-    }
-    .btn-ghost:hover { 
-      border-color: var(--text-main); 
-      background: var(--card-bg);
-      transform: translateY(-2px) scale(1.05);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    .btn-ghost:active {
-      transform: translateY(0) scale(1);
-      transition: transform 0.1s;
-    }
-    
-    /* Social icons hover */
-    .social-icon {
-      width: 40px; height: 40px; 
-      display: flex; align-items: center; justify-content: center; 
-      border-radius: 10px; background: var(--card-bg); 
-      border: 1px solid var(--card-border); 
-      transition: all 0.2s; 
-      text-decoration: none;
-      color: var(--text-main);
-    }
-    .social-icon:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      border-color: var(--text-main);
-      background: var(--card-bg);
-    }
-    [data-theme="dark"] .social-icon:hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    /* ABOUT UPGRADE */
-    .about-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 40px;
-      position: relative;
-    }
-    .about-text { font-size: 18px; color: var(--text-main); margin-bottom: 24px; line-height: 1.7; }
-    .tech-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 16px; margin-top: 32px; padding-top: 32px; border-top: 1px solid rgba(0,0,0,0.05);
-    }
-    .tech-item { font-size: 13px; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
-    .tech-item span { font-weight: 700; color: var(--text-main); font-size: 14px; }
-    
-    /* ROADMAP */
-    .roadmap-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    
-    .roadmap-item {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-    }
-    
-    .roadmap-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      margin-top: 4px;
-      flex-shrink: 0;
-      box-shadow: 0 0 0 4px rgba(0,0,0,0.02);
-    }
-    [data-theme="dark"] .roadmap-dot {
-      box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.3);
-    }
-    
-    .roadmap-content {
-      flex: 1;
-    }
-    
-    .roadmap-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text-main);
-      margin-bottom: 4px;
-    }
-    
-    .roadmap-desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    /* GAME CONTAINER */
-    .game-container {
-      width: 100%;
-      height: 400px;
-      border-radius: 12px;
-      overflow: hidden;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      position: relative;
-    }
-    
-    .game-container iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-    
-    @media (max-width: 900px) {
-      .game-container {
-        height: 300px;
-      }
-    }
-
-    /* PRIVACY MODAL */
-    .privacy-modal-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    }
-    
-    .privacy-modal-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    
-    .privacy-modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.85) translateY(20px);
-      width: 90%;
-      max-width: 800px;
-      max-height: calc(90vh - 40px);
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 24px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-      z-index: 1001;
-      opacity: 0;
-      pointer-events: none;
-      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), top 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    
-    .privacy-modal.active {
-      transform: translate(-50%, -50%) scale(1) translateY(0);
-      opacity: 1;
-      pointer-events: all;
-    }
-    
-    /* Ensure modal stays within viewport */
-    @media (max-height: 600px) {
-      .privacy-modal {
-        top: 20px;
-        transform: translate(-50%, 0) scale(0.85) translateY(20px);
-        max-height: calc(100vh - 40px);
-      }
-      
-      .privacy-modal.active {
-        transform: translate(-50%, 0) scale(1) translateY(0);
-      }
-    }
-    
-    .privacy-modal-header {
-      padding: 24px 32px;
-      border-bottom: 1px solid var(--card-border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    
-    .privacy-modal-title {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-    
-    .privacy-modal-close {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      color: var(--text-main);
-    }
-    
-    .privacy-modal-close:hover {
-      background: var(--card-border);
-      transform: scale(1.1);
-    }
-    
-    .privacy-modal-content {
-      padding: 32px;
-      overflow-y: auto;
-      overflow-x: hidden;
-      flex: 1;
-      color: var(--text-main);
-      line-height: 1.7;
-      scrollbar-width: thin;
-      scrollbar-color: var(--card-border) transparent;
-    }
-    
-    /* Custom scrollbar for webkit browsers */
-    .privacy-modal-content::-webkit-scrollbar {
-      width: 8px;
-    }
-    
-    .privacy-modal-content::-webkit-scrollbar-track {
-      background: transparent;
-      border-radius: 4px;
-    }
-    
-    .privacy-modal-content::-webkit-scrollbar-thumb {
-      background: var(--card-border);
-      border-radius: 4px;
-      transition: background 0.2s ease;
-    }
-    
-    .privacy-modal-content::-webkit-scrollbar-thumb:hover {
-      background: var(--text-muted);
-    }
-    
-    [data-theme="dark"] .privacy-modal-content::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2);
-    }
-    
-    [data-theme="dark"] .privacy-modal-content::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-    
-    [data-theme="dark"] .privacy-modal-content {
-      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-    }
-    
-    .privacy-modal-content h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      color: var(--text-main);
-    }
-    
-    .privacy-modal-content h2 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-top: 32px;
-      margin-bottom: 12px;
-      color: var(--text-main);
-    }
-    
-    .privacy-modal-content p {
-      margin-bottom: 16px;
-      color: var(--text-muted);
-    }
-    
-    .privacy-modal-content ul,
-    .privacy-modal-content ol {
-      margin-bottom: 16px;
-      padding-left: 24px;
-      color: var(--text-muted);
-    }
-    
-    .privacy-modal-content li {
-      margin-bottom: 8px;
-    }
-    
-    .privacy-modal-content strong {
-      color: var(--text-main);
-      font-weight: 600;
-    }
-    
-    .privacy-modal-content a {
-      color: var(--text-main);
-      text-decoration: underline;
-    }
-    
-    .privacy-modal-content hr {
-      border: none;
-      border-top: 1px solid var(--card-border);
-      margin: 24px 0;
-    }
-    
-    @media (max-width: 900px) {
-      .privacy-modal {
-        width: 95%;
-        max-height: calc(95vh - 20px);
-        border-radius: 20px;
-        top: 50%;
-        transform: translate(-50%, -50%) scale(0.85) translateY(20px);
-      }
-      
-      .privacy-modal.active {
-        transform: translate(-50%, -50%) scale(1) translateY(0);
-      }
-      
-      .privacy-modal-header {
-        padding: 20px 24px;
-      }
-      
-      .privacy-modal-content {
-        padding: 24px;
-      }
-      
-      .privacy-modal-title {
-        font-size: 20px;
-      }
-    }
-    
-    @media (max-width: 900px) and (max-height: 600px) {
-      .privacy-modal {
-        top: 10px;
-        transform: translate(-50%, 0) scale(0.85) translateY(20px);
-        max-height: calc(100vh - 20px);
-      }
-      
-      .privacy-modal.active {
-        transform: translate(-50%, 0) scale(1) translateY(0);
-      }
-    }
-
-    /* DONATE */
-    .donate-row {
-      display: flex; flex-direction: column; gap: 12px;
-      font-family: var(--font-mono); font-size: 13px;
-    }
-    .crypto-box {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      padding: 16px; border-radius: 12px;
-      display: flex; justify-content: space-between; align-items: center;
-      cursor: pointer; transition: all 0.2s;
-      color: var(--text-main);
-    }
-    .crypto-box:hover { border-color: var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    .crypto-box:active { transform: scale(0.98); }
-    .crypto-network {
-      font-size: 11px; color: var(--text-muted); margin-left: 8px; font-weight: 400;
-    }
-    
-    .copy-tooltip { font-size: 10px; font-weight: 700; color: #10b981; opacity: 0; transition: opacity 0.3s; }
-    .crypto-box.copied .copy-tooltip { opacity: 1; }
-
-    /* Theme Switcher - в правому нижньому куті */
-    .theme-switcher {
-      position: fixed; bottom: 24px; right: 24px; z-index: 100;
-      background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
-      padding: 4px; border-radius: 100px;
-      border: 1px solid rgba(0,0,0,0.08);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-      display: flex; gap: 2px;
-      transition: background 0.3s ease, border-color 0.3s ease;
-    }
-    [data-theme="dark"] .theme-switcher {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      border-color: var(--card-border);
-    }
-    .theme-btn {
-      border: none; background: none; 
-      font-size: 11px; font-weight: 700;
-      padding: 8px 12px; border-radius: 20px; 
-      color: var(--text-muted); cursor: pointer;
-      transition: all 0.2s;
-      display: flex; align-items: center; justify-content: center;
-      min-width: 32px;
-    }
-    .theme-btn:hover { 
-      color: var(--text-main); 
-    }
-    .theme-btn.active { 
-      background: var(--text-main); 
-      color: var(--bg);
-    }
-
-    /* MOBILE MENU */
-    .mobile-menu-toggle {
-      display: none;
-      width: 40px;
-      height: 40px;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      padding: 8px;
-      z-index: 101;
-      background: var(--card-bg) !important;
-      border: 1px solid var(--card-border) !important;
-      border-radius: 12px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      transition: all 0.2s ease;
-      position: relative;
-    }
-    .mobile-menu-toggle:hover {
-      background: var(--card-border) !important;
-    }
-    [data-theme="dark"] .mobile-menu-toggle {
-      background: var(--card-bg) !important;
-      border-color: var(--card-border) !important;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    [data-theme="dark"] .mobile-menu-toggle:hover {
-      background: rgba(255, 255, 255, 0.1) !important;
-    }
-    
-    .mobile-menu-toggle span {
-      width: 20px;
-      height: 2px;
-      background: var(--text-main) !important;
-      border-radius: 2px;
-      transition: all 0.3s ease;
-      display: block;
-      margin: 2.5px 0;
-      position: relative;
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(2) {
-      opacity: 0;
-      transform: scaleX(0);
-    }
-    
-    .mobile-menu-toggle.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -5px);
-    }
-    
-    .mobile-nav {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--card-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      z-index: 100;
-      padding: 80px 20px 40px;
-      overflow-y: auto;
-      transform: translateX(-100%);
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
-    }
-    
-    .mobile-nav.active {
-      transform: translateX(0);
-    }
-
-    .mobile-nav-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      z-index: 99;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-    
-    .mobile-nav-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-    
-    .mobile-nav .nav {
-      flex-direction: column;
-      gap: 8px;
-    }
-    
-    .mobile-nav .nav-link {
-      padding: 16px;
-      font-size: 16px;
-      border-radius: 12px;
-    }
-
-    /* Mobile Controls (Theme & Language in mobile menu) */
-    .mobile-controls {
-      margin-top: 24px;
-      padding-top: 24px;
-      border-top: 1px solid var(--card-border);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .mobile-theme-switcher,
-    .mobile-lang-switcher {
-      display: flex;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.05);
-      padding: 4px;
-      border-radius: 100px;
-      border: 1px solid var(--card-border);
-    }
-    [data-theme="dark"] .mobile-theme-switcher,
-    [data-theme="dark"] .mobile-lang-switcher {
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .mobile-theme-btn,
-    .mobile-lang-btn {
-      flex: 1;
-      border: none;
-      background: none;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 10px 16px;
-      border-radius: 20px;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .mobile-theme-btn.active,
-    .mobile-lang-btn.active {
-      background: var(--text-main);
-      color: var(--bg);
-    }
-
-    .mobile-theme-btn:hover:not(.active),
-    .mobile-lang-btn:hover:not(.active) {
-      color: var(--text-main);
-    }
-
-    /* LANG SWITCHER */
-    .lang-switcher {
-      position: fixed; top: 24px; right: 24px; z-index: 100;
-      background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
-      padding: 4px; border-radius: 100px;
-      border: 1px solid rgba(0,0,0,0.08);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-      display: flex;
-      align-items: center;
-    }
-    [data-theme="dark"] .lang-switcher {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      border-color: var(--card-border);
-    }
-    .lang-btn {
-      border: none; background: none; font-size: 11px; font-weight: 700;
-      padding: 8px 16px; border-radius: 20px; color: var(--text-muted); cursor: pointer;
-      transition: all 0.2s;
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .lang-btn.active { 
-      background: var(--text-main); 
-      color: var(--bg);
-    }
-    [data-theme="dark"] .lang-btn.active {
-      background: var(--text-main);
-      color: var(--bg);
-    }
-
-    /* FOOTER */
-    .footer {
-      padding-top: 40px; border-top: 1px solid var(--card-border);
-      font-size: 12px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.1em;
-    }
-
-    /* Screen reader only */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border-width: 0;
-    }
-
-    /* RESPONSIVE */
-    /* Tablets */
-    @media (max-width: 1024px) {
-      .page-wrapper { max-width: 100%; padding: 0 16px; }
-      .sidebar { width: 220px; padding: 50px 16px 40px 0; }
-      .main { padding: 80px 40px 100px; }
-      .grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-    }
-    
-    /* Mobile and Small Tablets */
-    @media (max-width: 900px) {
-      .page-wrapper { flex-direction: column; padding: 0; }
-      .sidebar { 
-        width: 100%; height: auto; position: sticky; top: 0; padding: 16px 20px; 
-        border-right: none; border-bottom: 1px solid var(--card-border); 
-        background: var(--card-bg); backdrop-filter: blur(10px); z-index: 50;
-        flex-direction: row; justify-content: space-between; align-items: center;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      }
-      [data-theme="dark"] .sidebar {
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      }
-      .logo { margin-bottom: 0; font-size: 18px; }
-      .sidebar .nav { 
-        display: none; 
-      }
-      .mobile-menu-toggle {
-        display: flex;
-      }
-      .mobile-nav {
-        display: block;
-      }
-      
-      .main { padding: 30px 20px 60px; max-width: 100%; }
-      h1 { font-size: 36px; line-height: 1.1; margin-bottom: 24px; }
-      h2 { font-size: 24px; }
-      .hero-text { font-size: 16px; margin-bottom: 24px; }
-      .section { margin-bottom: 80px; }
-      .section-head { margin-bottom: 24px; }
-      .subtitle { font-size: 14px; }
-      
-      .grid { 
-        grid-template-columns: 1fr; 
-        gap: 20px; 
-      }
-      .card { border-radius: 20px; }
-      .card-inner { padding: 24px; }
-      .card-title { font-size: 18px; }
-      .card-desc { font-size: 14px; margin-bottom: 20px; }
-      
-      .tags-row { gap: 6px; }
-      .tag-pill { 
-        font-size: 11px; 
-        padding: 6px 10px; 
-      }
-      
-      .about-card { padding: 28px 24px; border-radius: 20px; }
-      .about-text { font-size: 16px; line-height: 1.6; }
-      .tech-grid { 
-        grid-template-columns: 1fr; 
-        gap: 12px; 
-        margin-top: 24px; 
-        padding-top: 24px; 
-      }
-      
-      .roadmap-item { gap: 12px; }
-      .roadmap-title { font-size: 14px; }
-      .roadmap-desc { font-size: 12px; }
-      
-      .btn-group { 
-        flex-direction: column; 
-        gap: 8px; 
-        width: 100%; 
-      }
-      .btn { 
-        width: 100%; 
-        padding: 12px 18px; 
-        font-size: 14px; 
-      }
-      
-      .donate-row { gap: 10px; }
-      .crypto-box { 
-        padding: 14px; 
-        font-size: 12px; 
-      }
-      
-      .social-icon {
-        width: 36px;
-        height: 36px;
-      }
-      
-      /* CRITICAL: Hide desktop switchers on mobile - MUST be at the end of media query */
-      html body .lang-switcher,
-      html body .theme-switcher {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        position: fixed !important;
-        top: -9999px !important;
-        left: -9999px !important;
-        width: 0 !important;
-        height: 0 !important;
-        overflow: hidden !important;
-      }
-      
-      /* CRITICAL: Ensure mobile menu toggle is visible and styled correctly */
-      html body .mobile-menu-toggle {
-        display: flex !important;
-        background: var(--card-bg) !important;
-        border: 1px solid var(--card-border) !important;
-      }
-      html body .mobile-menu-toggle span {
-        background: var(--text-main) !important;
-      }
-    }
-    
-    /* Small Mobile */
-    @media (max-width: 480px) {
-      h1 { font-size: 28px; }
-      h2 { font-size: 20px; }
-      .main { padding: 20px 16px 50px; }
-      .section { margin-bottom: 60px; }
-      .card-inner { padding: 20px; }
-      .about-card { padding: 24px 20px; }
-      .icon-box { width: 48px; height: 48px; }
-      .icon-box img { width: 36px !important; height: 36px !important; }
-    }
-  </style>
-  -->
-  
 </head>
 
 <body>
@@ -1383,7 +105,7 @@
     <aside class="sidebar">
       <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
         <div class="logo">
-          Uzor<span>Game</span>
+          Nahreba<span>.</span>
         </div>
         <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
           <span></span>
@@ -1395,22 +117,17 @@
         <a href="#home" class="nav-link active" aria-current="page">
           <span data-i18n="nav.home">Home</span>
         </a>
-        <a href="#apps" class="nav-link">
-          <span data-i18n="nav.apps">Apps</span>
-          <span class="badge" aria-label="1 app">1</span>
-        </a>
-        <a href="#games" class="nav-link">
-          <span data-i18n="nav.games">Games</span>
-          <span class="badge" style="background: #10b981; color: #fff;" aria-label="New">New</span>
-        </a>
-        <a href="#other" class="nav-link">
-          <span data-i18n="nav.other">Other</span>
+        <a href="#projects" class="nav-link">
+          <span data-i18n="nav.projects">Projects</span>
         </a>
         <a href="#about" class="nav-link">
           <span data-i18n="nav.about">About</span>
         </a>
-        <a href="#donate" class="nav-link">
-          <span data-i18n="nav.donate">Donate</span>
+        <a href="#stack" class="nav-link">
+          <span data-i18n="nav.stack">Stack</span>
+        </a>
+        <a href="#footer" class="nav-link">
+          <span data-i18n="nav.contact">Contact</span>
         </a>
       </nav>
     </aside>
@@ -1423,22 +140,17 @@
         <a href="#home" class="nav-link active" aria-current="page">
           <span data-i18n="nav.home">Home</span>
         </a>
-        <a href="#apps" class="nav-link">
-          <span data-i18n="nav.apps">Apps</span>
-          <span class="badge" aria-label="1 app">1</span>
-        </a>
-        <a href="#games" class="nav-link">
-          <span data-i18n="nav.games">Games</span>
-          <span class="badge" style="background: #10b981; color: #fff;" aria-label="New">New</span>
-        </a>
-        <a href="#other" class="nav-link">
-          <span data-i18n="nav.other">Other</span>
+        <a href="#projects" class="nav-link">
+          <span data-i18n="nav.projects">Projects</span>
         </a>
         <a href="#about" class="nav-link">
           <span data-i18n="nav.about">About</span>
         </a>
-        <a href="#donate" class="nav-link">
-          <span data-i18n="nav.donate">Donate</span>
+        <a href="#stack" class="nav-link">
+          <span data-i18n="nav.stack">Stack</span>
+        </a>
+        <a href="#footer" class="nav-link">
+          <span data-i18n="nav.contact">Contact</span>
         </a>
         
         <!-- Mobile Theme & Language Switchers -->
@@ -1457,247 +169,292 @@
 
     <main class="main">
       <section id="home" class="section">
+        <p class="hero-eyebrow" data-i18n="hero.eyebrow">Nahreba Mykhailo · Bratislava · Open to work</p>
         <h1 data-i18n="hero.title">
           Code with purpose.<br>Design with soul.
         </h1>
         <p class="hero-text" data-i18n="hero.subtitle">
-          UzorGame — I work alone here. If something broke — blame the intern (they don't exist).
+          Independent developer crafting minimalist mobile apps and web experiences with Flutter
         </p>
         <div class="tags-row">
-          <span class="tag-pill" data-i18n="tags.works">If it works — don't touch</span>
-          <span class="tag-pill" data-i18n="tags.crashes">If it crashes — say it's a feature</span>
-          <span class="tag-pill" data-i18n="tags.flutter">Flutter runs me, not the opposite</span>
+          <span class="tag-pill" data-i18n="tags.works">Clean code, minimal design</span>
+          <span class="tag-pill" data-i18n="tags.crashes">Performance-first approach</span>
+          <span class="tag-pill" data-i18n="tags.flutter">Built with Flutter & modern web technologies</span>
         </div>
+        <p class="hero-proof" data-i18n="hero.proof"><b>6</b> products · <b>4</b> platforms · <b>3</b> stores</p>
       </section>
 
-      <section id="apps" class="section">
+      <section id="projects" class="section">
         <div class="section-head">
-          <h2 data-i18n="apps.title">Utility</h2>
-          <p class="subtitle" data-i18n="apps.subtitle">Tools for everyday efficiency.</p>
+          <p class="section-eyebrow" data-i18n="eyebrow.projects">01 / Work</p>
+          <h2 data-i18n="projects.title">Projects</h2>
+          <p class="subtitle" data-i18n="projects.subtitle">From the newest work down to the very first.</p>
         </div>
 
-        <div class="grid">
-          <article class="card spotlight">
-            <div class="card-inner">
-              <div class="card-header">
-                <div class="icon-box">
-                  <img src="Currency Converter+.png" alt="Currency Converter+ app icon" loading="lazy">
+        <div class="timeline">
+          <!-- RutaLive (найновіший) -->
+          <div class="timeline-item">
+            <div class="timeline-date" data-i18n="date.ruta">Nov 2025 – Present</div>
+            <article class="card spotlight">
+              <div class="card-inner">
+                <div class="card-header">
+                  <div class="icon-box icon-box-ruta">
+                    <img src="ruta-pin.svg" alt="RutaLive app icon" loading="lazy">
+                  </div>
+                  <span class="status-badge st-green" data-i18n="other.ruta.tag">Available</span>
                 </div>
-                <span class="status-badge st-green" data-i18n="apps.currency.tag">Available</span>
-              </div>
-              <div class="card-title" data-i18n="apps.currency.title">Currency Converter+</div>
-              <p class="card-desc" data-i18n="apps.currency.desc">
-                Offline-first currency converter. No ads, no tracking, just exchange rates updated daily. Pure utility.
-              </p>
-              <div class="btn-group">
-                <a href="https://play.google.com/store/apps/details?id=com.uzorgame.converter" target="_blank" class="btn btn-primary" data-i18n="common.googlePlay">Google Play</a>
-                <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="converter">Privacy</button>
-                <a href="https://uzorgame.github.io/CurrencyConverter-Web/" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" data-i18n="common.website">Website</a>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="games" class="section">
-        <div class="section-head">
-          <h2 data-i18n="games.title">Games</h2>
-          <p class="subtitle" data-i18n="games.subtitle">Digital zen for your brain.</p>
-        </div>
-
-        <div class="grid">
-          <article class="card spotlight">
-            <div class="card-inner">
-              <div class="card-header">
-                <div class="icon-box">
-                  <img src="Sudoku.png" alt="Sudoku game icon" loading="lazy">
+                <div class="card-title" data-i18n="other.ruta.title">RutaLive</div>
+                <p class="card-desc" data-i18n="other.ruta.desc">
+                  Delivery operations dashboard for courier teams: live tracking, POD, zones and dispatching. Monitor couriers and orders in real time, from pickup to drop-off.
+                </p>
+                <div class="proj-chips">
+                  <span class="proj-chip">React</span><span class="proj-chip">Node.js</span><span class="proj-chip">MongoDB</span><span class="proj-chip">Socket.io</span><span class="proj-chip">Flutter</span><span class="proj-chip">Mapbox</span><span class="proj-chip">Docker</span>
                 </div>
-                <span class="status-badge st-green" data-i18n="games.sudoku.tag">Available</span>
-              </div>
-              <div class="card-title" data-i18n="games.sudoku.title">Sudoku</div>
-              <p class="card-desc" data-i18n="games.sudoku.desc">
-                A minimalist Sudoku experience. Dark mode, smart pencil marks, and absolutely zero distractions.
-              </p>
-              <div class="btn-group">
-                <a href="https://play.google.com/store/apps/details?id=com.sudoku.uzor" target="_blank" class="btn btn-primary" data-i18n="common.googlePlay">Google Play</a>
-                <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="sudoku">Privacy</button>
-              </div>
-            </div>
-          </article>
-
-          <article class="card spotlight">
-            <div class="card-inner">
-              <div class="card-header">
-                <div class="icon-box">
-                  <span class="ico-retro">RA</span>
+                <div class="btn-group">
+                  <a href="https://rutalive.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="common.open">Open</a>
+                  <a href="https://apps.apple.com/pl/app/rutalive/id6759526163" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="common.appStore">App Store</a>
+                  <a href="https://play.google.com/store/apps/details?id=com.ruta.app&pli=1" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="common.googlePlay">Google Play</a>
+                  <a href="https://rutalive.com/RutaSetup.exe" download class="btn btn-primary" data-i18n="common.windows">Windows</a>
+                  <button class="btn btn-ghost" data-i18n="common.screenshots" data-screenshots="rutalive">Screenshots</button>
+                  <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="rutalive">Privacy</button>
                 </div>
-                <span class="status-badge st-gray" data-i18n="games.retro.tag">In Dev</span>
               </div>
-              <div class="card-title" data-i18n="games.retro.title">Retro Arcade</div>
-              <p class="card-desc" data-i18n="games.retro.desc">
-                A retro collection of classic arcade-style mini games in one clean app. No coins, no waiting, just play.
-              </p>
-              <div class="btn-group">
-                <button class="btn btn-primary" style="opacity: 0.5; cursor: default;">In development</button>
-                <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="retro-arcade">Privacy</button>
-              </div>
-            </div>
-          </article>
-        </div>
-      </section>
+            </article>
+          </div>
 
-      <section id="other" class="section">
-        <div class="section-head">
-          <h2 data-i18n="other.title">Other</h2>
-          <p class="subtitle" data-i18n="other.subtitle">Interactive web experiences.</p>
-        </div>
-
-        <div class="grid">
-          <article class="card spotlight">
-            <div class="card-inner">
-              <div class="card-header">
-                <div class="icon-box">
-                  <img src="SolarIcon.jpg" alt="3D Solar System web experience icon" loading="lazy">
+          <!-- Kora Wallet -->
+          <div class="timeline-item">
+            <div class="timeline-date" data-i18n="date.kora">Feb 2026</div>
+            <article class="card spotlight">
+              <div class="card-inner">
+                <div class="card-header">
+                  <div class="icon-box">
+                    <img src="Public/kora/koraicon.png" alt="Kora Wallet app icon" loading="lazy" style="transform: scale(1.06);">
+                  </div>
+                  <span class="status-badge st-green" data-i18n="apps.currency.tag">Available</span>
                 </div>
-                <span class="status-badge st-green" data-i18n="other.solar.tag">Available</span>
+                <div class="card-title" data-i18n="apps.kora.title">Kora Wallet</div>
+                <p class="card-desc" data-i18n="apps.kora.desc"></p>
+                <div class="proj-chips">
+                  <span class="proj-chip">Flutter</span><span class="proj-chip">Dart</span><span class="proj-chip">Multi-chain</span><span class="proj-chip">Open-source</span>
+                </div>
+                <div class="btn-group">
+                  <a href="Public/kora/app/KoraSuite_Setup_v3.5.0.exe" download class="btn btn-primary" data-i18n="common.windows">Windows</a>
+                  <a href="Public/kora/app/koraandroid.apk" download class="btn btn-primary" data-i18n="common.android">Android</a>
+                  <button class="btn btn-ghost" data-i18n="common.screenshots" data-screenshots="kora">Screenshots</button>
+                  <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="kora">Privacy</button>
+                </div>
               </div>
-              <div class="card-title" data-i18n="other.solar.title">3D Solar System</div>
-              <p class="card-desc" data-i18n="other.solar.desc">
-                Interactive 3D visualization of our solar system. Explore all planets, dwarf planets, moons, asteroids, and comets in real-time. Adjust speed, follow celestial bodies, and discover the cosmos at your own pace.
-              </p>
-              <div class="btn-group">
-                <a href="https://uzorgame.github.io/Solar-System/" target="_blank" class="btn btn-primary" data-i18n="common.open">Open</a>
-                <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="3D-Solar-System">Privacy</button>
+            </article>
+          </div>
+
+          <!-- 3D Solar System -->
+          <div class="timeline-item">
+            <div class="timeline-date" data-i18n="date.solar">Dec 2025</div>
+            <article class="card spotlight">
+              <div class="card-inner">
+                <div class="card-header">
+                  <div class="icon-box">
+                    <img src="SolarIcon.jpg" alt="3D Solar System web experience icon" loading="lazy">
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
+                    <span class="status-badge st-green" data-i18n="other.solar.tag">Available</span>
+                    <span class="status-badge st-gray" style="font-size: 9px; padding: 4px 8px;" data-i18n="other.solar.platform">Desktop only</span>
+                  </div>
+                </div>
+                <div class="card-title" data-i18n="other.solar.title">3D Solar System</div>
+                <p class="card-desc" data-i18n="other.solar.desc">
+                  Interactive 3D visualization of our solar system. Explore all planets, dwarf planets, moons, asteroids, and comets in real-time. Adjust speed, follow celestial bodies, and discover the cosmos at your own pace.
+                </p>
+                <div class="proj-chips">
+                  <span class="proj-chip">Three.js</span><span class="proj-chip">WebGL</span><span class="proj-chip">JavaScript</span>
+                </div>
+                <div class="btn-group">
+                  <a href="https://uzorgame.github.io/Solar-System/" target="_blank" class="btn btn-primary" data-i18n="common.open">Open</a>
+                  <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="3D-Solar-System">Privacy</button>
+                </div>
               </div>
-            </div>
-          </article>
+            </article>
+          </div>
+
+          <!-- Retro Arcade -->
+          <div class="timeline-item">
+            <div class="timeline-date" data-i18n="date.retro">Oct – Nov 2025</div>
+            <article class="card spotlight">
+              <div class="card-inner">
+                <div class="card-header">
+                  <div class="icon-box">
+                    <img src="RetroArcade.png" alt="Retro Arcade game icon" loading="lazy">
+                  </div>
+                  <span class="status-badge st-green" data-i18n="games.retro.tag">Available</span>
+                </div>
+                <div class="card-title" data-i18n="games.retro.title">Retro Arcade</div>
+                <p class="card-desc" data-i18n="games.retro.desc">
+                  A retro collection of classic arcade-style mini games in one clean app. No coins, no waiting, just play.
+                </p>
+                <div class="proj-chips">
+                  <span class="proj-chip">Flutter</span><span class="proj-chip">Dart</span><span class="proj-chip">Offline</span>
+                </div>
+                <div class="btn-group">
+                  <a href="https://play.google.com/store/apps/details?id=com.uzorgame.retroarcade" target="_blank" class="btn btn-primary" data-i18n="common.googlePlay">Google Play</a>
+                  <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="retro-arcade">Privacy</button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Currency Converter+ -->
+          <div class="timeline-item">
+            <div class="timeline-date" data-i18n="date.currency">Oct 2025</div>
+            <article class="card spotlight">
+              <div class="card-inner">
+                <div class="card-header">
+                  <div class="icon-box">
+                    <img src="CurrencyConverter.png" alt="Currency Converter+ app icon" loading="lazy">
+                  </div>
+                  <span class="status-badge st-green" data-i18n="apps.currency.tag">Available</span>
+                </div>
+                <div class="card-title" data-i18n="apps.currency.title">Currency Converter+</div>
+                <p class="card-desc" data-i18n="apps.currency.desc">
+                  Offline-first currency converter. No ads, no tracking, just exchange rates updated daily. Pure utility.
+                </p>
+                <div class="proj-chips">
+                  <span class="proj-chip">Flutter</span><span class="proj-chip">Dart</span><span class="proj-chip">JavaScript</span><span class="proj-chip">Offline</span>
+                </div>
+                <div class="btn-group">
+                  <a href="https://play.google.com/store/apps/details?id=com.uzorgame.converter" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="common.googlePlay">Google Play</a>
+                  <a href="https://uzorgame.github.io/CurrencyConverter-Web/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="common.website">Website</a>
+                  <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="converter">Privacy</button>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- Sudoku (найперший проєкт) -->
+          <div class="timeline-item">
+            <div class="timeline-date" data-i18n="date.sudoku">Sep – Oct 2025</div>
+            <article class="card spotlight">
+              <div class="card-inner">
+                <div class="card-header">
+                  <div class="icon-box">
+                    <img src="Sudoku.png" alt="Sudoku game icon" loading="lazy">
+                  </div>
+                  <span class="status-badge st-green" data-i18n="games.sudoku.tag">Available</span>
+                </div>
+                <div class="card-title" data-i18n="games.sudoku.title">Sudoku</div>
+                <p class="card-desc" data-i18n="games.sudoku.desc">
+                  A minimalist Sudoku experience. Dark mode, smart pencil marks, and absolutely zero distractions.
+                </p>
+                <div class="proj-chips">
+                  <span class="proj-chip">Flutter</span><span class="proj-chip">Dart</span><span class="proj-chip">4 modes</span>
+                </div>
+                <div class="btn-group">
+                  <a href="https://play.google.com/store/apps/details?id=com.sudoku.uzor" target="_blank" class="btn btn-primary" data-i18n="common.googlePlay">Google Play</a>
+                  <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="sudoku">Privacy</button>
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
       <section id="about" class="section">
         <div class="section-head">
+          <p class="section-eyebrow" data-i18n="eyebrow.about">02 / About</p>
           <h2 data-i18n="about.title">About</h2>
         </div>
-        
+
+        <p class="about-statement" data-i18n="about.statement">Junior by title, shipping by habit.</p>
+
         <div class="grid" style="grid-template-columns: 1fr; gap: 32px;">
           <article class="card spotlight">
             <div class="card-inner">
-              <div class="card-header">
-                <span class="status-badge" style="background: transparent; color: var(--text-main); border: 1px solid var(--card-border); font-size: 11.5px;" data-i18n="tab.philosophy">About Me</span>
-              </div>
-              <p class="card-desc" data-i18n="about.bio" style="margin-top: 0;">
-                Hi, I'm Uzor. I do what I like and what interests me. These apps and this work are a hobby for me, but if you want to offer me a job - I'll gladly accept XD
+              <p class="about-lead" data-i18n="about.bio">
+                I'm a junior developer who doesn't wait for permission — I build my own products end to end, from idea to the app stores, across mobile, games and the web. Alongside that, I'm a co-founder and active builder of RutaLive, a multi-tenant SaaS for courier logistics. Minimal by taste, shipped by habit.
               </p>
-              <div class="tech-grid" style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--card-border);">
+              <p class="about-looking" data-i18n="about.looking">Open to full-time roles, collaborations and product work that actually ships.</p>
+
+              <div class="journey">
+                <div class="journey-item">
+                  <div class="journey-date" data-i18n="journey.d1">2025</div>
+                  <div class="journey-text" data-i18n="journey.t1">First shipped products — Sudoku, Currency Converter+, Retro Arcade, 3D Solar System.</div>
+                </div>
+                <div class="journey-item">
+                  <div class="journey-date" data-i18n="journey.d2">2025 → Present</div>
+                  <div class="journey-text" data-i18n="journey.t2">RutaLive — co-founder &amp; active builder of a courier-logistics SaaS.</div>
+                </div>
+                <div class="journey-item">
+                  <div class="journey-date" data-i18n="journey.d3">2026</div>
+                  <div class="journey-text" data-i18n="journey.t3">Kora Wallet — non-custodial multi-chain wallet.</div>
+                </div>
+              </div>
+
+              <div class="tech-grid" style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--card-border);">
                 <div class="tech-item">
                   <span>Stack</span>
-                  Flutter, Dart, Firebase
+                  <div>Flutter · React · Node.js</div>
                 </div>
                 <div class="tech-item">
-                  <span>Obsession</span>
-                  60 FPS & Micro-interactions
+                  <span>Focus</span>
+                  <div data-i18n="about.focus">Ship to the stores</div>
                 </div>
                 <div class="tech-item">
                   <span>Base</span>
-                  Remote / Earth
+                  <div>Bratislava</div>
                 </div>
               </div>
               <div style="margin-top: 32px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                 <a href="mailto:uzorplay@gmail.com?subject=Feedback" class="btn btn-primary" data-i18n="nav.feedback">Send Feedback</a>
-                 <div style="display: flex; gap: 8px;">
-                   <a href="https://www.instagram.com/uzor.nm?igsh=b3RrdzY2M2E1emh3" target="_blank" rel="noopener noreferrer" class="social-icon">
-                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                       <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/>
-                     </svg>
-                   </a>
-                   <a href="https://www.linkedin.com/in/uzornm/" target="_blank" rel="noopener noreferrer" class="social-icon">
-                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                       <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" fill="currentColor"/>
-                     </svg>
-                   </a>
-                   <a href="https://github.com/uzorgame" target="_blank" rel="noopener noreferrer" class="social-icon">
-                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                       <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" fill="currentColor"/>
-                     </svg>
-                   </a>
-                 </div>
-              </div>
-            </div>
-          </article>
-
-          <article class="card spotlight">
-            <div class="card-inner">
-              <div class="card-header">
-                <span class="status-badge" style="background: transparent; color: var(--text-main); border: 1px solid var(--card-border); font-size: 11.5px;" data-i18n="tab.roadmap">Roadmap</span>
-              </div>
-              <div class="roadmap-list" style="margin-top: 0;">
-                <div class="roadmap-item">
-                  <div class="roadmap-dot" style="background: #10b981;"></div>
-                  <div class="roadmap-content">
-                    <div class="roadmap-title" data-i18n="roadmap.sudoku.title">Sudoku — Released</div>
-                    <div class="roadmap-desc" data-i18n="roadmap.sudoku.desc">Available on Google Play</div>
-                  </div>
+                <div style="display: flex; gap: 8px;">
+                  <a href="https://www.instagram.com/uzor.nm?igsh=b3RrdzY2M2E1emh3" target="_blank" rel="noopener noreferrer" class="social-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/>
+                  </a>
+                  <a href="https://github.com/uzorgame" target="_blank" rel="noopener noreferrer" class="social-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" fill="currentColor"/>
+                  </a>
                 </div>
-                <div class="roadmap-item">
-                  <div class="roadmap-dot" style="background: #10b981;"></div>
-                  <div class="roadmap-content">
-                    <div class="roadmap-title" data-i18n="roadmap.solar.title">3D Solar System — Released</div>
-                    <div class="roadmap-desc" data-i18n="roadmap.solar.desc">Interactive web experience available</div>
-                  </div>
-                </div>
-                <div class="roadmap-item">
-                  <div class="roadmap-dot" style="background: #10b981;"></div>
-                  <div class="roadmap-content">
-                    <div class="roadmap-title" data-i18n="roadmap.currency.title">Currency Converter+ — Released</div>
-                    <div class="roadmap-desc" data-i18n="roadmap.currency.desc">Easy and fast currency conversion</div>
-                  </div>
-                </div>
-                <div class="roadmap-item">
-                  <div class="roadmap-dot" style="background: #6b7280;"></div>
-                  <div class="roadmap-content">
-                    <div class="roadmap-title" data-i18n="roadmap.retro.title">Retro Arcade — Planned</div>
-                    <div class="roadmap-desc" data-i18n="roadmap.retro.desc">Classic arcade games collection</div>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-          <article class="card spotlight">
-            <div class="card-inner">
-              <div class="card-header">
-                <span class="status-badge" style="background: transparent; color: var(--text-main); border: 1px solid var(--card-border); font-size: 11.5px;">Rex</span>
-              </div>
-              <div class="game-container" style="margin-top: 16px;">
-                <iframe src="./runner/" title="Rex Game" allow="fullscreen" loading="lazy"></iframe>
               </div>
             </div>
           </article>
         </div>
       </section>
 
-      <section id="donate" class="section">
+      <section id="stack" class="section">
         <div class="section-head">
-          <h2 data-i18n="donate.title">Donate</h2>
-          <p class="subtitle" data-i18n="donate.note">Independent development is fueled by coffee and crypto.</p>
+          <p class="section-eyebrow" data-i18n="eyebrow.stack">03 / Stack</p>
+          <h2 data-i18n="stack.title">Tools I build with</h2>
         </div>
-        
-        <div class="donate-row">
-          <div class="crypto-box" role="button" tabindex="0" onclick="copyToClip('bc1q4fkt39f6467r4lh396ctkcc372z5296luz6q2p', this)" onkeypress="if(event.key==='Enter') copyToClip('bc1q4fkt39f6467r4lh396ctkcc372z5296luz6q2p', this)" aria-label="Copy Bitcoin address">
-            <div><span style="font-weight:700">BTC</span><span class="crypto-network">(Bitcoin)</span><br>bc1q4fkt39f6467r4lh396ctkcc372z5296luz6q2p</div>
-            <div class="copy-tooltip" aria-live="polite">COPIED</div>
+        <div class="stack-grid">
+          <div class="stack-group">
+            <h3 data-i18n="stack.mobile">Mobile</h3>
+            <div class="items"><span>Flutter</span><span>Dart</span><span>Firebase</span></div>
           </div>
-          <div class="crypto-box" role="button" tabindex="0" onclick="copyToClip('0xD7a1FF747bE6e98b12133A167a539a7d3C09137b', this)" onkeypress="if(event.key==='Enter') copyToClip('0xD7a1FF747bE6e98b12133A167a539a7d3C09137b', this)" aria-label="Copy Ethereum address">
-            <div><span style="font-weight:700">ETH</span><span class="crypto-network">(Ethereum)</span><br>0xD7a1FF747bE6e98b12133A167a539a7d3C09137b</div>
-            <div class="copy-tooltip" aria-live="polite">COPIED</div>
+          <div class="stack-group">
+            <h3 data-i18n="stack.web">Web</h3>
+            <div class="items"><span>React</span><span>Node.js</span><span>MongoDB</span><span>Socket.io</span></div>
           </div>
-          <div class="crypto-box" role="button" tabindex="0" onclick="copyToClip('TLPVY4d85XLdafMzQ1CW7HoDWxQkWhe4we', this)" onkeypress="if(event.key==='Enter') copyToClip('TLPVY4d85XLdafMzQ1CW7HoDWxQkWhe4we', this)" aria-label="Copy USDT TRC20 address">
-            <div><span style="font-weight:700">USDT</span><span class="crypto-network">(TRC20)</span><br>TLPVY4d85XLdafMzQ1CW7HoDWxQkWhe4we</div>
-            <div class="copy-tooltip" aria-live="polite">COPIED</div>
+          <div class="stack-group">
+            <h3 data-i18n="stack.graphics">Graphics &amp; Maps</h3>
+            <div class="items"><span>Three.js</span><span>WebGL</span><span>Mapbox</span></div>
+          </div>
+          <div class="stack-group">
+            <h3 data-i18n="stack.infra">Infra</h3>
+            <div class="items"><span>Docker</span><span>Nginx</span><span>Git</span></div>
           </div>
         </div>
+      </section>
 
+      <section id="footer" class="section">
+        <p class="section-eyebrow" data-i18n="eyebrow.contact">04 / Contact</p>
+        <h2 class="cta-title" data-i18n="cta.title">Let's build something.</h2>
+        <p class="cta-note" data-i18n="cta.note">I reply personally, usually the same day.</p>
+        <div class="cta-links">
+          <a href="mailto:NagrebaMM@gmail.com" class="cta-link">NagrebaMM@gmail.com <span class="arw">→</span></a>
+          <a href="https://t.me/uzormn" target="_blank" rel="noopener noreferrer" class="cta-link">Telegram · @uzormn <span class="arw">→</span></a>
+        </div>
         <footer class="footer" data-i18n="footer.text">
-          © 2025 UzorGame. Built with enthusiasm.
+          © 2026 Nahreba Mykhailo. Built with precision.
         </footer>
       </section>
 
@@ -1721,621 +478,27 @@
     </div>
   </div>
 
-  <script src="js/utils.js?v=2.0.1"></script>
-  <script src="js/theme.js?v=2.0.1"></script>
-  <script src="js/i18n.js?v=2.0.1"></script>
-  <script src="js/main.js?v=2.0.1"></script>
-  <script src="js/privacy-modal.js?v=2.0.1"></script>
-  <!--
-  <script>
-    /* --- LOGIC --- */
-    document.addEventListener("DOMContentLoaded", () => {
-      
-      // 1. SPOTLIGHT EFFECT
-      const cards = document.querySelectorAll(".spotlight");
-      document.addEventListener("mousemove", (e) => {
-        cards.forEach(card => {
-          const rect = card.getBoundingClientRect();
-          card.style.setProperty("--cursor-x", `${e.clientX - rect.left}px`);
-          card.style.setProperty("--cursor-y", `${e.clientY - rect.top}px`);
-        });
-      });
+  <!-- Screenshots Modal -->
+  <div class="privacy-modal-overlay" id="screenshots-modal-overlay"></div>
+  <div class="privacy-modal" id="screenshots-modal" role="dialog" aria-modal="true" aria-labelledby="screenshots-modal-title">
+    <div class="privacy-modal-header">
+      <h2 class="privacy-modal-title" id="screenshots-modal-title">Screenshots</h2>
+      <button class="privacy-modal-close" id="screenshots-modal-close" aria-label="Close">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+    <div class="privacy-modal-content" id="screenshots-modal-content" style="padding: 24px; height: 100%;">
+    </div>
+  </div>
 
-      // 1.5. CARD ANIMATION ON SCROLL
-      const cardElements = document.querySelectorAll(".card");
-      const cardObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if(entry.isIntersecting) {
-            entry.target.classList.add("animate-in");
-            cardObserver.unobserve(entry.target);
-          }
-        });
-      }, {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px"
-      });
-      
-      cardElements.forEach(card => {
-        cardObserver.observe(card);
-      });
-
-      // 2. NAV HIGHLIGHT
-      const sections = document.querySelectorAll("section");
-      const navLinks = document.querySelectorAll(".nav-link");
-      let currentActiveId = null;
-      let rafId = null;
-      let isScrolling = false;
-      
-      // Function to set active nav link
-      function setActiveNavLink(id) {
-        if(currentActiveId === id) return; // Avoid unnecessary updates
-        currentActiveId = id;
-        // Update both desktop and mobile nav links
-        document.querySelectorAll('.nav-link').forEach(link => {
-          link.classList.remove("active");
-          link.removeAttribute('aria-current');
-        });
-        document.querySelectorAll(`.nav-link[href="#${id}"]`).forEach(link => {
-          link.classList.add("active");
-          link.setAttribute('aria-current', 'page');
-        });
-      }
-      
-      // Make it globally available
-      window.setActiveNavLink = setActiveNavLink;
-      
-      // Handle click on nav links with smooth scroll
-      function handleNavClick(e, link) {
-        e.preventDefault();
-        const href = link.getAttribute("href");
-        if(href.startsWith("#")) {
-          const id = href.substring(1);
-          const target = document.getElementById(id);
-          if(target) {
-            const offsetTop = target.offsetTop - 20;
-            window.scrollTo({
-              top: offsetTop,
-              behavior: 'smooth'
-            });
-            setActiveNavLink(id);
-            
-            // Close mobile menu if open
-            const mobileNav = document.getElementById('mobile-nav');
-            const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
-            const mobileToggle = document.getElementById('mobile-menu-toggle');
-            if(mobileNav && mobileNav.classList.contains('active')) {
-              mobileNav.classList.remove('active');
-              mobileNavOverlay.classList.remove('active');
-              mobileNav.setAttribute('aria-hidden', 'true');
-              mobileNavOverlay.setAttribute('aria-hidden', 'true');
-              if(mobileToggle) mobileToggle.classList.remove('active');
-              document.body.style.overflow = '';
-            }
-          }
-        }
-      }
-      
-      navLinks.forEach(link => {
-        link.addEventListener("click", (e) => handleNavClick(e, link));
-      });
-      
-      // Mobile menu links
-      const mobileNavLinks = document.querySelectorAll('.mobile-nav .nav-link');
-      mobileNavLinks.forEach(link => {
-        link.addEventListener("click", (e) => handleNavClick(e, link));
-      });
-      
-      // Mobile menu toggle
-      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-      const mobileNav = document.getElementById('mobile-nav');
-      const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
-      
-      function toggleMobileMenu() {
-        const isActive = mobileNav.classList.contains('active');
-        mobileNav.classList.toggle('active');
-        mobileNavOverlay.classList.toggle('active');
-        mobileMenuToggle.classList.toggle('active');
-        mobileNav.setAttribute('aria-hidden', isActive ? 'true' : 'false');
-        mobileNavOverlay.setAttribute('aria-hidden', isActive ? 'true' : 'false');
-        document.body.style.overflow = isActive ? '' : 'hidden';
-      }
-      
-      if(mobileMenuToggle && mobileNav) {
-        mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-        mobileNavOverlay.addEventListener('click', toggleMobileMenu);
-      }
-      
-      // Smooth scroll detection function
-      function updateActiveSection() {
-        let activeSection = null;
-        let minDistance = Infinity;
-        const scrollY = window.scrollY;
-        const viewportCenter = scrollY + window.innerHeight * 0.3; // 30% from top
-        
-        sections.forEach(section => {
-          const rect = section.getBoundingClientRect();
-          const sectionTop = scrollY + rect.top;
-          const sectionCenter = sectionTop + rect.height / 2;
-          const distance = Math.abs(sectionCenter - viewportCenter);
-          
-          // Check if section is visible in viewport
-          if(rect.top < window.innerHeight && rect.bottom > 0) {
-            // Prefer sections that are above or at viewport center
-            if(sectionCenter <= viewportCenter + 100) {
-              if(distance < minDistance) {
-                minDistance = distance;
-                activeSection = section;
-              }
-            }
-          }
-        });
-        
-        // If no section found above center, find the closest visible one
-        if(!activeSection) {
-          sections.forEach(section => {
-            const rect = section.getBoundingClientRect();
-            if(rect.top < window.innerHeight && rect.bottom > 0) {
-              const sectionTop = scrollY + rect.top;
-              const distance = Math.abs(sectionTop - scrollY - 150);
-              if(distance < minDistance) {
-                minDistance = distance;
-                activeSection = section;
-              }
-            }
-          });
-        }
-        
-        if(activeSection) {
-          setActiveNavLink(activeSection.id);
-        }
-      }
-      
-      // Smooth scroll handler using requestAnimationFrame
-      function handleScroll() {
-        if(!isScrolling) {
-          isScrolling = true;
-        }
-        
-        if(rafId) {
-          cancelAnimationFrame(rafId);
-        }
-        
-        rafId = requestAnimationFrame(() => {
-          updateActiveSection();
-          isScrolling = false;
-        });
-      }
-      
-      // Scroll event listener
-      window.addEventListener("scroll", handleScroll, { passive: true });
-      
-      // Also update when scroll ends (for final accuracy)
-      let scrollEndTimeout = null;
-      window.addEventListener("scroll", () => {
-        if(scrollEndTimeout) clearTimeout(scrollEndTimeout);
-        scrollEndTimeout = setTimeout(() => {
-          updateActiveSection();
-        }, 150);
-      }, { passive: true });
-      
-      // Initial update
-      updateActiveSection();
-      
-      // Update aria-current on initial load
-      setTimeout(() => {
-        document.querySelectorAll('.nav-link').forEach(link => {
-          if(link.classList.contains('active')) {
-            link.setAttribute('aria-current', 'page');
-          }
-        });
-      }, 100);
-    });
-
-    // 3. COPY TO CLIPBOARD with improved feedback
-    function copyToClip(text, element) {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(text).then(() => {
-          element.classList.add('copied');
-          const tooltip = element.querySelector('.copy-tooltip');
-          if(tooltip) tooltip.textContent = 'COPIED';
-          setTimeout(() => {
-            element.classList.remove('copied');
-            if(tooltip) tooltip.textContent = '';
-          }, 2000);
-        }).catch(() => {
-          // Fallback for older browsers
-          const textArea = document.createElement('textarea');
-          textArea.value = text;
-          textArea.style.position = 'fixed';
-          textArea.style.opacity = '0';
-          document.body.appendChild(textArea);
-          textArea.select();
-          try {
-            document.execCommand('copy');
-            element.classList.add('copied');
-            setTimeout(() => element.classList.remove('copied'), 2000);
-          } catch (err) {
-            console.error('Failed to copy:', err);
-          }
-          document.body.removeChild(textArea);
-        });
-      }
-    }
-
-
-
-    // 4. TRANSLATIONS
-    const translations = {
-      en: {
-        "nav.home": "Home", "nav.apps": "Apps", "nav.games": "Games", "nav.other": "Other", "nav.about": "About", "nav.donate": "Donate", "nav.feedback": "Feedback",
-        "theme.light": "Light", "theme.dark": "Dark",
-        "hero.title": "Code with purpose.<br>Design with soul.",
-        "hero.subtitle": "UzorGame — I work alone here. If something broke — blame the intern (they don't exist).",
-        "tags.works": "If it works — don't touch",
-        "tags.crashes": "If it crashes — say it's a feature",
-        "tags.flutter": "Flutter runs me, not the opposite",
-        "apps.title": "Utility", "apps.subtitle": "Tools for everyday efficiency.",
-        "apps.currency.title": "Currency Converter+", "apps.currency.tag": "In Dev", "apps.currency.desc": "Offline-first currency converter. No ads, no tracking, just exchange rates updated daily. Pure utility.",
-        "games.title": "Games", "games.subtitle": "Digital zen for your brain.",
-        "games.sudoku.title": "Sudoku", "games.sudoku.tag": "Available", "games.sudoku.desc": "A minimalist Sudoku experience. Dark mode, smart pencil marks, and absolutely zero distractions.",
-        "games.retro.title": "Retro Arcade", "games.retro.tag": "In Dev", "games.retro.desc": "A retro collection of classic arcade-style mini games in one clean app. No coins, no waiting.",
-        "other.title": "Other", "other.subtitle": "Interactive web experiences.",
-        "other.solar.title": "3D Solar System", "other.solar.tag": "Available", "other.solar.desc": "Interactive 3D visualization of our solar system. Explore all planets, dwarf planets, moons, asteroids, and comets in real-time. Adjust speed, follow celestial bodies, and discover the cosmos at your own pace.",
-        "about.title": "About", "about.bio": "Hi, I'm Uzor. I do what I like and what interests me. These apps and this work are a hobby for me, but if you want to offer me a job - I'll gladly accept XD",
-        "tab.philosophy": "About Me", "tab.roadmap": "Roadmap",
-        "roadmap.title": "Roadmap",
-        "roadmap.sudoku.title": "Sudoku — Released", "roadmap.sudoku.desc": "Available on Google Play",
-        "roadmap.solar.title": "3D Solar System — Released", "roadmap.solar.desc": "Interactive web experience available",
-        "roadmap.currency.title": "Currency Converter+ — In Progress", "roadmap.currency.desc": "Offline-first currency converter",
-        "roadmap.retro.title": "Retro Arcade — Planned", "roadmap.retro.desc": "Classic arcade games collection",
-        "donate.title": "Donate", "donate.note": "Independent development is fueled by coffee and crypto. Tap to copy.", "common.googlePlay": "Google Play", "common.open": "Open",
-        "common.privacyPolicy": "Privacy", "footer.text": "© 2025 UzorGame. Built with enthusiasm."
-      },
-      uk: {
-        "nav.home": "Головна", "nav.apps": "Софт", "nav.games": "Ігри", "nav.other": "Інше", "nav.about": "Інфо", "nav.donate": "Донат", "nav.feedback": "Зв'язок",
-        "theme.light": "Світла", "theme.dark": "Темна",
-        "hero.title": "Код зі змістом.<br>Дизайн з душею.",
-        "hero.subtitle": "UzorGame — я тут працюю один. Якщо щось зламалося — звинувачуйте стажера (його не існує).",
-        "tags.works": "Якщо працює — не чіпай",
-        "tags.crashes": "Якщо зламалося — скажи, що це фіча",
-        "tags.flutter": "Flutter керує мною, а не навпаки",
-        "apps.title": "Утиліти", "apps.subtitle": "Інструменти для ефективності.",
-        "apps.currency.title": "Currency Converter+", "apps.currency.tag": "В розробці", "apps.currency.desc": "Офлайн конвертер валют. Жодної реклами, трекерів. Тільки актуальні курси.",
-        "games.title": "Ігри", "games.subtitle": "Цифровий дзен.",
-        "games.sudoku.title": "Sudoku", "games.sudoku.tag": "Доступно", "games.sudoku.desc": "Мінімалістичне судоку. Темна тема, розумні нотатки і жодних відволікаючих факторів.",
-        "games.retro.title": "Retro Arcade", "games.retro.tag": "В розробці", "games.retro.desc": "Ретро-збірка класичних аркадних ігор. Без монет, без очікування, просто гра.",
-        "other.title": "Інше", "other.subtitle": "Інтерактивні веб-досвіди.",
-        "other.solar.title": "3D Сонячна Система", "other.solar.tag": "Доступно", "other.solar.desc": "Інтерактивна 3D візуалізація нашої сонячної системи. Досліджуйте всі планети, карликові планети, супутники, астероїди та комети в реальному часі. Налаштуйте швидкість, слідуйте за небесними тілами та відкривайте космос у своєму темпі.",
-        "about.title": "Про нас", "about.bio": "Привіт, я Uzor. Я роблю те, що мені подобається і те, що мені цікаво. Ці додатки і ця робота для мене хобі, але якщо ти хочеш запропонувати мені роботу - я з радістю погоджусь XD",
-        "tab.philosophy": "Про мене", "tab.roadmap": "План розробки",
-        "roadmap.title": "План розробки",
-        "roadmap.sudoku.title": "Sudoku — Випущено", "roadmap.sudoku.desc": "Доступно в Google Play",
-        "roadmap.solar.title": "3D Сонячна Система — Випущено", "roadmap.solar.desc": "Інтерактивний веб-досвід доступний",
-        "roadmap.currency.title": "Currency Converter+ — В розробці", "roadmap.currency.desc": "Офлайн конвертер валют",
-        "roadmap.retro.title": "Retro Arcade — Заплановано", "roadmap.retro.desc": "Колекція класичних аркадних ігор",
-        "donate.title": "Підтримка", "donate.note": "Інді-розробка працює на каві та крипті. Натисни, щоб скопіювати.", "common.googlePlay": "Google Play", "common.open": "Відкрити",
-        "common.privacyPolicy": "Приватність", "footer.text": "© 2025 UzorGame. Зроблено з точністю."
-      }
-    };
-
-    // 4. THEME MANAGEMENT - світла тема за замовчуванням
-    function applyTheme(theme) {
-      const root = document.documentElement;
-      root.setAttribute('data-theme', theme);
-      
-      // Update theme color meta tag
-      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-      if(metaThemeColor) {
-        metaThemeColor.content = theme === 'dark' ? '#0F0F0F' : '#FAFAFA';
-      }
-      
-      // Update active button (desktop and mobile)
-      document.querySelectorAll('.theme-btn, .mobile-theme-btn').forEach(btn => {
-        btn.classList.remove('active');
-        if(btn.dataset.theme === theme) {
-          btn.classList.add('active');
-        }
-      });
-      
-      // Save to localStorage
-      localStorage.setItem('theme', theme);
-    }
-
-    // Initialize theme - світла за замовчуванням, але перевіряємо localStorage
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    // Застосовуємо тему одразу, щоб уникнути мерехтіння
-    applyTheme(savedTheme);
-
-    // Theme switcher buttons (desktop and mobile)
-    const themeButtons = document.querySelectorAll('.theme-btn, .mobile-theme-btn');
-    themeButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const theme = btn.dataset.theme;
-        applyTheme(theme);
-      });
-    });
-
-    // 5. LOCALIZATION with localStorage and browser detection
-    function detectBrowserLanguage() {
-      const browserLang = navigator.language || navigator.userLanguage;
-      if(browserLang.startsWith('uk') || browserLang.startsWith('ru')) {
-        return 'uk';
-      }
-      return 'en';
-    }
-
-    const langButtons = document.querySelectorAll(".lang-btn, .mobile-lang-btn");
-    
-    function applyLanguage(lang) {
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.dataset.i18n;
-        if(translations[lang] && translations[lang][key]) {
-          if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-            el.value = translations[lang][key];
-          } else {
-            el.innerHTML = translations[lang][key];
-          }
-        }
-      });
-      
-      // Update theme buttons aria-label and title (desktop and mobile)
-      const lightText = translations[lang]?.["theme.light"] || "Light";
-      const darkText = translations[lang]?.["theme.dark"] || "Dark";
-      
-      // Update all theme buttons
-      document.querySelectorAll('.theme-btn[data-theme="light"], .mobile-theme-btn[data-theme="light"]').forEach(btn => {
-        btn.setAttribute('aria-label', `${lightText} theme`);
-        btn.setAttribute('title', `${lightText} theme`);
-      });
-      document.querySelectorAll('.theme-btn[data-theme="dark"], .mobile-theme-btn[data-theme="dark"]').forEach(btn => {
-        btn.setAttribute('aria-label', `${darkText} theme`);
-        btn.setAttribute('title', `${darkText} theme`);
-      });
-      
-      // Update HTML lang attribute
-      document.documentElement.setAttribute('lang', lang === 'uk' ? 'uk' : 'en');
-      
-      // Update active button (desktop and mobile)
-      langButtons.forEach(b => b.classList.remove("active"));
-      document.querySelectorAll(`.lang-btn[data-lang="${lang}"], .mobile-lang-btn[data-lang="${lang}"]`).forEach(btn => btn.classList.add("active"));
-      
-      // Save to localStorage
-      localStorage.setItem('language', lang);
-    }
-
-    // Initialize language
-    const savedLang = localStorage.getItem('language') || detectBrowserLanguage();
-    applyLanguage(savedLang);
-
-    langButtons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const lang = btn.dataset.lang;
-        applyLanguage(lang);
-      });
-    });
-
-    // 6. SAVE SCROLL POSITION
-    function saveScrollPosition() {
-      sessionStorage.setItem('scrollPosition', window.scrollY.toString());
-    }
-
-    function restoreScrollPosition() {
-      const savedPosition = sessionStorage.getItem('scrollPosition');
-      if(savedPosition) {
-        window.scrollTo(0, parseInt(savedPosition, 10));
-        sessionStorage.removeItem('scrollPosition');
-      }
-    }
-
-    // Save scroll position before unload
-    window.addEventListener('beforeunload', saveScrollPosition);
-    
-    // Restore on load (with slight delay for layout)
-    window.addEventListener('load', () => {
-      setTimeout(restoreScrollPosition, 100);
-    });
-
-    // 7. PWA Service Worker Registration - DISABLED
-    // if ('serviceWorker' in navigator) {
-    //   window.addEventListener('load', () => {
-    //     navigator.serviceWorker.register('/service-worker.js')
-    //       .then((registration) => {
-    //         console.log('SW registered: ', registration);
-    //       })
-    //       .catch((registrationError) => {
-    //         console.log('SW registration failed: ', registrationError);
-    //       });
-    //   });
-    // }
-
-    // 8. PRIVACY MODAL
-    const privacyModal = document.getElementById('privacy-modal');
-    const privacyModalOverlay = document.getElementById('privacy-modal-overlay');
-    const privacyModalClose = document.getElementById('privacy-modal-close');
-    const privacyModalContent = document.getElementById('privacy-modal-content');
-    const privacyModalTitle = document.getElementById('privacy-modal-title');
-    
-    const privacyPolicies = {
-      'converter': 'privacy-policy-converter.md',
-      'sudoku': 'privacy-policy-sudoku.md',
-      'retro-arcade': 'privacy-policy-retro-arcade.md',
-      '3D-Solar-System': 'privacy-policy-3D-Solar-System.md'
-    };
-    
-    function markdownToHTML(markdown) {
-      let html = markdown;
-      // Headers
-      html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-      html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-      html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-      // Bold and italic
-      html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
-      html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
-      // Links
-      html = html.replace(/\[([^\]]+)\]\(([^\)]+)\)/gim, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-      // Horizontal rule
-      html = html.replace(/^---$/gim, '<hr>');
-      // Process lists - wrap consecutive list items
-      const lines = html.split('\n');
-      let inList = false;
-      let listItems = [];
-      let processedLines = [];
-      
-      lines.forEach((line, index) => {
-        const isListItem = /^[\-\*] (.+)$/.test(line.trim()) || /^\d+\. (.+)$/.test(line.trim());
-        
-        if (isListItem) {
-          if (!inList) {
-            inList = true;
-            listItems = [];
-          }
-          const content = line.replace(/^[\-\*] /, '').replace(/^\d+\. /, '');
-          listItems.push('<li>' + content + '</li>');
-        } else {
-          if (inList) {
-            processedLines.push('<ul>' + listItems.join('') + '</ul>');
-            listItems = [];
-            inList = false;
-          }
-          if (line.trim()) {
-            processedLines.push(line);
-          }
-        }
-      });
-      
-      if (inList && listItems.length > 0) {
-        processedLines.push('<ul>' + listItems.join('') + '</ul>');
-      }
-      
-      html = processedLines.join('\n');
-      
-      // Process paragraphs
-      html = html.split('\n\n').map(para => {
-        para = para.trim();
-        if (!para) return '';
-        if (para.startsWith('<h') || para.startsWith('<ul') || para.startsWith('<hr')) {
-          return para;
-        }
-        return '<p>' + para + '</p>';
-      }).join('\n');
-      
-      // Clean up
-      html = html.replace(/<p><h/gim, '<h');
-      html = html.replace(/<\/h([1-6])><\/p>/gim, '</h$1>');
-      html = html.replace(/<p><ul>/gim, '<ul>');
-      html = html.replace(/<\/ul><\/p>/gim, '</ul>');
-      html = html.replace(/<p><hr><\/p>/gim, '<hr>');
-      html = html.replace(/<p><\/p>/gim, '');
-      return html;
-    }
-    
-    async function loadPrivacyPolicy(type) {
-      const fileName = privacyPolicies[type];
-      if (!fileName) return;
-      
-      privacyModalContent.innerHTML = '<p>Loading...</p>';
-      
-      try {
-        const response = await fetch(fileName);
-        if (!response.ok) throw new Error('Failed to load');
-        const markdown = await response.text();
-        const html = markdownToHTML(markdown);
-        privacyModalContent.innerHTML = html;
-        
-        const titleMatch = markdown.match(/^# (.+)$/m);
-        if (titleMatch) {
-          privacyModalTitle.textContent = titleMatch[1];
-        }
-      } catch (error) {
-        privacyModalContent.innerHTML = '<p>Error loading privacy policy. Please try again later.</p>';
-      }
-    }
-    
-    function openPrivacyModal(type) {
-      // Prevent body scroll without shifting content
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = scrollbarWidth + 'px';
-      
-      loadPrivacyPolicy(type);
-      
-      // Ensure modal is positioned correctly after content loads
-      setTimeout(() => {
-        const viewportHeight = window.innerHeight;
-        const modalMaxHeight = Math.min(viewportHeight * 0.9, viewportHeight - 40);
-        privacyModal.style.maxHeight = modalMaxHeight + 'px';
-        
-        // Use CSS centering but ensure it doesn't go below viewport
-        privacyModal.style.top = '';
-        privacyModal.style.transform = 'translate(-50%, -50%) scale(1) translateY(0)';
-        
-        // Check if modal would go below viewport and adjust if needed
-        requestAnimationFrame(() => {
-          const modalRect = privacyModal.getBoundingClientRect();
-          if (modalRect.bottom > viewportHeight - 20) {
-            const overflow = modalRect.bottom - (viewportHeight - 20);
-            privacyModal.style.top = `calc(50% - ${overflow}px)`;
-          }
-        });
-      }, 100);
-      
-      privacyModal.classList.add('active');
-      privacyModalOverlay.classList.add('active');
-      privacyModal.setAttribute('aria-hidden', 'false');
-    }
-    
-    function closePrivacyModal() {
-      privacyModal.classList.remove('active');
-      privacyModalOverlay.classList.remove('active');
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
-      privacyModal.setAttribute('aria-hidden', 'true');
-    }
-    
-    document.querySelectorAll('[data-privacy]').forEach(button => {
-      button.addEventListener('click', (e) => {
-        e.preventDefault();
-        const type = button.getAttribute('data-privacy');
-        openPrivacyModal(type);
-      });
-    });
-    
-    if (privacyModalClose) {
-      privacyModalClose.addEventListener('click', closePrivacyModal);
-    }
-    if (privacyModalOverlay) {
-      privacyModalOverlay.addEventListener('click', closePrivacyModal);
-    }
-    
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && privacyModal && privacyModal.classList.contains('active')) {
-        closePrivacyModal();
-      }
-    });
-    
-    // Handle window resize to keep modal in viewport
-    let resizeTimeout;
-    window.addEventListener('resize', () => {
-      if (privacyModal && privacyModal.classList.contains('active')) {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-          const viewportHeight = window.innerHeight;
-          const modalMaxHeight = Math.min(viewportHeight * 0.9, viewportHeight - 40);
-          privacyModal.style.maxHeight = modalMaxHeight + 'px';
-          
-          requestAnimationFrame(() => {
-            const modalRect = privacyModal.getBoundingClientRect();
-            if (modalRect.bottom > viewportHeight - 20) {
-              const overflow = modalRect.bottom - (viewportHeight - 20);
-              privacyModal.style.top = `calc(50% - ${overflow}px)`;
-            } else {
-              privacyModal.style.top = '';
-            }
-          });
-        }, 150);
-      }
-    });
-  </script>
-  -->
+  <script src="js/utils.js?v=2.2.4"></script>
+  <script src="js/theme.js?v=2.2.4"></script>
+  <script src="js/i18n.js?v=2.2.4"></script>
+  <script src="js/main.js?v=2.2.4"></script>
+  <script src="js/privacy-modal.js?v=2.2.4"></script>
+  <script src="js/screenshots-modal.js?v=2.2.4"></script>
 </body>
 </html>

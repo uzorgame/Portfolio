@@ -2,7 +2,7 @@
 
 **Last updated:** November 2025
 
-This Privacy Policy explains how **UzorGame** (“we”, “our”, “us”) handles information in the mobile app **Currency Converter**.
+This Privacy Policy explains how **Nahreba Mykhailo** (“we”, “our”, “us”) handles information in the mobile app **Currency Converter**.
 
 The app is a utility tool designed to work **without accounts**, **without ads**, and **without tracking**. We prioritize your privacy and do not build user profiles.
 
@@ -45,4 +45,4 @@ We may update this Privacy Policy from time to time if our practices change or l
 If you have questions about this policy or the app, please contact us:
 
 * **Email:** uzorplay@gmail.com
-* **Developer:** UzorGame
+* **Developer:** Nahreba Mykhailo

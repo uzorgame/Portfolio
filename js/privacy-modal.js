@@ -10,7 +10,9 @@ const privacyPolicies = {
   'converter': 'privacy-policy-converter.md',
   'sudoku': 'privacy-policy-sudoku.md',
   'retro-arcade': 'privacy-policy-retro-arcade.md',
-  '3D-Solar-System': 'privacy-policy-3D-Solar-System.md'
+  '3D-Solar-System': 'privacy-policy-3D-Solar-System.md',
+  'rutalive': 'privacy-policy-rutalive.md',
+  'kora': 'privacy-policy-kora.md'
 };
 
 function markdownToHTML(markdown) {
@@ -48,9 +50,9 @@ function markdownToHTML(markdown) {
         listItems = [];
         inList = false;
       }
-      if (line.trim()) {
-        processedLines.push(line);
-      }
+      // Зберігаємо ВСІ рядки (в т.ч. порожні), щоб split('\n\n') нижче коректно
+      // ділив текст на окремі абзаци <p> (інакше все зливалось в один блок).
+      processedLines.push(line);
     }
   });
   
@@ -103,83 +105,27 @@ async function loadPrivacyPolicy(type) {
 }
 
 function openPrivacyModal(type) {
-  // Save current scroll position
-  const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
-  
-  // Prevent body scroll without shifting content
+  // Запамʼятовуємо позицію скролу й «замикаємо» сторінку через position:fixed —
+  // це залишає її рівно на місці, поки відкрита модалка (модалка ж бо оверлей).
+  const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
+  document.body.setAttribute('data-scroll-y', String(scrollY));
+
+  // Компенсуємо ширину скролбара, щоб контент не «стрибнув» вбік при його зникненні.
   const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-  document.body.style.overflow = 'hidden';
-  document.body.style.paddingRight = scrollbarWidth + 'px';
-  
-  // Prevent iOS bounce scroll and preserve scroll position
   document.body.style.position = 'fixed';
   document.body.style.top = `-${scrollY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
   document.body.style.width = '100%';
-  
-  // Store scroll position for restoration
-  document.body.setAttribute('data-scroll-y', scrollY);
-  
+  document.body.style.overflow = 'hidden';
+  if (scrollbarWidth > 0) document.body.style.paddingRight = scrollbarWidth + 'px';
+
   loadPrivacyPolicy(type);
-  
-  // Ensure modal is positioned correctly after content loads
-  setTimeout(() => {
-    const viewportHeight = window.innerHeight;
-    const viewportWidth = window.innerWidth;
-    const isMobile = viewportWidth <= 900;
-    const isShortScreen = viewportHeight <= 600;
-    
-    // Calculate max height based on viewport
-    let modalMaxHeight;
-    if (isShortScreen) {
-      modalMaxHeight = viewportHeight - 20;
-    } else if (isMobile) {
-      modalMaxHeight = viewportHeight - 20;
-    } else {
-      modalMaxHeight = Math.min(viewportHeight * 0.9, viewportHeight - 40);
-    }
-    
-    privacyModal.style.maxHeight = modalMaxHeight + 'px';
-    
-    // Reset positioning
-    privacyModal.style.top = '';
-    privacyModal.style.left = '50%';
-    
-    // Check if modal would go outside viewport and adjust
-    requestAnimationFrame(() => {
-      const modalRect = privacyModal.getBoundingClientRect();
-      const padding = 10;
-      
-      // Check bottom overflow
-      if (modalRect.bottom > viewportHeight - padding) {
-        const overflow = modalRect.bottom - (viewportHeight - padding);
-        if (isShortScreen) {
-          privacyModal.style.top = `${padding}px`;
-          privacyModal.style.transform = 'translate(-50%, 0) scale(1)';
-        } else {
-          privacyModal.style.top = `calc(50% - ${overflow}px)`;
-        }
-      }
-      
-      // Check top overflow
-      if (modalRect.top < padding) {
-        privacyModal.style.top = `${padding}px`;
-        if (isShortScreen) {
-          privacyModal.style.transform = 'translate(-50%, 0) scale(1)';
-        } else {
-          privacyModal.style.transform = 'translate(-50%, 0) scale(1)';
-        }
-      }
-      
-      // Check horizontal overflow
-      if (modalRect.left < padding) {
-        privacyModal.style.left = `${padding + modalRect.width / 2}px`;
-      }
-      if (modalRect.right > viewportWidth - padding) {
-        privacyModal.style.left = `${viewportWidth - padding - modalRect.width / 2}px`;
-      }
-    });
-  }, 50);
-  
+  privacyModalContent.scrollTop = 0; // завжди відкриваємо згори тексту
+
+  // Жодного JS-переміщення: центрування й обмеження висоти повністю на CSS
+  // (transform + max-height + внутрішній скрол). Тому вікно зʼявляється рівно,
+  // без «доведення» позиції та без стрибків знизу.
   privacyModal.classList.add('active');
   privacyModalOverlay.classList.add('active');
   privacyModal.setAttribute('aria-hidden', 'false');
@@ -188,42 +134,28 @@ function openPrivacyModal(type) {
 function closePrivacyModal() {
   privacyModal.classList.remove('active');
   privacyModalOverlay.classList.remove('active');
-  
-  // Get saved scroll position
-  const scrollY = document.body.getAttribute('data-scroll-y');
-  
-  // Restore scroll position BEFORE removing fixed positioning
-  // This prevents any visible scroll animation
-  if (scrollY) {
-    const scrollValue = parseInt(scrollY, 10);
-    // Set scroll position directly on all possible scroll containers
-    document.documentElement.scrollTop = scrollValue;
-    document.body.scrollTop = scrollValue;
-    window.pageYOffset = scrollValue;
-  }
-  
-  // Remove fixed positioning - this will reveal the already-set scroll position
-  document.body.style.overflow = '';
-  document.body.style.paddingRight = '';
+  privacyModal.setAttribute('aria-hidden', 'true');
+
+  const scrollY = parseInt(document.body.getAttribute('data-scroll-y') || '0', 10);
+
+  // Глушимо глобальний html{scroll-behavior:smooth} на час відновлення — інакше
+  // повернення позиції анімувалось би («сповзало»). Знімаємо фіксацію й тим самим
+  // синхронним кадром вертаємо ТУ САМУ позицію, тож сторінка лишається де була.
+  const html = document.documentElement;
+  const prevBehavior = html.style.scrollBehavior;
+  html.style.scrollBehavior = 'auto';
+
   document.body.style.position = '';
   document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
   document.body.style.width = '';
+  document.body.style.overflow = '';
+  document.body.style.paddingRight = '';
   document.body.removeAttribute('data-scroll-y');
-  
-  // Ensure scroll position is maintained (some browsers might reset it)
-  if (scrollY) {
-    // Use immediate scrollTo without animation as final fallback
-    window.scrollTo(0, parseInt(scrollY, 10));
-  }
-  
-  privacyModal.setAttribute('aria-hidden', 'true');
-  
-  // Reset modal position after animation
-  setTimeout(() => {
-    privacyModal.style.top = '';
-    privacyModal.style.left = '50%';
-    privacyModal.style.transform = '';
-  }, 350);
+
+  window.scrollTo(0, scrollY);
+  html.style.scrollBehavior = prevBehavior;
 }
 
 document.querySelectorAll('[data-privacy]').forEach(button => {
@@ -247,55 +179,8 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Handle window resize to keep modal in viewport
-let resizeTimeout;
-window.addEventListener('resize', () => {
-  if (privacyModal && privacyModal.classList.contains('active')) {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      const viewportHeight = window.innerHeight;
-      const viewportWidth = window.innerWidth;
-      const isMobile = viewportWidth <= 900;
-      const isShortScreen = viewportHeight <= 600;
-      
-      let modalMaxHeight;
-      if (isShortScreen) {
-        modalMaxHeight = viewportHeight - 20;
-      } else if (isMobile) {
-        modalMaxHeight = viewportHeight - 20;
-      } else {
-        modalMaxHeight = Math.min(viewportHeight * 0.9, viewportHeight - 40);
-      }
-      
-      privacyModal.style.maxHeight = modalMaxHeight + 'px';
-      
-      requestAnimationFrame(() => {
-        const modalRect = privacyModal.getBoundingClientRect();
-        const padding = 10;
-        
-        // Reset positioning
-        privacyModal.style.top = '';
-        privacyModal.style.left = '50%';
-        
-        // Check and fix positioning
-        if (modalRect.bottom > viewportHeight - padding) {
-          const overflow = modalRect.bottom - (viewportHeight - padding);
-          if (isShortScreen) {
-            privacyModal.style.top = `${padding}px`;
-            privacyModal.style.transform = 'translate(-50%, 0) scale(1)';
-          } else {
-            privacyModal.style.top = `calc(50% - ${overflow}px)`;
-          }
-        }
-        
-        if (modalRect.top < padding) {
-          privacyModal.style.top = `${padding}px`;
-          privacyModal.style.transform = 'translate(-50%, 0) scale(1)';
-        }
-      });
-    }, 150);
-  }
-});
+// Розмір вікна більше не потребує JS-переміщення модалки: висоту й центрування
+// тримає CSS (max-height + transform), а довгий текст скролиться всередині.
 
 // Make functions globally available
 window.openPrivacyModal = openPrivacyModal;

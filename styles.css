@@ -10,11 +10,13 @@
   --accent: #111111;
   
   --card-bg: rgba(255, 255, 255, 0.7);
+  --surface: #ffffff;
   --card-border: rgba(0, 0, 0, 0.06);
   --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
   
   --font-main: 'Inter', sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Space Grotesk', 'Inter', sans-serif;
 
   /* Spotlight Variables */
   --cursor-x: 0px;
@@ -33,6 +35,7 @@
   --text-light: #6B6B6B;
   --accent: #F5F5F5;
   --card-bg: rgba(22, 22, 22, 0.85);
+  --surface: #161616;
   --card-border: rgba(255, 255, 255, 0.08);
   --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 4px 8px rgba(0, 0, 0, 0.3);
 }
@@ -45,6 +48,7 @@
   --text-light: #A3A3A3;
   --accent: #111111;
   --card-bg: rgba(255, 255, 255, 0.7);
+  --surface: #ffffff;
   --card-border: rgba(0, 0, 0, 0.06);
   --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
 }
@@ -199,17 +203,47 @@ body {
 .section-head { margin-bottom: 32px; }
 
 h1 {
-  font-size: 72px;
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
+  font-family: var(--font-display);
+  font-size: clamp(46px, 9vw, 100px);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
   color: var(--text-main);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
+  text-wrap: balance;
 }
 
-h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
+h2 {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 5.4vw, 54px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.0;
+  text-transform: uppercase;
+  text-wrap: balance;
+  margin-bottom: 8px;
+}
 
-.subtitle { font-size: 16px; color: var(--text-muted); max-width: 500px; }
+.subtitle { font-size: 16px; color: var(--text-muted); max-width: 520px; }
+
+/* ── Редакційні лейбли/номери секцій (моно + волосяна лінія) ───────────── */
+.section-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.section-eyebrow::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: var(--card-border);
+}
 
 /* HERO */
 .hero-text {
@@ -236,6 +270,90 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
+/* ═══════════════ ELEVATION: hero · author · journey · stack · CTA ═══════════════ */
+
+/* Hero */
+.hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12.5px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 26px;
+}
+.hero-proof {
+  font-family: var(--font-mono);
+  font-size: 13px; letter-spacing: 0.05em; color: var(--text-light); margin-top: 28px;
+}
+.hero-proof b { color: var(--text-main); font-weight: 600; }
+
+/* Author / About */
+.about-statement {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 46px); font-weight: 700;
+  letter-spacing: -0.03em; line-height: 1.02; text-transform: uppercase;
+  color: var(--text-main); margin: 4px 0 26px; max-width: 15ch; text-wrap: balance;
+}
+.about-lead {
+  font-size: clamp(16.5px, 1.9vw, 19px); line-height: 1.62;
+  color: var(--text-main); max-width: 62ch; margin-bottom: 18px;
+}
+.about-looking { font-size: 15px; color: var(--text-muted); max-width: 60ch; margin-bottom: 4px; }
+.about-looking b { color: var(--text-main); font-weight: 600; }
+
+/* Journey — мінівіхи */
+.journey { display: flex; flex-direction: column; margin: 30px 0 8px; }
+.journey-item {
+  display: grid; grid-template-columns: 180px 1fr; gap: 20px;
+  padding: 14px 0; border-top: 1px solid var(--card-border); align-items: baseline;
+}
+.journey-item:last-child { border-bottom: 1px solid var(--card-border); }
+.journey-date {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.05em;
+  text-transform: uppercase; color: var(--text-light);
+}
+.journey-text { font-size: 15px; color: var(--text-main); }
+.journey-text b { font-weight: 600; }
+@media (max-width: 560px){ .journey-item { grid-template-columns: 1fr; gap: 3px; } }
+
+/* Project chips — наповненість карток */
+.proj-chips { display: flex; flex-wrap: wrap; gap: 7px; margin: -8px 0 22px; }
+.proj-chip {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.03em;
+  padding: 4px 9px; border-radius: 100px; border: 1px solid var(--card-border);
+  color: var(--text-muted); background: var(--card-bg);
+}
+
+/* Stack section */
+.stack-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px; background: var(--card-border); border: 1px solid var(--card-border);
+  border-radius: 16px; overflow: hidden;
+}
+.stack-group { background: var(--bg); padding: 22px 22px 24px; }
+.stack-group h3 {
+  font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-light); margin-bottom: 14px; font-weight: 500;
+}
+.stack-group .items { display: flex; flex-direction: column; gap: 9px; }
+.stack-group .items span { font-size: 15px; color: var(--text-main); font-weight: 500; }
+
+/* CTA */
+.cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 9vw, 92px); font-weight: 700;
+  letter-spacing: -0.045em; line-height: 0.94; text-transform: uppercase;
+  text-wrap: balance; margin: 6px 0 22px;
+}
+.cta-note { font-size: 16px; color: var(--text-muted); max-width: 46ch; margin-bottom: 30px; }
+.cta-links { display: flex; flex-direction: column; gap: 12px; margin-bottom: 56px; }
+.cta-link {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 3vw, 30px); font-weight: 500; letter-spacing: -0.02em;
+  color: var(--text-main); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 12px; width: fit-content;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.cta-link:hover { opacity: 0.62; transform: translateX(4px); }
+.cta-link .arw { color: var(--text-light); }
+
 /* --- CARDS (The Upgrade) --- */
 .grid {
   display: grid;
@@ -243,16 +361,16 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
   gap: 32px;
 }
 
+/* Флет-картки в одному стилі з секцією «Стек»: суцільна поверхня, волосяна межа,
+   без тіні/блюру. Сама картка НЕ масштабується на hover — лише її межа трохи темнішає.
+   Анімується тільки іконка (див. .card:hover .icon-box нижче). */
 .card {
-  background: var(--card-bg);
+  background: var(--surface);
   border: 1px solid var(--card-border);
-  border-radius: 24px;
+  border-radius: 16px;
   position: relative;
   overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s, opacity 0.6s ease, transform 0.6s ease;
-  box-shadow: var(--card-shadow);
-  backdrop-filter: blur(20px); /* Эффект матового стекла */
-  -webkit-backdrop-filter: blur(20px);
+  transition: border-color 0.3s ease, opacity 0.6s ease, transform 0.6s ease;
   /* Initial state for animation */
   opacity: 0;
   transform: translateY(30px);
@@ -263,36 +381,8 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
   transform: translateY(0);
 }
 
-.card:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 16px 32px rgba(0,0,0,0.08);
-  border-color: rgba(0,0,0,0.12);
-  z-index: 10;
-}
-[data-theme="dark"] .card:hover {
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 8px 16px rgba(0, 0, 0, 0.4);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-.card:active {
-  transform: translateY(-4px) scale(1.01);
-  transition: transform 0.1s;
-}
-
-/* Spotlight Glow */
-.card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-  border-radius: 24px;
-  pointer-events: none;
-  background: radial-gradient(600px circle at var(--cursor-x) var(--cursor-y), rgba(0,0,0,0.05), transparent 40%);
-  opacity: 0; transition: opacity 0.3s;
-  z-index: 1;
-}
-.card:hover::before { opacity: 1; }
-[data-theme="dark"] .card::before {
-  background: radial-gradient(600px circle at var(--cursor-x) var(--cursor-y), rgba(255,255,255,0.03), transparent 40%);
-}
+.card:hover { border-color: rgba(0, 0, 0, 0.16); }
+[data-theme="dark"] .card:hover { border-color: rgba(255, 255, 255, 0.18); }
 
 .card-inner { padding: 32px; position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; }
 
@@ -300,13 +390,18 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
 
 /* Icons */
 .icon-box {
-  width: 56px; height: 56px;
-  border-radius: 16px;
+  width: 60px; height: 60px;
+  border-radius: 17px;
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   display: flex; align-items: center; justify-content: center;
   box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  /* Плавно тільки transform (масштаб+поворот) — не 'all', щоб не смикалось; center +
+     backface прибирають субпіксельний джиттер при повороті/поверненні. */
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  transform-origin: center center;
+  will-change: transform;
+  backface-visibility: hidden;
   overflow: hidden; /* Обмежує вихід іконок за межі */
   position: relative; /* Для позиціонування */
 }
@@ -326,12 +421,15 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
   display: block;
 }
 
-/* Конкретні розміри для світлої теми - використовуємо alt атрибут для надійності */
+/* Currency Converter+ — справжній app-icon (темна плитка з білою іконкою обміну).
+   У PNG плитка займає лише ~78% канви (решта — прозорий падінг adaptive-іконки), тож
+   при 100% лишалась прозора рамка. Збільшуємо (cover 135%), щоб плитка заповнила бокс
+   впритул, а заокруглення кутів робить сам icon-box. */
 .icon-box img[alt*="Currency Converter"] {
-  width: 165% !important;
-  height: 165% !important;
-  max-width: 165% !important;
-  max-height: 165% !important;
+  width: 135% !important;
+  height: 135% !important;
+  max-width: 135% !important;
+  max-height: 135% !important;
   object-fit: cover !important;
 }
 
@@ -347,6 +445,33 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
   height: 102% !important;
   max-width: 102% !important;
   max-height: 102% !important;
+}
+
+.icon-box img[alt*="Retro Arcade"],
+.icon-box img[src$="RetroArcade.png"],
+.icon-box img[src*="RetroArcade.png"] {
+  width: 130% !important;
+  height: 130% !important;
+  max-width: 130% !important;
+  max-height: 130% !important;
+  object-fit: cover !important;
+}
+
+/* Новий бренд-пін RutaLive (ruta-pin.svg) — прозорий фон, форма краплі.
+   Не розтягуємо на весь бокс: лишаємо видимий падінг довкола піна (за правилом іконок),
+   центруємо через object-fit:contain. */
+.icon-box.icon-box-ruta img {
+  width: 70% !important;
+  height: 70% !important;
+  max-width: 70% !important;
+  max-height: 70% !important;
+  object-fit: contain !important;
+}
+/* Пін прозорий: у темній темі даємо білу «плитку», щоб іконка читалась і не
+   відрізнялась від решти айконів (ті — суцільні світлі). У світлій темі бокс і так світлий. */
+[data-theme="dark"] .icon-box.icon-box-ruta {
+  background: #ffffff;
+  border-color: rgba(255, 255, 255, 0.14);
 }
 
 /* Альтернативний селектор за src (на випадок) */
@@ -391,10 +516,10 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
 }
 
 [data-theme="dark"] .icon-box img[alt*="Currency Converter"] {
-  width: 165% !important;
-  height: 165% !important;
-  max-width: 165% !important;
-  max-height: 165% !important;
+  width: 135% !important;
+  height: 135% !important;
+  max-width: 135% !important;
+  max-height: 135% !important;
   object-fit: cover !important;
 }
 
@@ -432,6 +557,11 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   background: rgba(255, 255, 255, 0.05);
 }
+/* RutaLive-плитка лишається білою і на hover (інакше загальне hover-правило вище
+   робило її знову напівпрозоро-темною). */
+[data-theme="dark"] .card:hover .icon-box.icon-box-ruta {
+  background: #ffffff;
+}
 
 /* Custom CSS Icons */
 .ico-currency { font-weight: 800; font-family: var(--font-mono); font-size: 20px; color: #111; }
@@ -446,6 +576,51 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
 .card-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
 .card-desc { font-size: 15px; color: var(--text-muted); line-height: 1.5; margin-bottom: 24px; flex-grow: 1; }
 
+/* Хронологічна стрічка проєктів: по центру — дата/період, під нею — карта проєкту
+   на всю ширину (розмір як у Kora), між проєктами — впевнений відступ. Нове зверху. */
+.timeline { display: flex; flex-direction: column; }
+.timeline-item { margin-bottom: 72px; }
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+/* Полоски обабіч дати (плавно згасають до країв) — для акуратного поділу стрічки. */
+.timeline-date::before,
+.timeline-date::after {
+  content: '';
+  height: 1px;
+  flex: 0 1 100px; /* базово 100px, але можуть стискатись, щоб довга дата не вилазила */
+}
+.timeline-date::before { background: linear-gradient(90deg, transparent, var(--card-border)); }
+.timeline-date::after  { background: linear-gradient(90deg, var(--card-border), transparent); }
+@media (max-width: 600px) {
+  .timeline-date { font-size: 12px; gap: 12px; }
+  .timeline-date::before, .timeline-date::after { flex-basis: 40px; }
+}
+
+@media (max-width: 600px) {
+  .timeline-item { margin-bottom: 52px; }
+}
+
+/* Поки html має клас theme-switching (мить перемикання теми) — жодних переходів,
+   щоб кольори/тіні змінювались миттєво й старий вигляд не мерехтів. */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition: none !important;
+}
+
 .status-badge {
   font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
   padding: 6px 10px; border-radius: 100px;
@@ -458,9 +633,11 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
 .st-green { background: #ecfdf5; color: #047857; }
 .st-gray { background: var(--card-bg); color: var(--text-muted); border: 1px solid var(--card-border); }
 [data-theme="dark"] .st-green {
-  background: rgba(16, 185, 129, 0.12);
-  color: #5EEAD4;
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  /* Було: неоновий бірюзовий #5EEAD4 на зеленому «світінні» — виглядало як вайбкод.
+     Тепер стриманий нейтральний чіп (як інші бейджі) з приглушеним зеленим текстом. */
+  background: rgba(255, 255, 255, 0.05);
+  color: #7fbda0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
 }
 [data-theme="dark"] .st-gray {
   background: rgba(255, 255, 255, 0.05);
@@ -469,7 +646,7 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
 }
 
 /* Buttons */
-.btn-group { display: flex; gap: 12px; margin-top: auto; }
+.btn-group { display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto; }
 
 .btn {
   padding: 10px 18px;
@@ -636,29 +813,6 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
   line-height: 1.5;
 }
 
-/* GAME CONTAINER */
-.game-container {
-  width: 100%;
-  height: 400px;
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  position: relative;
-}
-
-.game-container iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-}
-
-@media (max-width: 900px) {
-  .game-container {
-    height: 300px;
-  }
-}
 
 /* PRIVACY MODAL */
 .privacy-modal-overlay {
@@ -694,9 +848,9 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(0.9) translateY(10px);
-  width: 90%;
-  max-width: 800px;
-  max-height: calc(90vh - 40px);
+  width: 95%;
+  max-width: 1600px;
+  max-height: calc(95vh - 40px);
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   border-radius: 24px;
@@ -704,7 +858,7 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
   z-index: 1001;
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease-out, top 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease-out;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -1349,6 +1503,6 @@ h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 
   .section { margin-bottom: 60px; }
   .card-inner { padding: 20px; }
   .about-card { padding: 24px 20px; }
-  .icon-box { width: 48px; height: 48px; }
-  .icon-box img { width: 36px !important; height: 36px !important; }
+  .icon-box { width: 51px; height: 51px; }
+  .icon-box img { width: 38px !important; height: 38px !important; }
 }
