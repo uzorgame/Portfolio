@@ -104,7 +104,7 @@ async function loadPrivacyPolicy(type) {
   }
 }
 
-function openPrivacyModal(type) {
+async function openPrivacyModal(type) {
   // Запамʼятовуємо позицію скролу й «замикаємо» сторінку через position:fixed —
   // це залишає її рівно на місці, поки відкрита модалка (модалка ж бо оверлей).
   const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || 0;
@@ -120,12 +120,13 @@ function openPrivacyModal(type) {
   document.body.style.overflow = 'hidden';
   if (scrollbarWidth > 0) document.body.style.paddingRight = scrollbarWidth + 'px';
 
-  loadPrivacyPolicy(type);
+  // Спершу ПОВНІСТЮ вантажимо текст і лише потім показуємо вікно — тоді модалка
+  // зʼявляється одразу в кінцевому розмірі, без стрибка висоти з «Loading…».
+  await loadPrivacyPolicy(type);
   privacyModalContent.scrollTop = 0; // завжди відкриваємо згори тексту
 
-  // Жодного JS-переміщення: центрування й обмеження висоти повністю на CSS
-  // (transform + max-height + внутрішній скрол). Тому вікно зʼявляється рівно,
-  // без «доведення» позиції та без стрибків знизу.
+  // Центрування й масштаб — повністю на CSS (плавний fade + scale від центру,
+  // без overshoot і без translateY). Тому вікно зʼявляється рівно, без стрибків.
   privacyModal.classList.add('active');
   privacyModalOverlay.classList.add('active');
   privacyModal.setAttribute('aria-hidden', 'false');

@@ -827,7 +827,7 @@ html.theme-switching *::after {
   z-index: 1000;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity;
 }
 
@@ -839,7 +839,7 @@ html.theme-switching *::after {
 /* Smooth overlay animation */
 @media (prefers-reduced-motion: no-preference) {
   .privacy-modal-overlay {
-    transition: opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 }
 
@@ -847,7 +847,7 @@ html.theme-switching *::after {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) scale(0.9) translateY(10px);
+  transform: translate(-50%, -50%) scale(0.96);
   width: 95%;
   max-width: 1600px;
   max-height: calc(95vh - 40px);
@@ -858,7 +858,7 @@ html.theme-switching *::after {
   z-index: 1001;
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.35s ease-out;
+  transition: transform 0.34s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -866,7 +866,7 @@ html.theme-switching *::after {
 }
 
 .privacy-modal.active {
-  transform: translate(-50%, -50%) scale(1) translateY(0);
+  transform: translate(-50%, -50%) scale(1);
   opacity: 1;
   pointer-events: all;
 }
@@ -875,12 +875,12 @@ html.theme-switching *::after {
 @media (max-height: 600px) {
   .privacy-modal {
     top: 20px;
-    transform: translate(-50%, 0) scale(0.9) translateY(10px);
+    transform: translate(-50%, 0) scale(0.96);
     max-height: calc(100vh - 40px);
   }
   
   .privacy-modal.active {
-    transform: translate(-50%, 0) scale(1) translateY(0);
+    transform: translate(-50%, 0) scale(1);
   }
 }
 
@@ -1016,13 +1016,13 @@ html.theme-switching *::after {
     border-radius: 20px;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0.92) translateY(15px);
+    transform: translate(-50%, -50%) scale(0.96);
     margin: 10px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
   }
   
   .privacy-modal.active {
-    transform: translate(-50%, -50%) scale(1) translateY(0);
+    transform: translate(-50%, -50%) scale(1);
   }
   
   .privacy-modal-header {
@@ -1050,12 +1050,12 @@ html.theme-switching *::after {
 @media (max-width: 900px) and (max-height: 600px) {
   .privacy-modal {
     top: 10px;
-    transform: translate(-50%, 0) scale(0.92) translateY(10px);
+    transform: translate(-50%, 0) scale(0.96);
     max-height: calc(100vh - 20px);
   }
   
   .privacy-modal.active {
-    transform: translate(-50%, 0) scale(1) translateY(0);
+    transform: translate(-50%, 0) scale(1);
   }
 }
 
