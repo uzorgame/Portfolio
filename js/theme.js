@@ -10,11 +10,16 @@ function applyTheme(theme) {
   void root.offsetWidth; // форсуємо застосування нових стилів без переходу
   requestAnimationFrame(() => root.classList.remove('theme-switching'));
 
-  // Update theme color meta tag
-  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-  if(metaThemeColor) {
-    metaThemeColor.content = theme === 'dark' ? '#0F0F0F' : '#FAFAFA';
-  }
+  // Оновлюємо theme-color ПЕРЕСТВОРЕННЯМ тега: iOS Safari часто ігнорує
+  // зміну content у наявного <meta> і перечитує колір лише при перезавантаженні.
+  // Видалення старого вузла + вставка нового змушує браузер перефарбувати
+  // панелі одразу, без рефреша.
+  const themeColor = theme === 'dark' ? '#0F0F0F' : '#FAFAFA';
+  document.querySelectorAll('meta[name="theme-color"]').forEach(m => m.remove());
+  const metaThemeColor = document.createElement('meta');
+  metaThemeColor.name = 'theme-color';
+  metaThemeColor.content = themeColor;
+  document.head.appendChild(metaThemeColor);
   
   // Update active button (desktop and mobile)
   document.querySelectorAll('.theme-btn, .mobile-theme-btn').forEach(btn => {
