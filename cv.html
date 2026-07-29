@@ -79,7 +79,12 @@
   /* ── Плейсхолдери, які треба заповнити (жовтим, щоб не пропустити) ── */
   .todo { background: #fff3bf; padding: 0 4px; border-radius: 3px; }
   @media print {
-    .page { padding: 10mm 14mm; }
+    /* стиснуто, щоб CV гарантовано вміщалось на ОДНУ сторінку A4 */
+    body { font-size: 9.8pt; }
+    .page { padding: 7mm 13mm; }
+    section { margin-top: 11px; }
+    ul li { margin-bottom: 2.5px; }
+    .product { margin-bottom: 4px; }
     @page { size: A4; margin: 0; }
   }
 </style>
