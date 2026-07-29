@@ -424,13 +424,6 @@ h2 {
   max-height: 101% !important;
 }
 
-.icon-box img[alt*="3D Solar System"] {
-  width: 102% !important;
-  height: 102% !important;
-  max-width: 102% !important;
-  max-height: 102% !important;
-}
-
 .icon-box img[alt*="Retro Arcade"],
 .icon-box img[src$="RetroArcade.png"],
 .icon-box img[src*="RetroArcade.png"] {
@@ -476,22 +469,7 @@ h2 {
   max-height: 101% !important;
 }
 
-.icon-box img[src$="SolarIcon.jpg"],
-.icon-box img[src*="SolarIcon"] {
-  width: 102% !important;
-  height: 102% !important;
-  max-width: 102% !important;
-  max-height: 102% !important;
-}
-
 /* Збільшені іконки для темної теми - заповнюють простір */
-[data-theme="dark"] .icon-box img[alt*="3D Solar System"] {
-  width: 102% !important;
-  height: 102% !important;
-  max-width: 102% !important;
-  max-height: 102% !important;
-}
-
 [data-theme="dark"] .icon-box img[alt*="Sudoku"] {
   width: 101% !important;
   height: 101% !important;
@@ -505,15 +483,6 @@ h2 {
   max-width: 135% !important;
   max-height: 135% !important;
   object-fit: cover !important;
-}
-
-/* Альтернативний селектор за src для темної теми */
-[data-theme="dark"] .icon-box img[src$="SolarIcon.jpg"],
-[data-theme="dark"] .icon-box img[src*="SolarIcon"] {
-  width: 102% !important;
-  height: 102% !important;
-  max-width: 102% !important;
-  max-height: 102% !important;
 }
 
 [data-theme="dark"] .icon-box img[src$="Sudoku.png"],

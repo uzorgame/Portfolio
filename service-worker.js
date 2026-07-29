@@ -1,13 +1,14 @@
 // Version - UPDATE THIS WHEN YOU UPDATE THE SITE
-const CACHE_VERSION = 'v2.3.5';
+const CACHE_VERSION = 'v2.3.6';
 const CACHE_NAME = `uzor-${CACHE_VERSION}`;
 
 // Static assets to cache (images, fonts, etc.)
+// УВАГА: addAll відхиляється ЦІЛКОМ, якщо хоч один URL віддає 404 —
+// тримати список лише з реально наявних файлів
 const STATIC_CACHE_URLS = [
   '/favicon.svg',
-  '/Currency Converter+.png',
-  '/Sudoku.png',
-  '/SolarIcon.jpg'
+  '/CurrencyConverter.png',
+  '/Sudoku.png'
 ];
 
 // Install event - skip waiting to activate immediately

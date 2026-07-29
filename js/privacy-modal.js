@@ -10,7 +10,6 @@ const privacyPolicies = {
   'converter': 'privacy-policy-converter.md',
   'sudoku': 'privacy-policy-sudoku.md',
   'retro-arcade': 'privacy-policy-retro-arcade.md',
-  '3D-Solar-System': 'privacy-policy-3D-Solar-System.md',
   'rutalive': 'privacy-policy-rutalive.md',
   'kora': 'privacy-policy-kora.md'
 };
