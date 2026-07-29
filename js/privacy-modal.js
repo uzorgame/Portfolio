@@ -82,27 +82,38 @@ function markdownToHTML(markdown) {
   return html;
 }
 
-async function loadPrivacyPolicy(type) {
+// Кеш готових політик: тип → Promise<{html, title}>. Завдяки кешу повторне
+// відкриття миттєве, а префетч нижче робить миттєвим і перше.
+const policyCache = {};
+
+function fetchPolicy(type) {
   const fileName = privacyPolicies[type];
-  if (!fileName) return;
-  
-  privacyModalContent.innerHTML = '<p>Loading...</p>';
-  
-  try {
-    const response = await fetch(fileName);
-    if (!response.ok) throw new Error('Failed to load');
-    const markdown = await response.text();
-    const html = markdownToHTML(markdown);
-    privacyModalContent.innerHTML = html;
-    
-    const titleMatch = markdown.match(/^# (.+)$/m);
-    if (titleMatch) {
-      privacyModalTitle.textContent = titleMatch[1];
-    }
-  } catch (error) {
-    privacyModalContent.innerHTML = '<p>Error loading privacy policy. Please try again later.</p>';
-  }
+  if (!fileName) return Promise.reject(new Error('Unknown policy'));
+  if (policyCache[type]) return policyCache[type];
+
+  policyCache[type] = fetch(fileName)
+    .then((response) => {
+      if (!response.ok) throw new Error('Failed to load');
+      return response.text();
+    })
+    .then((markdown) => {
+      const titleMatch = markdown.match(/^# (.+)$/m);
+      return { html: markdownToHTML(markdown), title: titleMatch ? titleMatch[1] : null };
+    })
+    .catch((err) => {
+      delete policyCache[type]; // невдалий фетч не кешуємо — наступний клік спробує знову
+      throw err;
+    });
+
+  return policyCache[type];
 }
+
+// Префетч усіх політик у фоні після завантаження сторінки — на момент кліку
+// текст уже в памʼяті, модалка відкривається без затримки мережі.
+window.addEventListener('load', () => {
+  const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 1500));
+  idle(() => { Object.keys(privacyPolicies).forEach((type) => fetchPolicy(type).catch(() => {})); });
+});
 
 async function openPrivacyModal(type) {
   // Запамʼятовуємо позицію скролу й «замикаємо» сторінку через position:fixed —
@@ -121,16 +132,26 @@ async function openPrivacyModal(type) {
   if (scrollbarWidth > 0) document.body.style.paddingRight = scrollbarWidth + 'px';
   window.lenis && window.lenis.stop(); // пауза інерційного скролу, поки модалка відкрита
 
-  // Спершу ПОВНІСТЮ вантажимо текст і лише потім показуємо вікно — тоді модалка
-  // зʼявляється одразу в кінцевому розмірі, без стрибка висоти з «Loading…».
-  await loadPrivacyPolicy(type);
-  privacyModalContent.scrollTop = 0; // завжди відкриваємо згори тексту
-
-  // Центрування й масштаб — повністю на CSS (плавний fade + scale від центру,
-  // без overshoot і без translateY). Тому вікно зʼявляється рівно, без стрибків.
+  // Вікно показуємо ОДРАЗУ (зі спінером, якщо текст ще не в кеші) — клік
+  // мусить давати миттєву реакцію. Завдяки префетчу кеш майже завжди теплий,
+  // тож стрибка висоти на практиці немає.
+  privacyModalTitle.textContent = 'Privacy Policy';
   privacyModal.classList.add('active');
   privacyModalOverlay.classList.add('active');
   privacyModal.setAttribute('aria-hidden', 'false');
+
+  const cached = policyCache[type];
+  if (!cached) privacyModalContent.innerHTML = '<div class="modal-loading">Loading</div>';
+
+  try {
+    const { html, title } = await fetchPolicy(type);
+    // якщо користувач устиг закрити модалку — не чіпаємо DOM даремно
+    privacyModalContent.innerHTML = html;
+    if (title) privacyModalTitle.textContent = title;
+  } catch (error) {
+    privacyModalContent.innerHTML = '<p>Error loading privacy policy. Please try again later.</p>';
+  }
+  privacyModalContent.scrollTop = 0; // завжди відкриваємо згори тексту
 }
 
 function closePrivacyModal() {

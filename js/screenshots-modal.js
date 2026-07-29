@@ -88,6 +88,23 @@ function loadScreenshots(type) {
   document.getElementById('screenshot-next').addEventListener('click', () => {
     selectScreenshot((currentScreenshotIndex + 1) % shots.length);
   });
+
+  // Свайп вліво/вправо по великому зображенню (мобільні пристрої).
+  // Вертикаль віддаємо сторінці (touch-action: pan-y у CSS), горизонталь — наша.
+  const stage = screenshotsModalContent.querySelector('.ss-stage');
+  let touchStartX = 0, touchStartY = 0;
+  stage.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].clientX;
+    touchStartY = e.changedTouches[0].clientY;
+  }, { passive: true });
+  stage.addEventListener('touchend', (e) => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    // поріг 40px відсікає випадкові тапи; беремо жест лише коли він горизонтальний
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+      selectScreenshot((currentScreenshotIndex + (dx < 0 ? 1 : -1) + shots.length) % shots.length);
+    }
+  }, { passive: true });
 }
 
 function openScreenshotsModal(type) {

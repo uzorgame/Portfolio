@@ -1540,3 +1540,48 @@ html.lenis, html.lenis body { height: auto; }
   .ss-next { right: 6px; }
   .ss-thumb { height: 54px; }
 }
+
+/* --- ФІКСИ v2.3.1: футер, модалки, мобільні --- */
+
+/* 1) Порожнеча під футером: останній блок без нижнього відступу,
+   менший нижній padding у .main (140+120px пустоти було забагато) */
+.main .section:last-of-type { margin-bottom: 0; }
+.main { padding-bottom: 72px; }
+@media (max-width: 900px) { .main { padding-bottom: 48px; } }
+@media (max-width: 480px) { .main { padding-bottom: 40px; } }
+
+/* 2) Мобільні браузери: 100vh не враховує панель браузера → dvh-фолбек
+   (старі браузери проігнорують і залишать попереднє vh-значення) */
+@media (max-width: 900px) {
+  .privacy-modal { max-height: calc(100dvh - 20px); }
+}
+
+/* 3) Модалка скриншотів: ФІКСОВАНА висота. Без неї високі мобільні
+   скриншоти розтягували вікно за межі екрана — низ і стрічка мініатюр
+   обрізались overflow:hidden. З фіксованою висотою картинка вписується
+   через object-fit:contain незалежно від пропорцій. */
+.privacy-modal.ss-modal { height: calc(95vh - 40px); height: calc(95dvh - 40px); }
+@media (max-width: 900px) {
+  .privacy-modal.ss-modal { height: calc(100vh - 20px); height: calc(100dvh - 20px); }
+}
+.ss-modal .privacy-modal-content { display: flex; flex-direction: column; padding: 24px; }
+@media (max-width: 700px) {
+  .ss-modal .privacy-modal-content { padding: 12px; }
+}
+/* галерея заповнює контент модалки як flex-дитина (замість height:100%,
+   який не працює без визначеної висоти предка) */
+.ss-gallery { flex: 1; height: auto; }
+/* вертикальний скрол сторінки не чіпаємо, горизонтальний свайп — наш */
+.ss-stage { touch-action: pan-y; }
+
+/* 4) Індикатор завантаження політики приватності */
+.modal-loading {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 48px 0; color: var(--text-muted);
+}
+.modal-loading::after {
+  content: ''; width: 20px; height: 20px;
+  border: 2px solid var(--card-border); border-top-color: var(--text-main);
+  border-radius: 50%; animation: modal-spin 0.8s linear infinite;
+}
+@keyframes modal-spin { to { transform: rotate(360deg); } }
