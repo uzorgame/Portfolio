@@ -898,9 +898,13 @@ html.theme-switching *::after {
   color: var(--text-main);
 }
 
-.privacy-modal-close:hover {
-  background: var(--card-border);
-  transform: scale(1.1);
+/* hover лише там, де є справжній курсор: на тачі :hover ЗАЛИПАЄ після тапу,
+   і кнопка втрачала фон (--card-border у темній темі майже прозорий) */
+@media (hover: hover) and (pointer: fine) {
+  .privacy-modal-close:hover {
+    background: var(--card-border);
+    transform: scale(1.1);
+  }
 }
 
 .privacy-modal-content {
@@ -1516,7 +1520,11 @@ html.lenis, html.lenis body { height: auto; }
   color: var(--text-main); cursor: pointer; z-index: 2;
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
-.ss-arrow:hover { background: var(--card-border); }
+/* та сама історія з липким :hover на тачі — тільки для курсорних пристроїв */
+@media (hover: hover) and (pointer: fine) {
+  .ss-arrow:hover { background: var(--card-border); }
+}
+.ss-arrow, .privacy-modal-close { -webkit-tap-highlight-color: transparent; }
 .ss-prev { left: 12px; }
 .ss-next { right: 12px; }
 .ss-counter { text-align: center; font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); flex-shrink: 0; }
