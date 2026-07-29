@@ -1593,3 +1593,16 @@ html.lenis, html.lenis body { height: auto; }
 @media (max-width: 900px) {
   .privacy-modal { margin: 0; }
 }
+
+/* --- ФІКСИ v2.3.3: панелі мобільного браузера у колір теми --- */
+/* Фон на html (не лише body): Safari фарбує зону статус-бара та overscroll
+   кольором КОРЕНЕВОГО елемента — без цього зверху лишалась біла смуга
+   в темній темі. color-scheme каже браузеру, яка сторінка «за природою»,
+   і тонує його власний UI (панелі, скролбари, контроли) відповідно. */
+html {
+  background-color: var(--bg);
+  color-scheme: light;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
