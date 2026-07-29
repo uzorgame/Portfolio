@@ -62,11 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const id = href.substring(1);
       const target = document.getElementById(id);
       if(target) {
-        const offsetTop = target.offsetTop - 20;
-        window.scrollTo({
-          top: offsetTop,
-          behavior: 'smooth'
-        });
+        if(window.lenis) {
+          window.lenis.scrollTo(target, { offset: -20 });
+        } else {
+          window.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+        }
         setActiveNavLink(id);
         
         // Close mobile menu if open

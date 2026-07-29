@@ -119,6 +119,7 @@ async function openPrivacyModal(type) {
   document.body.style.width = '100%';
   document.body.style.overflow = 'hidden';
   if (scrollbarWidth > 0) document.body.style.paddingRight = scrollbarWidth + 'px';
+  window.lenis && window.lenis.stop(); // пауза інерційного скролу, поки модалка відкрита
 
   // Спершу ПОВНІСТЮ вантажимо текст і лише потім показуємо вікно — тоді модалка
   // зʼявляється одразу в кінцевому розмірі, без стрибка висоти з «Loading…».
@@ -136,6 +137,7 @@ function closePrivacyModal() {
   privacyModal.classList.remove('active');
   privacyModalOverlay.classList.remove('active');
   privacyModal.setAttribute('aria-hidden', 'true');
+  window.lenis && window.lenis.start();
 
   const scrollY = parseInt(document.body.getAttribute('data-scroll-y') || '0', 10);
 
