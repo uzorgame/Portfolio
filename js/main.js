@@ -243,3 +243,13 @@ if ('serviceWorker' in navigator) {
 
 
 
+
+/* --- «Як це було» — розгортання історії проєкту в картці --- */
+document.querySelectorAll('.story-toggle').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const story = document.getElementById('story-' + btn.dataset.story);
+    if (!story) return;
+    const open = story.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+  });
+});

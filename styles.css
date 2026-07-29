@@ -1583,3 +1583,21 @@ html {
 html[data-theme="dark"] {
   color-scheme: dark;
 }
+
+/* --- «Як це було» v2.3.7: розгортна історія проєкту в картці --- */
+/* grid-rows 0fr→1fr — плавне розгортання без вимірювання висоти в JS */
+.card-story {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+.card-story-inner { overflow: hidden; }
+.card-story-inner p {
+  margin: 16px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--card-border);
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+.card-story.open { grid-template-rows: 1fr; }
