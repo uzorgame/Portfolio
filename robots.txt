@@ -1,9 +1,5 @@
-# robots.txt for uz-or.com
+# robots.txt for uzorgame.github.io
 User-agent: *
 Allow: /
 
-# Disallow service worker and other technical files
-Disallow: /service-worker.js
-
-# Sitemap
-Sitemap: https://uz-or.com/sitemap.xml
+Sitemap: https://uzorgame.github.io/sitemap.xml

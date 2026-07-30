@@ -1,162 +1,344 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mykhailo Nahreba — Product Engineer CV</title>
-<style>
-  /* Мінімалізм у стилі портфоліо Nahreba. — світло, моно-акценти, волосяні лінії */
-  :root {
-    --text: #0a0a0a;
-    --muted: #525252;
-    --light: #a3a3a3;
-    --line: rgba(0,0,0,0.10);
-    --mono: 'Consolas', 'JetBrains Mono', monospace;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  body {
-    font-family: 'Segoe UI', 'Inter', -apple-system, sans-serif;
-    color: var(--text);
-    background: #fff;
-    line-height: 1.45;
-    font-size: 10.2pt;
-  }
-  .page {
-    max-width: 210mm;
-    margin: 0 auto;
-    padding: 14mm 16mm;
-  }
-  /* ── Шапка ── */
-  h1 {
-    font-size: 26pt; font-weight: 800; letter-spacing: -0.03em; line-height: 1;
-  }
-  .role {
-    font-family: var(--mono); font-size: 10pt; color: var(--muted);
-    margin-top: 5px; letter-spacing: 0.02em;
-  }
-  .contacts {
-    display: flex; flex-wrap: wrap; gap: 4px 14px;
-    font-family: var(--mono); font-size: 8.6pt; color: var(--muted);
-    margin-top: 9px;
-  }
-  .contacts a { color: var(--text); text-decoration: none; }
-  .contacts b { color: var(--text); font-weight: 600; }
-  /* ── Секції ── */
-  section { margin-top: 15px; }
-  .eyebrow {
-    font-family: var(--mono); font-size: 7.8pt; letter-spacing: 0.2em;
-    text-transform: uppercase; color: var(--light);
-    display: flex; align-items: center; gap: 10px; margin-bottom: 7px;
-  }
-  .eyebrow::after { content: ""; height: 1px; flex: 1; background: var(--line); }
-  p.summary { color: var(--muted); max-width: 66ch; }
-  p.summary b { color: var(--text); }
-  /* ── Досвід ── */
-  .job-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 2px 12px; }
-  .job-title { font-size: 11.5pt; font-weight: 700; }
-  .job-meta { font-family: var(--mono); font-size: 8.2pt; color: var(--light); }
-  .job-sub { color: var(--muted); font-size: 9.6pt; margin: 3px 0 6px; max-width: 70ch; }
-  ul { list-style: none; }
-  ul li {
-    padding-left: 14px; position: relative; color: var(--muted);
-    margin-bottom: 3.5px; max-width: 74ch;
-  }
-  ul li::before { content: "—"; position: absolute; left: 0; color: var(--light); }
-  ul li b { color: var(--text); font-weight: 600; }
-  /* ── Продукти ── */
-  .product { margin-bottom: 5px; color: var(--muted); max-width: 76ch; padding-left: 14px; position: relative; }
-  .product::before { content: "—"; position: absolute; left: 0; color: var(--light); }
-  .product b { color: var(--text); }
-  .product .dt { font-family: var(--mono); font-size: 8.2pt; color: var(--light); }
-  /* ── Навички ── */
-  .skills { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 24px; }
-  .skill-row { color: var(--muted); font-size: 9.4pt; }
-  .skill-row b { color: var(--text); font-weight: 600; }
-  /* ── Мови ── */
-  .langs { display: flex; flex-wrap: wrap; gap: 6px 22px; color: var(--muted); font-size: 9.4pt; }
-  .langs b { color: var(--text); font-weight: 600; }
-  /* ── Плейсхолдери, які треба заповнити (жовтим, щоб не пропустити) ── */
-  .todo { background: #fff3bf; padding: 0 4px; border-radius: 3px; }
-  @media print {
-    /* стиснуто, щоб CV гарантовано вміщалось на ОДНУ сторінку A4 */
-    body { font-size: 9.8pt; }
-    .page { padding: 7mm 13mm; }
-    section { margin-top: 11px; }
-    ul li { margin-bottom: 2.5px; }
-    .product { margin-bottom: 4px; }
-    @page { size: A4; margin: 0; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mykhailo Nahreba — Full-Stack Developer</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    @page { size: A4; margin: 10mm 14mm; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 9pt;
+      line-height: 1.4;
+      color: #1a1a1a;
+      background: #fff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 16px 16px;
+    }
+
+    @media print {
+      .page { padding: 0; max-width: none; }
+      .no-print { display: none !important; }
+      a { color: #1a1a1a !important; }
+    }
+
+    /* --- Header --- */
+    header {
+      text-align: center;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid #111;
+    }
+
+    h1 {
+      font-size: 20pt;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: #0a0a0a;
+      line-height: 1.1;
+    }
+
+    .title {
+      font-size: 10pt;
+      font-weight: 400;
+      color: #555;
+      margin: 2px 0 8px;
+    }
+
+    .contact {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px 14px;
+      font-size: 8.5pt;
+      color: #444;
+    }
+
+    .contact a { color: #444; text-decoration: none; }
+    .contact .sep { color: #bbb; }
+
+    /* --- Sections --- */
+    section { margin-bottom: 10px; }
+
+    h2 {
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #0a0a0a;
+      border-bottom: 0.75px solid #d4d4d4;
+      padding-bottom: 3px;
+      margin-bottom: 7px;
+    }
+
+    /* --- Summary --- */
+    .summary {
+      font-size: 9pt;
+      line-height: 1.45;
+      color: #333;
+    }
+
+    /* --- Skills grid --- */
+    .skills {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 3px 14px;
+      font-size: 9pt;
+    }
+    .skills dt { font-weight: 600; color: #1a1a1a; }
+    .skills dd { color: #333; }
+
+    /* --- Experience --- */
+    .job { margin-bottom: 8px; }
+
+    .job-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .job-title {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #0a0a0a;
+    }
+
+    .job-date {
+      font-size: 8.5pt;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .job-company {
+      font-size: 9pt;
+      color: #555;
+      margin-bottom: 3px;
+    }
+
+    .job-tagline {
+      font-size: 9pt;
+      color: #555;
+      font-style: italic;
+      margin-bottom: 4px;
+    }
+
+    ul.bullets {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul.bullets li {
+      font-size: 9pt;
+      color: #333;
+      padding-left: 12px;
+      position: relative;
+      margin-bottom: 2px;
+      line-height: 1.42;
+    }
+
+    ul.bullets li::before {
+      content: "\2022";
+      position: absolute;
+      left: 1px;
+      color: #999;
+    }
+
+    /* --- Projects --- */
+    .project { margin-bottom: 5px; }
+
+    .proj-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .proj-name { font-weight: 600; font-size: 9.5pt; color: #1a1a1a; }
+    .proj-meta { font-size: 8pt; color: #888; white-space: nowrap; }
+    .proj-desc { font-size: 8.5pt; color: #555; margin-top: 1px; line-height: 1.4; }
+
+    /* --- Languages --- */
+    .langs {
+      display: flex;
+      gap: 28px;
+      font-size: 9.5pt;
+    }
+    .langs strong { font-weight: 600; }
+
+    /* --- Screen controls --- */
+    .toolbar {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .toolbar a,
+    .toolbar button {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: opacity 0.2s;
+    }
+
+    .toolbar a {
+      background: #f0f0f0;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .toolbar button {
+      background: #0a0a0a;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .toolbar a:hover,
+    .toolbar button:hover { opacity: 0.8; }
+
+    @media screen and (max-width: 600px) {
+      .page { padding: 16px; }
+      h1 { font-size: 18pt; }
+      .contact { flex-direction: column; align-items: center; gap: 2px; }
+      .skills { grid-template-columns: 1fr; gap: 2px; }
+      .skills dt { margin-top: 4px; }
+      .job-row, .proj-row { flex-direction: column; gap: 0; }
+    }
+  </style>
 </head>
 <body>
-<div class="page">
+  <div class="page">
+    <header>
+      <h1>Mykhailo Nahreba</h1>
+      <p class="title">Full-Stack Developer</p>
+      <div class="contact">
+        <a href="mailto:nagrebamm@gmail.com">nagrebamm@gmail.com</a>
+        <span class="sep">&middot;</span>
+        <span>+421 915 921 413</span>
+        <span class="sep">&middot;</span>
+        <span>Bratislava, Slovakia</span>
+        <span class="sep">&middot;</span>
+        <a href="https://github.com/uzorgame">github.com/uzorgame</a>
+        <span class="sep">&middot;</span>
+        <a href="https://uzorgame.github.io">uzorgame.github.io</a>
+      </div>
+    </header>
 
-  <header>
-    <h1>Mykhailo Nahreba</h1>
-    <div class="role">Product Engineer — Full-Stack · Node.js · React · Flutter</div>
-    <div class="contacts">
-      <span>Bratislava, Slovakia</span>
-      <a href="mailto:nagrebamm@gmail.com"><b>nagrebamm@gmail.com</b></a>
-      <span><b>+421 915 921 413</b></span>
-      <span>Telegram <b>@uzormn</b></span>
-      <a href="https://uzorgame.github.io"><b>uzorgame.github.io</b></a>
-      <a href="https://github.com/uzorgame"><b>github.com/uzorgame</b></a>
-    </div>
-  </header>
+    <section>
+      <h2>Summary</h2>
+      <p class="summary">Full-stack developer who shipped 5 products across 4 platforms (Web, iOS, Android, Windows) in under a year. Co-founder of RutaLive, a multi-tenant courier logistics SaaS serving the US and Canadian markets. Owns the full product lifecycle from design and architecture through deployment and live operations.</p>
+    </section>
 
-  <section>
-    <div class="eyebrow">01 / Summary</div>
-    <p class="summary">
-      Product engineer who ships complete products end to end — <b>five shipped products</b> across Android, iOS, web and Windows, all built solo: design, code, release, operations. Co-founder and active developer of <b>RutaLive</b> (<a href="https://rutalive.com">rutalive.com</a>), a courier-logistics SaaS live in production, competing with major US/Canadian dispatch platforms. Looking to join a product team where I can own features across the whole stack from day one.
-    </p>
-  </section>
+    <section>
+      <h2>Technical Skills</h2>
+      <dl class="skills">
+        <dt>Languages</dt>
+        <dd>JavaScript, Dart, HTML, CSS</dd>
+        <dt>Frontend</dt>
+        <dd>React 18, Vite, Three.js, WebGL</dd>
+        <dt>Mobile</dt>
+        <dd>Flutter, Firebase, App Store &amp; Google Play publishing</dd>
+        <dt>Backend</dt>
+        <dd>Node.js, Express.js, Socket.io, REST APIs</dd>
+        <dt>Database</dt>
+        <dd>MongoDB</dd>
+        <dt>Infrastructure</dt>
+        <dd>Docker, Nginx, Git, CI/CD</dd>
+        <dt>Integrations</dt>
+        <dd>Mapbox, QuickBooks API, Lemon Squeezy, Astro</dd>
+      </dl>
+    </section>
 
-  <section>
-    <div class="eyebrow">02 / Experience</div>
-    <div class="job-head">
-      <span class="job-title">RutaLive — Co-founder &amp; Full-Stack Engineer</span>
-      <span class="job-meta">Nov 2025 — present · rutalive.com</span>
-    </div>
-    <p class="job-sub">Multi-tenant SaaS for courier companies — web, iOS (App Store), Android (Google Play), Windows. Born from a real need: replacing the software a friend's courier company was using. Built and operated single-handedly.</p>
-    <ul>
-      <li><b>Backend:</b> Node.js + Express, MongoDB, Socket.io real-time layer (delta updates, event dedup, offline-tolerant reconnection), JWT auth with session invalidation, worker-pool PDF/QR generation</li>
-      <li><b>Web:</b> React 18 + Vite operator dashboard — live courier map (Mapbox GL), orders, invoicing, analytics; marketing site on Astro</li>
-      <li><b>Mobile:</b> Flutter for iOS + Android — background GPS, proof of delivery (photo / signature / QR), push notifications, offline-tolerant socket sync</li>
-      <li><b>Integrations:</b> QuickBooks (invoices, bills, US sales tax), Lemon Squeezy subscriptions, Mapbox geocoding/routing</li>
-      <li><b>Infra:</b> Docker Compose on VPS, Nginx, Codemagic CI; versioned public REST API; i18n in 6 languages</li>
-      <li><b>The hard parts:</b> async multi-user consistency, sockets that survive a courier's basement dead zone, fixes tested across every platform at once</li>
-    </ul>
-  </section>
+    <section>
+      <h2>Experience</h2>
+      <div class="job">
+        <div class="job-row">
+          <span class="job-title">Co-Founder &amp; Full-Stack Developer</span>
+          <span class="job-date">Nov 2025 &ndash; Present</span>
+        </div>
+        <p class="job-company">RutaLive &middot; rutalive.com &middot; Bratislava, Slovakia</p>
+        <p class="job-tagline">Multi-tenant courier logistics SaaS competing with Onfleet, Track-POD, and Digital Waybill.</p>
+        <ul class="bullets">
+          <li>Designed and built the full platform end-to-end: web dashboard (React&nbsp;18, Vite), mobile apps (Flutter for iOS &amp; Android), Windows desktop client, and Node.js/Express back&nbsp;end with MongoDB</li>
+          <li>Implemented real-time GPS tracking and live order updates via WebSockets (Socket.io) and Mapbox, handling concurrent multi-user sessions</li>
+          <li>Built proof-of-delivery system supporting photo capture, digital signature, and QR-code verification at drop-off</li>
+          <li>Developed a delivery-zone engine with custom pricing rules, auto-dispatch logic, and public tracking links for end-recipients</li>
+          <li>Integrated QuickBooks for automated invoicing and Lemon Squeezy for subscription billing, reducing manual finance work</li>
+          <li>Containerized the stack with Docker; deployed and managed production infrastructure behind Nginx reverse proxy</li>
+          <li>Published and maintained live listings on both Apple App Store and Google Play</li>
+        </ul>
+      </div>
+    </section>
 
-  <section>
-    <div class="eyebrow">03 / Shipped products</div>
-    <div class="product"><b>Kora Wallet</b> <span class="dt">· Feb 2026</span> — non-custodial multi-chain crypto wallet (BTC, ETH, SOL, TRX, BNB, LTC, DOGE + custom tokens), Flutter; key derivation compatible with major wallets, zero secrets in code; Windows market widget. My daily driver since day one.</div>
-    <div class="product"><b>Retro Arcade</b> <span class="dt">· Oct–Nov 2025</span> — arcade game collection on Google Play; first graphics work: external textures, sprites, sound.</div>
-    <div class="product"><b>Currency Converter+</b> <span class="dt">· Oct 2025</span> — offline-first converter, Google Play + web; first online product: real-time external APIs, caching, network-failure handling.</div>
-    <div class="product"><b>Sudoku</b> <span class="dt">· Sep–Oct 2025</span> — first product, full cycle from idea to Google Play; 4 modes, ranked championship.</div>
-  </section>
+    <section>
+      <h2>Projects</h2>
 
-  <section>
-    <div class="eyebrow">04 / Skills</div>
-    <div class="skills">
-      <div class="skill-row"><b>Core:</b> JavaScript (Node.js, Express, React), Dart (Flutter), HTML/CSS</div>
-      <div class="skill-row"><b>Data &amp; real-time:</b> MongoDB, SQLite, Socket.io, Firebase</div>
-      <div class="skill-row"><b>Infra:</b> Docker, Nginx, Linux VPS, Git, Codemagic CI</div>
-      <div class="skill-row"><b>APIs:</b> REST design, OAuth2, Mapbox, payments, blockchain RPC</div>
-      <div class="skill-row"><b>Practices:</b> multi-tenant architecture, i18n, E2E testing (Playwright)</div>
-      <div class="skill-row"><b>Workflow:</b> AI-assisted development — with full ownership of the result</div>
-    </div>
-  </section>
+      <div class="project">
+        <div class="proj-row">
+          <span class="proj-name">Kora Wallet</span>
+          <span class="proj-meta">Flutter, Dart, Multi-chain &middot; Feb 2026</span>
+        </div>
+        <p class="proj-desc">Open-source non-custodial multi-chain crypto wallet (BTC, ETH, SOL, TRX, BNB, LTC, DOGE). QR scan, address book, PIN lock, and a live market-tracking desktop widget. Windows &amp; Android.</p>
+      </div>
 
-  <section>
-    <div class="eyebrow">05 / Languages</div>
-    <div class="langs">
-      <span><b>Ukrainian</b> — native</span>
-      <span><b>English</b> — B1</span>
-    </div>
-  </section>
+      <div class="project">
+        <div class="proj-row">
+          <span class="proj-name">Retro Arcade</span>
+          <span class="proj-meta">Flutter, Dart &middot; Oct&ndash;Nov 2025</span>
+        </div>
+        <p class="proj-desc">Collection of classic arcade mini-games with pixel-perfect graphics, retro sound, and haptic feedback. Published on Google Play.</p>
+      </div>
 
-</div>
+      <div class="project">
+        <div class="proj-row">
+          <span class="proj-name">Currency Converter+</span>
+          <span class="proj-meta">Flutter, Dart, JS &middot; Oct 2025</span>
+        </div>
+        <p class="proj-desc">Offline-first currency converter with daily rate updates, 5-year historical charts, and smart 24-hour caching. Google Play + companion web app.</p>
+      </div>
+
+      <div class="project">
+        <div class="proj-row">
+          <span class="proj-name">Sudoku</span>
+          <span class="proj-meta">Flutter, Dart &middot; Sep&ndash;Oct 2025</span>
+        </div>
+        <p class="proj-desc">Minimalist Sudoku with 4 game modes, 5 difficulty levels, and smart pencil marks. Published on Google Play.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Languages</h2>
+      <div class="langs">
+        <span><strong>Ukrainian</strong> &mdash; Native</span>
+        <span><strong>English</strong> &mdash; B1 (Intermediate)</span>
+      </div>
+    </section>
+  </div>
+
+  <div class="toolbar no-print">
+    <a href="index.html">&larr; Portfolio</a>
+    <a href="Mykhailo_Nahreba_CV.pdf" download style="background:#0a0a0a;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,0.15);">Download PDF</a>
+  </div>
 </body>
 </html>

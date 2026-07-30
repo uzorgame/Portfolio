@@ -80,7 +80,7 @@ We don’t run user databases. Ad delivery and measurement are handled by Google
 ## 9) Changes to this policy
 
 We may update this Policy from time to time. The latest version is always available at:  
-**https://uz-or.com/**
+**https://uzorgame.github.io/**
 
 ---
 

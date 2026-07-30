@@ -1,21 +1,31 @@
 {
-  "name": "Nahreba",
+  "name": "Nahreba — Product Engineer",
   "short_name": "Nahreba",
-  "description": "Minimalist mobile apps and games built with Flutter",
+  "description": "Product engineer building and shipping mobile apps, games and web products, plus RutaLive, a courier-logistics SaaS.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#FAFAFA",
-  "theme_color": "#FAFAFA",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
   "orientation": "portrait-primary",
   "icons": [
     {
       "src": "favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["games", "entertainment", "utilities"],
+  "categories": ["productivity", "utilities", "developer"],
   "lang": "en"
 }
-

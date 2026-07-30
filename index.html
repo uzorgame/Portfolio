@@ -1,510 +1,402 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Prevent caching of HTML -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nahreba — Product Engineer</title>
+  <meta name="description" content="Product engineer building and shipping mobile apps, games and web — plus RutaLive, a courier-logistics SaaS.">
+  <meta name="author" content="Nahreba Mykhailo">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://uzorgame.github.io/">
+  <link rel="manifest" href="manifest.json">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+  <meta name="theme-color" content="#0a0a0a">
 
-  <!-- Primary Meta Tags -->
-  <title>Nahreba — Minimalist mobile apps & games</title>
-  <meta name="title" content="Nahreba — Minimalist mobile apps & games" />
-  <meta name="description" content="Nahreba — minimalist mobile apps and games built with Flutter. Sudoku, Currency Converter+, Retro Arcade, and more." />
-  <meta name="keywords" content="uzorgame, mobile apps, games, flutter, sudoku, currency converter, indie developer" />
-  <meta name="author" content="Nahreba" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://uz-or.com/" />
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://uzorgame.github.io/">
+  <meta property="og:site_name" content="Nahreba">
+  <meta property="og:title" content="Nahreba — Product Engineer">
+  <meta property="og:description" content="Product engineer building and shipping mobile apps, games and web — plus RutaLive, a courier-logistics SaaS.">
+  <meta property="og:image" content="https://uzorgame.github.io/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nahreba — Product Engineer">
+  <meta name="twitter:description" content="Product engineer building and shipping mobile apps, games and web — plus RutaLive, a courier-logistics SaaS.">
+  <meta name="twitter:image" content="https://uzorgame.github.io/og-image.png">
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://uz-or.com/" />
-  <meta property="og:title" content="Nahreba — Minimalist mobile apps & games" />
-  <meta property="og:description" content="Product engineer building and shipping mobile apps, games and web — plus RutaLive, a courier-logistics SaaS." />
-  <meta property="og:site_name" content="Nahreba" />
+  <script>
+    (function(){
+      var t = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
 
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://uz-or.com/" />
-  <meta property="twitter:title" content="Nahreba — Minimalist mobile apps & games" />
-  <meta property="twitter:description" content="Product engineer building and shipping mobile apps, games and web — plus RutaLive, a courier-logistics SaaS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Structured Data (Schema.org) -->
+  <link rel="stylesheet" href="styles.css">
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Person",
-    "name": "Nahreba",
-    "url": "https://uz-or.com/",
-    "sameAs": [
-      "https://github.com/uzorgame",
-      "https://www.instagram.com/uzor.nm"
-    ],
-    "jobTitle": "Indie Developer",
-    "knowsAbout": ["Flutter", "Mobile App Development", "Game Development"]
+    "name": "Nahreba Mykhailo",
+    "url": "https://uzorgame.github.io/",
+    "sameAs": ["https://github.com/uzorgame","https://www.instagram.com/uzor.nm"],
+    "jobTitle": "Product Engineer",
+    "knowsAbout": ["Flutter","React","Node.js","Mobile App Development"]
   }
   </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "Nahreba",
-    "url": "https://uz-or.com/",
-    "description": "Minimalist mobile apps and games built with Flutter",
-    "author": {
-      "@type": "Person",
-      "name": "Nahreba"
-    }
-  }
-  </script>
-
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#FAFAFA" />
-  <meta name="color-scheme" content="light dark" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="Nahreba" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <!-- Immediate theme application to prevent flash -->
-  <script>
-    (function() {
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      document.documentElement.setAttribute('data-theme', savedTheme);
-      const metaThemeColor = document.querySelector('meta[name="theme-color"]');
-      if(metaThemeColor) {
-        metaThemeColor.content = savedTheme === 'dark' ? '#0F0F0F' : '#FAFAFA';
-      }
-    })();
-  </script>
-
-  <link rel="stylesheet" href="styles.css?v=2.3.7">
-
 </head>
-
 <body>
 
-  <div class="theme-switcher" role="group" aria-label="Theme switcher">
-    <button class="theme-btn active" data-theme="light" aria-label="Light theme" title="Light theme" data-i18n="theme.light">Light</button>
-    <button class="theme-btn" data-theme="dark" aria-label="Dark theme" title="Dark theme" data-i18n="theme.dark">Dark</button>
-  </div>
-
-  <div class="lang-switcher" role="group" aria-label="Language switcher">
-    <button class="lang-btn active" data-lang="en" aria-label="English">EN</button>
-    <button class="lang-btn" data-lang="uk" aria-label="Українська">UA</button>
-  </div>
-
-  <div class="page-wrapper">
-    <aside class="sidebar">
-      <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-        <div class="logo">
-          Nahreba<span>.</span>
+  <!-- ═══ NAV ═══ -->
+  <nav class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-logo" href="#hero">nahreba</a>
+      <div class="nav-links" id="nav-links">
+        <a href="#projects" class="nav-link" data-i18n="nav.projects">Projects</a>
+        <a href="#about" class="nav-link" data-i18n="nav.about">About</a>
+        <a href="#stack" class="nav-link" data-i18n="nav.stack">Stack</a>
+        <a href="#contact" class="nav-link" data-i18n="nav.contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="uk">UA</button>
         </div>
-        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
-          <span></span>
-          <span></span>
-          <span></span>
+        <a href="Mykhailo_Nahreba_CV.pdf" class="nav-cta" target="_blank">CV</a>
+        <button class="burger" id="burger" aria-label="Toggle menu">
+          <span></span><span></span>
         </button>
       </div>
-      <nav class="nav" role="navigation" aria-label="Main navigation">
-        <a href="#home" class="nav-link active" aria-current="page">
-          <span data-i18n="nav.home">Home</span>
-        </a>
-        <a href="#projects" class="nav-link">
-          <span data-i18n="nav.projects">Projects</span>
-        </a>
-        <a href="#about" class="nav-link">
-          <span data-i18n="nav.about">About</span>
-        </a>
-        <a href="#stack" class="nav-link">
-          <span data-i18n="nav.stack">Stack</span>
-        </a>
-        <a href="#footer" class="nav-link">
-          <span data-i18n="nav.contact">Contact</span>
-        </a>
-      </nav>
-    </aside>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-nav-overlay" id="mobile-nav-overlay" aria-hidden="true"></div>
-    <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title" aria-hidden="true">
-      <nav class="nav" role="navigation" aria-label="Mobile navigation">
-        <h2 id="mobile-menu-title" class="sr-only">Mobile Menu</h2>
-        <a href="#home" class="nav-link active" aria-current="page">
-          <span data-i18n="nav.home">Home</span>
-        </a>
-        <a href="#projects" class="nav-link">
-          <span data-i18n="nav.projects">Projects</span>
-        </a>
-        <a href="#about" class="nav-link">
-          <span data-i18n="nav.about">About</span>
-        </a>
-        <a href="#stack" class="nav-link">
-          <span data-i18n="nav.stack">Stack</span>
-        </a>
-        <a href="#footer" class="nav-link">
-          <span data-i18n="nav.contact">Contact</span>
-        </a>
-        
-        <!-- Mobile Theme & Language Switchers -->
-        <div class="mobile-controls">
-          <div class="mobile-theme-switcher" role="group" aria-label="Theme switcher">
-            <button class="mobile-theme-btn active" data-theme="light" aria-label="Light theme" title="Light theme" data-i18n="theme.light">Light</button>
-            <button class="mobile-theme-btn" data-theme="dark" aria-label="Dark theme" title="Dark theme" data-i18n="theme.dark">Dark</button>
-          </div>
-          <div class="mobile-lang-switcher" role="group" aria-label="Language switcher">
-            <button class="mobile-lang-btn active" data-lang="en" aria-label="English">EN</button>
-            <button class="mobile-lang-btn" data-lang="uk" aria-label="Українська">UA</button>
-          </div>
-        </div>
-      </nav>
     </div>
+  </nav>
 
-    <main class="main">
-      <section id="home" class="section">
-        <p class="hero-eyebrow" data-i18n="hero.eyebrow">Nahreba Mykhailo · Bratislava · Open to work</p>
-        <h1 data-i18n="hero.title">
-          Design. Develop.<br>Ship.
-        </h1>
-        <p class="hero-text" data-i18n="hero.subtitle">
-          Product engineer with my own apps, games and web products. Co-founder and active developer of RutaLive — a courier-logistics SaaS competing with major dispatch companies across the US and Canada.
-        </p>
-        <div class="tags-row">
-          <span class="tag-pill" data-i18n="tags.works">Clean code, minimal design</span>
-          <span class="tag-pill" data-i18n="tags.crashes">Performance-first approach</span>
-          <span class="tag-pill" data-i18n="tags.flutter">Built with Flutter & modern web technologies</span>
-        </div>
-        <p class="hero-proof" data-i18n="hero.proof"><b>5</b> products · <b>4</b> platforms · <b>3</b> stores</p>
-      </section>
+  <!-- ═══ MOBILE MENU ═══ -->
+  <div class="mobile-overlay" id="mobile-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+    <a href="#hero" class="mobile-link" data-i18n="nav.home">Home</a>
+    <a href="#projects" class="mobile-link" data-i18n="nav.projects">Projects</a>
+    <a href="#about" class="mobile-link" data-i18n="nav.about">About</a>
+    <a href="#stack" class="mobile-link" data-i18n="nav.stack">Stack</a>
+    <a href="#contact" class="mobile-link" data-i18n="nav.contact">Contact</a>
+    <a href="Mykhailo_Nahreba_CV.pdf" class="mobile-link" target="_blank">CV</a>
+    <div class="mobile-bottom">
+      <div class="mobile-lang">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="uk">UA</button>
+      </div>
+      <div class="mobile-social">
+        <a href="https://www.instagram.com/uzor.nm" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://github.com/uzorgame" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </div>
 
-      <section id="projects" class="section">
-        <div class="section-head">
-          <p class="section-eyebrow" data-i18n="eyebrow.projects">01 / Work</p>
-          <h2 data-i18n="projects.title">Projects</h2>
-          <p class="subtitle" data-i18n="projects.subtitle">From the newest work down to the very first.</p>
-        </div>
+  <main>
 
-        <div class="timeline">
-          <!-- RutaLive (найновіший) -->
-          <div class="timeline-item">
-            <div class="timeline-date" data-i18n="date.ruta">Nov 2025 – Present</div>
-            <article class="card spotlight">
-              <div class="card-inner">
-                <div class="card-header">
-                  <div class="icon-box icon-box-ruta">
-                    <img src="ruta-pin.svg" alt="RutaLive app icon" loading="lazy">
-                  </div>
-                  <span class="status-badge st-green" data-i18n="other.ruta.tag">Available</span>
-                </div>
-                <div class="card-title" data-i18n="other.ruta.title">RutaLive</div>
-                <p class="card-desc" data-i18n="other.ruta.desc">
-                  Delivery operations dashboard for courier teams: live tracking, POD, zones and dispatching. Monitor couriers and orders in real time, from pickup to drop-off.
-                </p>
-                <div class="proj-chips">
-                  <span class="proj-chip">React</span><span class="proj-chip">Node.js</span><span class="proj-chip">MongoDB</span><span class="proj-chip">Socket.io</span><span class="proj-chip">Flutter</span><span class="proj-chip">Mapbox</span><span class="proj-chip">Docker</span>
-                </div>
-                <div class="btn-group">
-                  <a href="https://rutalive.com" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="common.open">Open</a>
-                  <a href="https://apps.apple.com/pl/app/rutalive/id6759526163" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="common.appStore">App Store</a>
-                  <a href="https://play.google.com/store/apps/details?id=com.ruta.app&pli=1" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="common.googlePlay">Google Play</a>
-                  <a href="https://rutalive.com/RutaSetup.exe" download class="btn btn-primary" data-i18n="common.windows">Windows</a>
-                  <button class="btn btn-ghost" data-i18n="common.screenshots" data-screenshots="rutalive">Screenshots</button>
-                  <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="rutalive">Privacy</button>
-                  <button class="btn btn-ghost story-toggle" data-story="ruta" aria-expanded="false" data-i18n="common.story">How it was built</button>
-                </div>
-                <div class="card-story" id="story-ruta">
-                  <div class="card-story-inner">
-                    <p data-i18n="story.ruta">A project born from a real need — to replace the software my friend's courier company was using. This is where I first understood what real IT means: websockets, databases, many users working asynchronously at once, clean architecture, Docker containers, React, Node.js and Astro, GPS maps shipping to web, iOS and Android simultaneously. And the genuinely hard fixes — when one line breaks production and you have to test every platform at once.</p>
-                  </div>
-                </div>
-              </div>
-            </article>
+    <!-- ═══ HERO ═══ -->
+    <section id="hero" class="hero">
+      <div class="wrap">
+        <h1 class="hero-title" data-reveal data-i18n="hero.title">Design. Develop.<br>Ship.</h1>
+        <div class="hero-bottom" data-reveal>
+          <p class="hero-sub" data-i18n="hero.subtitle">Product engineer with my own apps, games and web products. Co-founder and active developer of RutaLive &mdash; a courier-logistics SaaS competing with major dispatch companies across the US and Canada.</p>
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="stat-num">5</span>
+              <span class="stat-label">Products</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">4</span>
+              <span class="stat-label">Platforms</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">3</span>
+              <span class="stat-label">Stores</span>
+            </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ PROJECTS ═══ -->
+    <section id="projects" class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="eyebrow.projects">01 / Work</p>
+          <h2 data-i18n="projects.title">Projects</h2>
+        </div>
+
+        <div class="projects-list">
+
+          <!-- RutaLive -->
+          <article class="proj" data-reveal>
+            <div class="proj-head">
+              <div class="proj-icon icon-ruta"><img src="ruta-pin.svg" alt="RutaLive app icon" width="52" height="52"></div>
+              <div class="proj-meta">
+                <h3 class="proj-name" data-i18n="other.ruta.title">RutaLive</h3>
+                <span class="proj-date" data-i18n="date.ruta">Nov 2025 &ndash; Present</span>
+              </div>
+              <span class="proj-tag" data-i18n="other.ruta.tag">Available</span>
+            </div>
+            <p class="proj-desc" data-i18n="other.ruta.desc">A courier-logistics SaaS built to compete with the big US and Canadian dispatch platforms &mdash; Onfleet, Digital Waybill, Track-POD &mdash; at a fraction of their price.</p>
+            <div class="proj-stack">
+              <span>React</span><span>Node.js</span><span>MongoDB</span><span>Socket.io</span><span>Flutter</span><span>Mapbox</span><span>Docker</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://rutalive.com" target="_blank" rel="noopener" data-i18n="common.website">Website</a>
+              <a href="https://apps.apple.com/pl/app/rutalive/id6759526163" target="_blank" rel="noopener" data-i18n="common.appStore">App Store</a>
+              <a href="https://play.google.com/store/apps/details?id=com.ruta.app" target="_blank" rel="noopener" data-i18n="common.googlePlay">Google Play</a>
+              <a href="https://rutalive.com/RutaSetup.exe" download data-i18n="common.windows">Windows</a>
+              <button data-privacy="rutalive" data-i18n="common.privacyPolicy">Privacy</button>
+            </div>
+          </article>
 
           <!-- Kora Wallet -->
-          <div class="timeline-item">
-            <div class="timeline-date" data-i18n="date.kora">Feb 2026</div>
-            <article class="card spotlight">
-              <div class="card-inner">
-                <div class="card-header">
-                  <div class="icon-box">
-                    <img src="Public/kora/koraicon.png" alt="Kora Wallet app icon" loading="lazy" style="transform: scale(1.06);">
-                  </div>
-                  <span class="status-badge st-green" data-i18n="apps.currency.tag">Available</span>
-                </div>
-                <div class="card-title" data-i18n="apps.kora.title">Kora Wallet</div>
-                <p class="card-desc" data-i18n="apps.kora.desc"></p>
-                <div class="proj-chips">
-                  <span class="proj-chip">Flutter</span><span class="proj-chip">Dart</span><span class="proj-chip">Multi-chain</span><span class="proj-chip">Open-source</span>
-                </div>
-                <div class="btn-group">
-                  <a href="Public/kora/app/KoraSuite_Setup_v3.5.0.exe" download class="btn btn-primary" data-i18n="common.windows">Windows</a>
-                  <a href="Public/kora/app/koraandroid.apk" download class="btn btn-primary" data-i18n="common.android">Android</a>
-                  <button class="btn btn-ghost" data-i18n="common.screenshots" data-screenshots="kora">Screenshots</button>
-                  <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="kora">Privacy</button>
-                  <button class="btn btn-ghost story-toggle" data-story="kora" aria-expanded="false" data-i18n="common.story">How it was built</button>
-                </div>
-                <div class="card-story" id="story-kora">
-                  <div class="card-story-inner">
-                    <p data-i18n="story.kora">A wallet I built for myself out of curiosity about how blockchains and crypto wallets work — and after one too many custodial security stories. I've used it daily since day one. The main challenge was encryption and key derivation matching the standards of major wallets, so the same account can be opened in, say, Trust Wallet when needed. Plus choosing APIs that never slow the wallet down. It has never let me down.</p>
-                  </div>
-                </div>
+          <article class="proj" data-reveal>
+            <div class="proj-head">
+              <div class="proj-icon"><img src="Public/kora/koraicon.png" alt="Kora Wallet app icon" width="52" height="52"></div>
+              <div class="proj-meta">
+                <h3 class="proj-name" data-i18n="apps.kora.title">Kora Wallet</h3>
+                <span class="proj-date" data-i18n="date.kora">Feb 2026</span>
               </div>
-            </article>
-          </div>
+              <span class="proj-tag" data-i18n="apps.kora.tag">Available</span>
+            </div>
+            <p class="proj-desc" data-i18n="apps.kora.desc">A non-custodial, multi-chain crypto wallet &mdash; your keys, your assets, no middleman.</p>
+            <div class="proj-stack">
+              <span>Flutter</span><span>Dart</span><span>Multi-chain</span><span>Open-source</span>
+            </div>
+            <div class="proj-links">
+              <a href="Public/kora/app/KoraSuite_Setup_v3.5.0.exe" download data-i18n="common.windows">Windows</a>
+              <a href="Public/kora/app/koraandroid.apk" download data-i18n="common.android">Android</a>
+              <button data-privacy="kora" data-i18n="common.privacyPolicy">Privacy</button>
+            </div>
+          </article>
 
           <!-- Retro Arcade -->
-          <div class="timeline-item">
-            <div class="timeline-date" data-i18n="date.retro">Oct – Nov 2025</div>
-            <article class="card spotlight">
-              <div class="card-inner">
-                <div class="card-header">
-                  <div class="icon-box">
-                    <img src="RetroArcade.png" alt="Retro Arcade game icon" loading="lazy">
-                  </div>
-                  <span class="status-badge st-green" data-i18n="games.retro.tag">Available</span>
-                </div>
-                <div class="card-title" data-i18n="games.retro.title">Retro Arcade</div>
-                <p class="card-desc" data-i18n="games.retro.desc">
-                  A retro collection of classic arcade-style mini games in one clean app. No coins, no waiting, just play.
-                </p>
-                <div class="proj-chips">
-                  <span class="proj-chip">Flutter</span><span class="proj-chip">Dart</span><span class="proj-chip">Offline</span>
-                </div>
-                <div class="btn-group">
-                  <a href="https://play.google.com/store/apps/details?id=com.uzorgame.retroarcade" target="_blank" class="btn btn-primary" data-i18n="common.googlePlay">Google Play</a>
-                  <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="retro-arcade">Privacy</button>
-                  <button class="btn btn-ghost story-toggle" data-story="retro" aria-expanded="false" data-i18n="common.story">How it was built</button>
-                </div>
-                <div class="card-story" id="story-retro">
-                  <div class="card-story-inner">
-                    <p data-i18n="story.retro">A playful project with a serious technical challenge inside: my first work with graphics — external textures, sprites and sound. I wanted to recreate what our parents' generation played — and it genuinely plays well.</p>
-                  </div>
-                </div>
+          <article class="proj" data-reveal>
+            <div class="proj-head">
+              <div class="proj-icon icon-retro"><img src="RetroArcade.png" alt="Retro Arcade app icon" width="52" height="52"></div>
+              <div class="proj-meta">
+                <h3 class="proj-name" data-i18n="games.retro.title">Retro Arcade</h3>
+                <span class="proj-date" data-i18n="date.retro">Oct &ndash; Nov 2025</span>
               </div>
-            </article>
-          </div>
+              <span class="proj-tag" data-i18n="games.retro.tag">Available</span>
+            </div>
+            <p class="proj-desc" data-i18n="games.retro.desc">A retro collection of classic arcade-style mini games in one clean app. No coins, no waiting, just play.</p>
+            <div class="proj-stack">
+              <span>Flutter</span><span>Dart</span><span>Offline</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://play.google.com/store/apps/details?id=com.uzorgame.retroarcade" target="_blank" rel="noopener" data-i18n="common.googlePlay">Google Play</a>
+              <button data-privacy="retro-arcade" data-i18n="common.privacyPolicy">Privacy</button>
+            </div>
+          </article>
 
           <!-- Currency Converter+ -->
-          <div class="timeline-item">
-            <div class="timeline-date" data-i18n="date.currency">Oct 2025</div>
-            <article class="card spotlight">
-              <div class="card-inner">
-                <div class="card-header">
-                  <div class="icon-box">
-                    <img src="CurrencyConverter.png" alt="Currency Converter+ app icon" loading="lazy">
-                  </div>
-                  <span class="status-badge st-green" data-i18n="apps.currency.tag">Available</span>
-                </div>
-                <div class="card-title" data-i18n="apps.currency.title">Currency Converter+</div>
-                <p class="card-desc" data-i18n="apps.currency.desc">
-                  Offline-first currency converter. No ads, no tracking, just exchange rates updated daily. Pure utility.
-                </p>
-                <div class="proj-chips">
-                  <span class="proj-chip">Flutter</span><span class="proj-chip">Dart</span><span class="proj-chip">JavaScript</span><span class="proj-chip">Offline</span>
-                </div>
-                <div class="btn-group">
-                  <a href="https://play.google.com/store/apps/details?id=com.uzorgame.converter" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="common.googlePlay">Google Play</a>
-                  <a href="https://uzorgame.github.io/CurrencyConverter-Web/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" data-i18n="common.website">Website</a>
-                  <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="converter">Privacy</button>
-                  <button class="btn btn-ghost story-toggle" data-story="currency" aria-expanded="false" data-i18n="common.story">How it was built</button>
-                </div>
-                <div class="card-story" id="story-currency">
-                  <div class="card-story-inner">
-                    <p data-i18n="story.currency">An attempt to go beyond an offline project and understand how APIs work. The goal wasn't "a popular product" — it was my first app that lives online: real-time data from external servers, rate caching, handling network failures.</p>
-                  </div>
-                </div>
+          <article class="proj" data-reveal>
+            <div class="proj-head">
+              <div class="proj-icon icon-currency"><img src="CurrencyConverter.png" alt="Currency Converter+ app icon" width="52" height="52"></div>
+              <div class="proj-meta">
+                <h3 class="proj-name" data-i18n="apps.currency.title">Currency Converter+</h3>
+                <span class="proj-date" data-i18n="date.currency">Oct 2025</span>
               </div>
-            </article>
-          </div>
+              <span class="proj-tag" data-i18n="apps.currency.tag">Available</span>
+            </div>
+            <p class="proj-desc" data-i18n="apps.currency.desc">Offline-first currency converter. No ads, no tracking, just exchange rates updated daily. Pure utility.</p>
+            <div class="proj-stack">
+              <span>Flutter</span><span>Dart</span><span>JavaScript</span><span>Offline</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://play.google.com/store/apps/details?id=com.uzorgame.converter" target="_blank" rel="noopener" data-i18n="common.googlePlay">Google Play</a>
+              <a href="https://uzorgame.github.io/CurrencyConverter-Web/" target="_blank" rel="noopener" data-i18n="common.website">Website</a>
+              <button data-privacy="converter" data-i18n="common.privacyPolicy">Privacy</button>
+            </div>
+          </article>
 
-          <!-- Sudoku (найперший проєкт) -->
-          <div class="timeline-item">
-            <div class="timeline-date" data-i18n="date.sudoku">Sep – Oct 2025</div>
-            <article class="card spotlight">
-              <div class="card-inner">
-                <div class="card-header">
-                  <div class="icon-box">
-                    <img src="Sudoku.png" alt="Sudoku game icon" loading="lazy">
-                  </div>
-                  <span class="status-badge st-green" data-i18n="games.sudoku.tag">Available</span>
-                </div>
-                <div class="card-title" data-i18n="games.sudoku.title">Sudoku</div>
-                <p class="card-desc" data-i18n="games.sudoku.desc">
-                  A minimalist Sudoku experience. Dark mode, smart pencil marks, and absolutely zero distractions.
-                </p>
-                <div class="proj-chips">
-                  <span class="proj-chip">Flutter</span><span class="proj-chip">Dart</span><span class="proj-chip">4 modes</span>
-                </div>
-                <div class="btn-group">
-                  <a href="https://play.google.com/store/apps/details?id=com.sudoku.uzor" target="_blank" class="btn btn-primary" data-i18n="common.googlePlay">Google Play</a>
-                  <button class="btn btn-ghost" data-i18n="common.privacyPolicy" data-privacy="sudoku">Privacy</button>
-                  <button class="btn btn-ghost story-toggle" data-story="sudoku" aria-expanded="false" data-i18n="common.story">How it was built</button>
-                </div>
-                <div class="card-story" id="story-sudoku">
-                  <div class="card-story-inner">
-                    <p data-i18n="story.sudoku">My first product — I wanted to build, for myself, something I love in everyday life. This is where I first learned that AI tools are useless without your own understanding of what you're building and how it should work. A full cycle from idea to Google Play — and my first real lesson in engineering thinking.</p>
-                  </div>
-                </div>
+          <!-- Sudoku -->
+          <article class="proj" data-reveal>
+            <div class="proj-head">
+              <div class="proj-icon"><img src="Sudoku.png" alt="Sudoku app icon" width="52" height="52"></div>
+              <div class="proj-meta">
+                <h3 class="proj-name" data-i18n="games.sudoku.title">Sudoku</h3>
+                <span class="proj-date" data-i18n="date.sudoku">Sep &ndash; Oct 2025</span>
               </div>
-            </article>
-          </div>
+              <span class="proj-tag" data-i18n="games.sudoku.tag">Available</span>
+            </div>
+            <p class="proj-desc" data-i18n="games.sudoku.desc">A minimalist Sudoku experience. Dark mode, smart pencil marks, and absolutely zero distractions.</p>
+            <div class="proj-stack">
+              <span>Flutter</span><span>Dart</span><span>4 modes</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://play.google.com/store/apps/details?id=com.sudoku.uzor" target="_blank" rel="noopener" data-i18n="common.googlePlay">Google Play</a>
+              <button data-privacy="sudoku" data-i18n="common.privacyPolicy">Privacy</button>
+            </div>
+          </article>
+
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="about" class="section">
-        <div class="section-head">
-          <p class="section-eyebrow" data-i18n="eyebrow.about">02 / About</p>
+    <!-- ═══ ABOUT ═══ -->
+    <section id="about" class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="eyebrow.about">02 / About</p>
           <h2 data-i18n="about.title">About</h2>
         </div>
 
-        <p class="about-statement" data-i18n="about.statement">Product Engineer</p>
-
-        <div class="grid" style="grid-template-columns: 1fr; gap: 32px;">
-          <article class="card spotlight">
-            <div class="card-inner">
-              <p class="about-lead" data-i18n="about.bio">
-                Product engineer building cross-platform products end to end — from concept to release on the app stores. Five products shipped across mobile, games and the web. Co-founder and active developer of RutaLive, a multi-tenant SaaS for courier logistics.
-              </p>
-              <p class="about-looking" data-i18n="about.looking">Open to full-time roles, collaborations and product work that actually ships.</p>
-
-              <a href="cv.html" target="_blank" rel="noopener" class="btn btn-primary" data-i18n="about.cv" style="margin-top: 16px; display: inline-flex;">View CV</a>
-
-              <div class="journey">
-                <div class="journey-item">
-                  <div class="journey-date" data-i18n="journey.d1">2025</div>
-                  <div class="journey-text" data-i18n="journey.t1">First shipped products — Sudoku, Currency Converter+, Retro Arcade.</div>
-                </div>
-                <div class="journey-item">
-                  <div class="journey-date" data-i18n="journey.d2">2025 → Present</div>
-                  <div class="journey-text" data-i18n="journey.t2">RutaLive — co-founder &amp; active builder of a courier-logistics SaaS.</div>
-                </div>
-                <div class="journey-item">
-                  <div class="journey-date" data-i18n="journey.d3">2026</div>
-                  <div class="journey-text" data-i18n="journey.t3">Kora Wallet — non-custodial multi-chain wallet.</div>
-                </div>
-              </div>
-
-              <div class="tech-grid" style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--card-border);">
-                <div class="tech-item">
-                  <span>Stack</span>
-                  <div>Flutter · React · Node.js</div>
-                </div>
-                <div class="tech-item">
-                  <span>Focus</span>
-                  <div data-i18n="about.focus">Ship to the stores</div>
-                </div>
-                <div class="tech-item">
-                  <span>Base</span>
-                  <div>Bratislava</div>
-                </div>
-              </div>
-              <div style="margin-top: 32px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-                <div style="display: flex; gap: 8px;">
-                  <a href="https://www.instagram.com/uzor.nm?igsh=b3RrdzY2M2E1emh3" target="_blank" rel="noopener noreferrer" class="social-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" fill="currentColor"/>
-                  </a>
-                  <a href="https://github.com/uzorgame" target="_blank" rel="noopener noreferrer" class="social-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" fill="currentColor"/>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </article>
+        <div class="about-bio" data-reveal>
+          <p class="about-lead" data-i18n="about.bio">Product engineer building cross-platform products end to end &mdash; from concept to release on the app stores. Five products shipped across mobile, games and the web. Co-founder and active developer of RutaLive, a multi-tenant SaaS for courier logistics.</p>
+          <p class="about-note" data-i18n="about.looking">Open to full-time roles, collaborations and product work that actually ships.</p>
         </div>
-      </section>
 
-      <section id="stack" class="section">
-        <div class="section-head">
-          <p class="section-eyebrow" data-i18n="eyebrow.stack">03 / Stack</p>
+        <div class="about-details" data-reveal>
+          <div class="about-detail">
+            <span class="about-label">Stack</span>
+            <span>Flutter, React, Node.js</span>
+          </div>
+          <div class="about-detail">
+            <span class="about-label">Focus</span>
+            <span data-i18n="about.focus">Cross-platform</span>
+          </div>
+          <div class="about-detail">
+            <span class="about-label">Base</span>
+            <span>Bratislava, SK</span>
+          </div>
+          <div class="about-detail">
+            <span class="about-label">Links</span>
+            <span><a href="https://github.com/uzorgame" target="_blank" rel="noopener">GitHub</a> &middot; <a href="https://www.instagram.com/uzor.nm" target="_blank" rel="noopener">Instagram</a></span>
+          </div>
+        </div>
+
+        <div class="timeline" data-reveal>
+          <div class="timeline-item">
+            <div class="timeline-year" data-i18n="journey.d1">2025</div>
+            <p class="timeline-text" data-i18n="journey.t1">First shipped products &mdash; Sudoku, Currency Converter+, Retro Arcade.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year" data-i18n="journey.d2">2025 &rarr;</div>
+            <p class="timeline-text" data-i18n="journey.t2">RutaLive &mdash; co-founder &amp; active builder of a courier-logistics SaaS.</p>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year" data-i18n="journey.d3">2026</div>
+            <p class="timeline-text" data-i18n="journey.t3">Kora Wallet &mdash; non-custodial multi-chain wallet.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ STACK ═══ -->
+    <section id="stack" class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="eyebrow.stack">03 / Stack</p>
           <h2 data-i18n="stack.title">Tools I build with</h2>
         </div>
-        <div class="stack-grid">
-          <div class="stack-group">
-            <h3 data-i18n="stack.mobile">Mobile</h3>
-            <div class="items"><span>Flutter</span><span>Dart</span><span>Firebase</span></div>
-          </div>
-          <div class="stack-group">
-            <h3 data-i18n="stack.web">Web</h3>
-            <div class="items"><span>React</span><span>Node.js</span><span>MongoDB</span><span>Socket.io</span></div>
-          </div>
-          <div class="stack-group">
-            <h3 data-i18n="stack.graphics">Graphics &amp; Maps</h3>
-            <div class="items"><span>Three.js</span><span>WebGL</span><span>Mapbox</span></div>
-          </div>
-          <div class="stack-group">
-            <h3 data-i18n="stack.infra">Infra</h3>
-            <div class="items"><span>Docker</span><span>Nginx</span><span>Git</span></div>
-          </div>
+        <div class="stack-grid" data-reveal>
+          <a class="stack-row" href="#stack">
+            <span class="stack-num">01</span>
+            <span class="stack-name" data-i18n="stack.mobile">Mobile</span>
+            <span class="stack-items">Flutter, Dart, Firebase</span>
+            <span class="stack-arr">&rarr;</span>
+          </a>
+          <a class="stack-row" href="#stack">
+            <span class="stack-num">02</span>
+            <span class="stack-name" data-i18n="stack.web">Web</span>
+            <span class="stack-items">React, Node.js, MongoDB, Socket.io</span>
+            <span class="stack-arr">&rarr;</span>
+          </a>
+          <a class="stack-row" href="#stack">
+            <span class="stack-num">03</span>
+            <span class="stack-name" data-i18n="stack.graphics">Graphics &amp; Maps</span>
+            <span class="stack-items">Three.js, WebGL, Mapbox</span>
+            <span class="stack-arr">&rarr;</span>
+          </a>
+          <a class="stack-row" href="#stack">
+            <span class="stack-num">04</span>
+            <span class="stack-name" data-i18n="stack.infra">Infra</span>
+            <span class="stack-items">Docker, Nginx, Git, CI/CD</span>
+            <span class="stack-arr">&rarr;</span>
+          </a>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section id="footer" class="section">
-        <p class="section-eyebrow" data-i18n="eyebrow.contact">04 / Contact</p>
-        <h2 class="cta-title" data-i18n="cta.title">Let's build something.</h2>
-        <p class="cta-note" data-i18n="cta.note">I reply personally, usually the same day.</p>
-        <div class="cta-links">
-          <a href="mailto:NagrebaMM@gmail.com" class="cta-link">NagrebaMM@gmail.com <span class="arw">→</span></a>
-          <a href="https://t.me/uzormn" target="_blank" rel="noopener noreferrer" class="cta-link">Telegram · @uzormn <span class="arw">→</span></a>
+    <!-- ═══ CONTACT ═══ -->
+    <section id="contact" class="sec">
+      <div class="wrap">
+        <p class="label" data-reveal data-i18n="eyebrow.contact">04 / Contact</p>
+        <h2 class="cta-title" data-reveal data-i18n="cta.title">Let's work together.</h2>
+        <p class="cta-note" data-reveal data-i18n="cta.note">I reply personally, usually the same day.</p>
+        <div class="cta-links" data-reveal>
+          <a href="mailto:NagrebaMM@gmail.com" class="cta-link">NagrebaMM@gmail.com <span class="arr">&rarr;</span></a>
+          <a href="https://t.me/uzormn" target="_blank" rel="noopener" class="cta-link">Telegram &middot; @uzormn <span class="arr">&rarr;</span></a>
         </div>
-        <footer class="footer" data-i18n="footer.text">
-          © 2026 Nahreba Mykhailo. Built with precision.
-        </footer>
-      </section>
+      </div>
+    </section>
 
-    </main>
-  </div>
+  </main>
 
-  <!-- Privacy Modal -->
-  <div class="privacy-modal-overlay" id="privacy-modal-overlay"></div>
-  <div class="privacy-modal" id="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title">
-    <div class="privacy-modal-header">
-      <h2 class="privacy-modal-title" id="privacy-modal-title">Privacy Policy</h2>
-      <button class="privacy-modal-close" id="privacy-modal-close" aria-label="Close">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
+  <footer class="footer" data-reveal>
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="footer-col">
+          <p class="footer-col-title">Navigation</p>
+          <a href="#projects" data-i18n="nav.projects">Projects</a>
+          <a href="#about" data-i18n="nav.about">About</a>
+          <a href="#stack" data-i18n="nav.stack">Stack</a>
+          <a href="#contact" data-i18n="nav.contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Connect</p>
+          <a href="https://github.com/uzorgame" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.instagram.com/uzor.nm" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://t.me/uzormn" target="_blank" rel="noopener">Telegram</a>
+          <a href="mailto:NagrebaMM@gmail.com">Email</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Info</p>
+          <span>Bratislava, Slovakia</span>
+          <a href="Mykhailo_Nahreba_CV.pdf" target="_blank">Download CV</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-logo">nahreba</span>
+        <span class="footer-copy" data-i18n="footer.text">&copy; 2026 Nahreba Mykhailo. Built with precision.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ PRIVACY MODAL ═══ -->
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-head">
+      <h2 class="modal-title" id="modal-title">Privacy Policy</h2>
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <!-- data-lenis-prevent: зупинений Lenis глушить wheel/touch на всій сторінці —
-         без цього атрибута текст політики не скролиться (тачпад ПК і мобільні) -->
-    <div class="privacy-modal-content" id="privacy-modal-content" data-lenis-prevent>
-      <p>Loading...</p>
-    </div>
+    <div class="modal-body" id="modal-body"><p>Loading&hellip;</p></div>
   </div>
 
-  <!-- Screenshots Modal -->
-  <div class="privacy-modal-overlay" id="screenshots-modal-overlay"></div>
-  <div class="privacy-modal ss-modal" id="screenshots-modal" role="dialog" aria-modal="true" aria-labelledby="screenshots-modal-title">
-    <div class="privacy-modal-header">
-      <h2 class="privacy-modal-title" id="screenshots-modal-title">Screenshots</h2>
-      <button class="privacy-modal-close" id="screenshots-modal-close" aria-label="Close">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-    </div>
-    <div class="privacy-modal-content" id="screenshots-modal-content" data-lenis-prevent>
-    </div>
+  <!-- ═══ THEME SWITCHER ═══ -->
+  <div class="theme-switcher" id="theme-switcher">
+    <button class="theme-btn" data-theme="light">Light</button>
+    <button class="theme-btn" data-theme="dark">Dark</button>
   </div>
 
-  <script src="js/utils.js?v=2.3.0"></script>
-  <script src="js/theme.js?v=2.3.5"></script>
-  <script src="js/i18n.js?v=2.3.9"></script>
-  <script src="js/lenis.min.js?v=2.3.0"></script>
-  <script src="js/smooth-scroll.js?v=2.3.0"></script>
-  <script src="js/main.js?v=2.3.7"></script>
-  <script src="js/privacy-modal.js?v=2.3.6"></script>
-  <script src="js/screenshots-modal.js?v=2.3.1"></script>
+  <!-- Lenis тримаємо ЛОКАЛЬНО (1.1.20, той самий глобал Lenis і API), а не з
+       cdn.jsdelivr.net: сайт лишається самодостатнім, без стороннього запиту й
+       без залежності від чужого аптайму — так було й у попередній версії. -->
+  <script src="js/lenis.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>

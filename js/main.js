@@ -1,255 +1,248 @@
-/* --- MAIN LOGIC --- */
-document.addEventListener("DOMContentLoaded", () => {
-  
-  // 1. SPOTLIGHT EFFECT
-  const cards = document.querySelectorAll(".spotlight");
-  document.addEventListener("mousemove", (e) => {
-    cards.forEach(card => {
-      const rect = card.getBoundingClientRect();
-      card.style.setProperty("--cursor-x", `${e.clientX - rect.left}px`);
-      card.style.setProperty("--cursor-y", `${e.clientY - rect.top}px`);
+/* ═══ Nahreba — Main JS ═══ */
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ── Theme ── */
+  const currentTheme = () => document.documentElement.getAttribute('data-theme') || 'dark';
+
+  function setTheme(t) {
+    document.documentElement.classList.add('theme-switching');
+    document.documentElement.setAttribute('data-theme', t);
+    localStorage.setItem('theme', t);
+    document.querySelectorAll('.theme-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.theme === t);
     });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.documentElement.classList.remove('theme-switching');
+      });
+    });
+  }
+
+  setTheme(currentTheme());
+
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => setTheme(btn.dataset.theme));
   });
 
-  // 1.5. CARD ANIMATION ON SCROLL
-  const cardElements = document.querySelectorAll(".card");
-  const cardObserver = new IntersectionObserver((entries) => {
+  /* ── Lenis Smooth Scroll ── */
+  let lenis;
+  if (typeof Lenis !== 'undefined') {
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      touchMultiplier: 1.5,
+      prevent: (node) => node.closest('.modal-body') !== null,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }
+
+  /* ── Reveal on Scroll ── */
+  const reveals = document.querySelectorAll('[data-reveal]');
+  const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
-      if(entry.isIntersecting) {
-        entry.target.classList.add("animate-in");
-        cardObserver.unobserve(entry.target);
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target);
       }
     });
-  }, {
-    threshold: 0.1,
-    rootMargin: "0px 0px -50px 0px"
-  });
-  
-  cardElements.forEach(card => {
-    cardObserver.observe(card);
-  });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-  // 2. NAV HIGHLIGHT
-  const sections = document.querySelectorAll("section");
-  const navLinks = document.querySelectorAll(".nav-link");
-  let currentActiveId = null;
-  let rafId = null;
-  let isScrolling = false;
-  
-  // Function to set active nav link
-  function setActiveNavLink(id) {
-    if(currentActiveId === id) return; // Avoid unnecessary updates
-    currentActiveId = id;
-    // Update both desktop and mobile nav links
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.classList.remove("active");
-      link.removeAttribute('aria-current');
+  reveals.forEach(el => revealObserver.observe(el));
+
+  /* ── Nav Active State ── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  let activeId = null;
+
+  function updateActiveNav() {
+    const scrollY = window.scrollY || window.pageYOffset;
+    const viewTarget = scrollY + window.innerHeight * 0.35;
+    let best = null;
+    let bestDist = Infinity;
+
+    sections.forEach(sec => {
+      const rect = sec.getBoundingClientRect();
+      const top = scrollY + rect.top;
+      const center = top + rect.height / 2;
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        const dist = Math.abs(center - viewTarget);
+        if (dist < bestDist) { bestDist = dist; best = sec; }
+      }
     });
-    document.querySelectorAll(`.nav-link[href="#${id}"]`).forEach(link => {
-      link.classList.add("active");
-      link.setAttribute('aria-current', 'page');
-    });
+
+    if (best && best.id !== activeId) {
+      activeId = best.id;
+      navLinks.forEach(link => {
+        const isMatch = link.getAttribute('href') === '#' + activeId;
+        link.classList.toggle('active', isMatch);
+      });
+    }
   }
-  
-  // Make it globally available
-  window.setActiveNavLink = setActiveNavLink;
-  
-  // Handle click on nav links with smooth scroll
-  function handleNavClick(e, link) {
+
+  window.addEventListener('scroll', () => requestAnimationFrame(updateActiveNav), { passive: true });
+  updateActiveNav();
+
+  /* ── Nav Link Smooth Scroll ── */
+  function scrollToSection(e) {
+    const href = e.currentTarget.getAttribute('href');
+    if (!href || !href.startsWith('#')) return;
     e.preventDefault();
-    const href = link.getAttribute("href");
-    if(href.startsWith("#")) {
-      const id = href.substring(1);
-      const target = document.getElementById(id);
-      if(target) {
-        if(window.lenis) {
-          window.lenis.scrollTo(target, { offset: -20 });
-        } else {
-          window.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
-        }
-        setActiveNavLink(id);
-        
-        // Close mobile menu if open
-        const mobileNav = document.getElementById('mobile-nav');
-        const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
-        const mobileToggle = document.getElementById('mobile-menu-toggle');
-        if(mobileNav && mobileNav.classList.contains('active')) {
-          mobileNav.classList.remove('active');
-          mobileNavOverlay.classList.remove('active');
-          mobileNav.setAttribute('aria-hidden', 'true');
-          mobileNavOverlay.setAttribute('aria-hidden', 'true');
-          if(mobileToggle) mobileToggle.classList.remove('active');
-          document.body.style.overflow = '';
-        }
-      }
+    const target = document.getElementById(href.slice(1));
+    if (!target) return;
+
+    const top = target.offsetTop - 80;
+    if (lenis) {
+      lenis.scrollTo(top, { duration: 1.2 });
+    } else {
+      window.scrollTo({ top, behavior: 'smooth' });
     }
+
+    closeMobileMenu();
   }
-  
-  navLinks.forEach(link => {
-    link.addEventListener("click", (e) => handleNavClick(e, link));
+
+  document.querySelectorAll('.nav-link, .mobile-link').forEach(link => {
+    if (link.getAttribute('href')?.startsWith('#')) {
+      link.addEventListener('click', scrollToSection);
+    }
   });
-  
-  // Mobile menu links
-  const mobileNavLinks = document.querySelectorAll('.mobile-nav .nav-link');
-  mobileNavLinks.forEach(link => {
-    link.addEventListener("click", (e) => handleNavClick(e, link));
-  });
-  
-  // Mobile menu toggle
-  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-  const mobileNav = document.getElementById('mobile-nav');
-  const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
-  
+
+  /* ── Mobile Menu ── */
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const mobileOverlay = document.getElementById('mobile-overlay');
+
   function toggleMobileMenu() {
-    const isActive = mobileNav.classList.contains('active');
-    mobileNav.classList.toggle('active');
-    mobileNavOverlay.classList.toggle('active');
-    mobileMenuToggle.classList.toggle('active');
-    mobileNav.setAttribute('aria-hidden', isActive ? 'true' : 'false');
-    mobileNavOverlay.setAttribute('aria-hidden', isActive ? 'true' : 'false');
-    document.body.style.overflow = isActive ? '' : 'hidden';
+    const isOpen = mobileMenu.classList.contains('open');
+    mobileMenu.classList.toggle('open');
+    mobileOverlay.classList.toggle('open');
+    burger.classList.toggle('open');
+    mobileMenu.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+    document.body.style.overflow = isOpen ? '' : 'hidden';
+    if (lenis) isOpen ? lenis.start() : lenis.stop();
   }
-  
-  if(mobileMenuToggle && mobileNav) {
-    mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-    mobileNavOverlay.addEventListener('click', toggleMobileMenu);
+
+  function closeMobileMenu() {
+    if (!mobileMenu.classList.contains('open')) return;
+    mobileMenu.classList.remove('open');
+    mobileOverlay.classList.remove('open');
+    burger.classList.remove('open');
+    mobileMenu.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lenis) lenis.start();
   }
-  
-  // Smooth scroll detection function
-  function updateActiveSection() {
-    let activeSection = null;
-    let minDistance = Infinity;
-    const scrollY = window.scrollY;
-    const viewportCenter = scrollY + window.innerHeight * 0.3; // 30% from top
-    
-    sections.forEach(section => {
-      const rect = section.getBoundingClientRect();
-      const sectionTop = scrollY + rect.top;
-      const sectionCenter = sectionTop + rect.height / 2;
-      const distance = Math.abs(sectionCenter - viewportCenter);
-      
-      // Check if section is visible in viewport
-      if(rect.top < window.innerHeight && rect.bottom > 0) {
-        // Prefer sections that are above or at viewport center
-        if(sectionCenter <= viewportCenter + 100) {
-          if(distance < minDistance) {
-            minDistance = distance;
-            activeSection = section;
-          }
-        }
+
+  if (burger) burger.addEventListener('click', toggleMobileMenu);
+  if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileMenu);
+
+  /* ── Privacy Modal ── */
+  const modal = document.getElementById('modal');
+  const modalOverlay = document.getElementById('modal-overlay');
+  const modalClose = document.getElementById('modal-close');
+  const modalBody = document.getElementById('modal-body');
+  const modalTitle = document.getElementById('modal-title');
+
+  const policyFiles = {
+    'converter': 'privacy-policy-converter.md',
+    'sudoku': 'privacy-policy-sudoku.md',
+    'retro-arcade': 'privacy-policy-retro-arcade.md',
+    'rutalive': 'privacy-policy-rutalive.md',
+    'kora': 'privacy-policy-kora.md'
+  };
+
+  function mdToHtml(md) {
+    let html = md;
+    html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+    html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+    html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+    html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+    html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    html = html.replace(/^---$/gim, '<hr>');
+
+    const lines = html.split('\n');
+    let inList = false;
+    const items = [];
+    const out = [];
+
+    lines.forEach(line => {
+      const isBullet = /^[\-*] (.+)$/.test(line.trim()) || /^\d+\. (.+)$/.test(line.trim());
+      if (isBullet) {
+        if (!inList) { inList = true; items.length = 0; }
+        items.push('<li>' + line.replace(/^[\-*] /, '').replace(/^\d+\. /, '') + '</li>');
+      } else {
+        if (inList) { out.push('<ul>' + items.join('') + '</ul>'); items.length = 0; inList = false; }
+        out.push(line);
       }
     });
-    
-    // If no section found above center, find the closest visible one
-    if(!activeSection) {
-      sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        if(rect.top < window.innerHeight && rect.bottom > 0) {
-          const sectionTop = scrollY + rect.top;
-          const distance = Math.abs(sectionTop - scrollY - 150);
-          if(distance < minDistance) {
-            minDistance = distance;
-            activeSection = section;
-          }
-        }
-      });
-    }
-    
-    if(activeSection) {
-      setActiveNavLink(activeSection.id);
-    }
-  }
-  
-  // Smooth scroll handler using requestAnimationFrame
-  function handleScroll() {
-    if(!isScrolling) {
-      isScrolling = true;
-    }
-    
-    if(rafId) {
-      cancelAnimationFrame(rafId);
-    }
-    
-    rafId = requestAnimationFrame(() => {
-      updateActiveSection();
-      isScrolling = false;
-    });
-  }
-  
-  // Scroll event listener
-  window.addEventListener("scroll", handleScroll, { passive: true });
-  
-  // Also update when scroll ends (for final accuracy)
-  let scrollEndTimeout = null;
-  window.addEventListener("scroll", () => {
-    if(scrollEndTimeout) clearTimeout(scrollEndTimeout);
-    scrollEndTimeout = setTimeout(() => {
-      updateActiveSection();
-    }, 150);
-  }, { passive: true });
-  
-  // Initial update
-  updateActiveSection();
-  
-  // Update aria-current on initial load
-  setTimeout(() => {
-    document.querySelectorAll('.nav-link').forEach(link => {
-      if(link.classList.contains('active')) {
-        link.setAttribute('aria-current', 'page');
-      }
-    });
-  }, 100);
-});
+    if (inList) out.push('<ul>' + items.join('') + '</ul>');
 
-// Service Worker Registration with Auto-Update
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/service-worker.js', {
-      scope: '/'
-    })
-    .then((registration) => {
-      console.log('[SW] Service Worker registered:', registration.scope);
-      
-      // Check for updates every hour
-      setInterval(() => {
-        registration.update();
-      }, 3600000); // 1 hour
-      
-      // Listen for updates
-      registration.addEventListener('updatefound', () => {
-        const newWorker = registration.installing;
-        if (newWorker) {
-          newWorker.addEventListener('statechange', () => {
-            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // New service worker available, reload page to activate
-              console.log('[SW] New service worker available, reloading...');
-              window.location.reload();
-            }
-          });
-        }
-      });
-    })
-    .catch((error) => {
-      console.error('[SW] Service Worker registration failed:', error);
-    });
-    
-    // Listen for controller change (when new SW takes control)
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      console.log('[SW] New service worker activated, reloading...');
-      window.location.reload();
+    html = out.join('\n');
+    html = html.split('\n\n').map(p => {
+      p = p.trim();
+      if (!p || /^<[hul]/.test(p) || p.startsWith('<hr')) return p;
+      return '<p>' + p + '</p>';
+    }).join('\n');
+
+    html = html.replace(/<p><(h|ul|hr)/g, '<$1');
+    html = html.replace(/<\/(h[1-6]|ul)><\/p>/g, '</$1>');
+    html = html.replace(/<p><\/p>/g, '');
+    return html;
+  }
+
+  async function openModal(type) {
+    const file = policyFiles[type];
+    if (!file) return;
+
+    modalBody.innerHTML = '<p>Loading&hellip;</p>';
+
+    try {
+      const res = await fetch(file);
+      if (!res.ok) throw new Error();
+      const md = await res.text();
+      modalBody.innerHTML = mdToHtml(md);
+      const titleMatch = md.match(/^# (.+)$/m);
+      if (titleMatch) modalTitle.textContent = titleMatch[1];
+    } catch {
+      modalBody.innerHTML = '<p>Error loading privacy policy.</p>';
+    }
+
+    modalBody.scrollTop = 0;
+    modal.classList.add('active');
+    modalOverlay.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (lenis) lenis.stop();
+  }
+
+  function closeModal() {
+    modal.classList.remove('active');
+    modalOverlay.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    if (lenis) lenis.start();
+  }
+
+  document.querySelectorAll('[data-privacy]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      openModal(btn.getAttribute('data-privacy'));
     });
   });
-}
 
+  if (modalClose) modalClose.addEventListener('click', closeModal);
+  if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
 
-
-
-/* --- «Як це було» — розгортання історії проєкту в картці --- */
-document.querySelectorAll('.story-toggle').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const story = document.getElementById('story-' + btn.dataset.story);
-    if (!story) return;
-    const open = story.classList.toggle('open');
-    btn.setAttribute('aria-expanded', String(open));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      if (modal.classList.contains('active')) closeModal();
+      closeMobileMenu();
+    }
   });
+
 });
