@@ -307,11 +307,18 @@ h2 {
   margin-bottom: 16px;
 }
 
+/* Плитка БЕЗ власного фону. Раніше тут стояв background:#ffffff, і саме він
+   давав «біленьке на кордонах»: край плитки й край картинки згладжуються
+   окремо, тож на заокругленнях напівпрозорі пікселі підмішували білий фон
+   з-під іконки — навколо кожної темної іконки з'являвся світлий обідок
+   (найпомітніший на Retro Arcade і Currency Converter). Уся графіка тепер
+   повнокадрова й непрозора, тож підкладка їй не потрібна взагалі. Білий фон
+   лишився ТІЛЬКИ під піном RutaLive — він єдиний прозорий (див. .icon-ruta). */
 .proj-icon {
   position: relative;
   width: 52px; height: 52px;
   border-radius: 12px;
-  background: #ffffff;
+  background: transparent;
   box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06);
   overflow: hidden;
   flex-shrink: 0;
@@ -334,7 +341,6 @@ h2 {
 .proj-icon img {
   width: 100%; height: 100%;
   object-fit: contain;
-  border-radius: 12px;
   display: block;
 }
 
@@ -352,12 +358,13 @@ h2 {
    би стиснути назад), а надлишок обрізає overflow:hidden самої плитки. */
 .proj-icon img[src$="RetroArcade.png"],
 .proj-icon img[src$="CurrencyConverter.png"] {
-  transform: scale(1.12);
+  transform: scale(1.18);
 }
 
 /* Бренд-пін RutaLive — прозора крапля, а не повнокадрова плитка. Не розтягуємо
    на весь бокс: лишаємо видимий падінг довкола піна, як у попередній версії
    сайту (там було 70% від боксу). 55% робили пін помітно дрібнішим за сусідів. */
+.icon-ruta { background: #ffffff; }
 .icon-ruta img {
   width: 70%; height: 70%;
   object-fit: contain;
