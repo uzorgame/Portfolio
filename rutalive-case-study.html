@@ -9,221 +9,274 @@
   <meta property="og:title" content="RutaLive — Engineering Case Study">
   <meta property="og:description" content="Multi-tenant courier SaaS across 4 platforms: the architecture and the decisions that mattered.">
   <meta property="og:url" content="https://uz-or.com/rutalive-case-study.html">
-  <meta property="og:image" content="https://uz-or.com/RUTA.png">
+  <meta property="og:image" content="https://uz-or.com/og-image.png">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+
+  <script>
+    (function(){
+      var t = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
   <style>
-    :root {
-      --bg: #0a0a0a; --bg-alt: #111111; --surface: #141414;
-      --text: #f0f0f0; --text-2: #8a8a8a; --text-3: #4a4a4a;
-      --border: rgba(255,255,255,0.1); --border-h: rgba(255,255,255,0.2);
-      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-display: 'Space Grotesk', 'Inter', sans-serif;
-      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; -webkit-font-smoothing: antialiased; }
-    a { color: inherit; }
-    .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+    /* Case-study specific: flat rows + hairlines only, square corners, site tokens. */
+    .cs-hero { padding: 150px 0 24px; }
+    .cs-hero h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(38px, 6vw, 64px); line-height: 1.06; color: var(--text-hero); margin: 16px 0 22px; letter-spacing: -0.02em; }
+    .cs-lede { font-size: 17px; color: var(--text-2); max-width: 68ch; }
+    .cs-role { margin-top: 20px; font-size: 14.5px; color: var(--text-2); max-width: 68ch; }
+    .cs-role b { color: var(--text); font-weight: 600; }
 
-    .top { padding: 28px 0; display: flex; justify-content: space-between; align-items: center; }
-    .top a { font-size: 14px; color: var(--text-2); text-decoration: none; }
-    .top a:hover { color: var(--text); }
-    .top .brand { font-family: var(--font-display); font-weight: 600; color: var(--text); }
+    .cs-rows { border-bottom: 1px solid var(--border); }
+    .cs-row { border-top: 1px solid var(--border); padding: 26px 0; display: grid; grid-template-columns: 72px 220px 1fr; gap: 20px; align-items: start; }
+    .cs-row-num { font-family: var(--font-mono); font-size: 13px; color: var(--text-3); padding-top: 3px; }
+    .cs-row-name { font-family: var(--font-display); font-size: 19px; font-weight: 600; color: var(--text-hero); }
+    .cs-row-body p { font-size: 14.5px; color: var(--text-2); margin: 0 0 8px; }
+    .cs-row-body p:last-child { margin-bottom: 0; }
+    .cs-row-body .why { color: var(--text); }
+    .cs-row-body code { font-family: var(--font-mono); font-size: 12.5px; color: var(--text); border: 1px solid var(--border); padding: 1px 6px; }
+    @media (max-width: 820px) { .cs-row { grid-template-columns: 44px 1fr; } .cs-row-name { grid-column: 2; } .cs-row-body { grid-column: 2; } }
 
-    .hero { padding: 48px 0 40px; border-bottom: 1px solid var(--border); }
-    .kicker { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
-    h1 { font-family: var(--font-display); font-size: clamp(34px, 6vw, 54px); font-weight: 600; line-height: 1.08; margin: 14px 0 18px; color: #fff; }
-    .lede { font-size: 17px; color: var(--text-2); max-width: 62ch; }
-    .role { margin-top: 22px; font-size: 14px; color: var(--text-2); }
-    .role b { color: var(--text); font-weight: 600; }
+    .cs-ship { border-bottom: 1px solid var(--border); }
+    .cs-ship-row { border-top: 1px solid var(--border); padding: 16px 0; display: grid; grid-template-columns: 260px 1fr; gap: 20px; font-size: 14.5px; color: var(--text-2); }
+    .cs-ship-row b { color: var(--text); font-weight: 600; font-size: 14.5px; }
+    @media (max-width: 700px) { .cs-ship-row { grid-template-columns: 1fr; gap: 4px; } }
 
-    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin: 40px 0 0; }
-    .stat { background: var(--bg-alt); padding: 18px 16px; }
-    .stat b { display: block; font-family: var(--font-display); font-size: 26px; font-weight: 600; color: #fff; }
-    .stat span { font-size: 12.5px; color: var(--text-2); }
-
-    section { padding: 52px 0 8px; }
-    h2 { font-family: var(--font-display); font-size: 26px; font-weight: 600; color: #fff; margin-bottom: 8px; }
-    .sec-sub { color: var(--text-2); font-size: 15px; max-width: 66ch; margin-bottom: 28px; }
-
-    /* Architecture diagram */
-    .arch { border: 1px solid var(--border); border-radius: 14px; background: var(--bg-alt); padding: 22px; }
-    .arch-row { display: grid; gap: 10px; }
-    .arch-row + .arch-sep { text-align: center; color: var(--text-3); font-size: 15px; padding: 8px 0; }
-    .r-clients { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-    .r-core { grid-template-columns: 1fr; }
-    .r-deps { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
-    .node { border: 1px solid var(--border-h); border-radius: 10px; padding: 12px 14px; background: var(--surface); }
-    .node b { display: block; font-size: 13.5px; color: #fff; font-weight: 600; }
-    .node span { font-size: 12px; color: var(--text-2); }
-    .node.core { border-color: rgba(255,255,255,0.38); background: rgba(255,255,255,0.04); }
-    .arch-foot { margin-top: 14px; font-size: 12.5px; color: var(--text-3); font-family: var(--font-mono); }
-
-    /* Decision cards */
-    .dec { border: 1px solid var(--border); border-radius: 14px; background: var(--bg-alt); padding: 24px; margin-bottom: 16px; }
-    .dec h3 { font-family: var(--font-display); font-size: 18px; color: #fff; font-weight: 600; margin-bottom: 10px; }
-    .dec h3 .n { color: var(--text-3); font-family: var(--font-mono); font-size: 14px; margin-right: 10px; }
-    .dec p { font-size: 14.5px; color: var(--text-2); margin-bottom: 8px; }
-    .dec p:last-child { margin-bottom: 0; }
-    .dec .why { color: var(--text); }
-    .dec code { font-family: var(--font-mono); font-size: 12.5px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; color: var(--text); }
-
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
-    .chips span { font-size: 12px; color: var(--text-2); border: 1px solid var(--border); border-radius: 999px; padding: 4px 11px; }
-
-    .ship { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
-    .ship div { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 13.5px; color: var(--text-2); background: var(--bg-alt); }
-    .ship b { color: var(--text); font-weight: 600; }
-
-    .cta { margin: 56px 0 72px; border: 1px solid var(--border); border-radius: 16px; padding: 34px 28px; text-align: center; background: var(--bg-alt); }
-    .cta h2 { margin-bottom: 6px; }
-    .cta p { color: var(--text-2); font-size: 15px; margin-bottom: 22px; }
-    .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .btn { text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 22px; border-radius: 10px; }
-    .btn-solid { background: #f0f0f0; color: #0a0a0a; }
-    .btn-solid:hover { background: #fff; }
-    .btn-ghost { border: 1px solid var(--border-h); color: var(--text); }
-    .btn-ghost:hover { border-color: #fff; }
-
-    footer { border-top: 1px solid var(--border); padding: 26px 0 40px; font-size: 13px; color: var(--text-3); }
-    footer a { color: var(--text-2); text-decoration: none; }
-    footer a:hover { color: var(--text); }
+    .cs-note { margin-top: 26px; font-size: 13px; color: var(--text-3); }
   </style>
 </head>
 <body>
-  <div class="wrap">
 
-    <div class="top">
-      <a class="brand" href="/">← Mykhailo Nahreba</a>
-      <a href="https://rutalive.com" target="_blank" rel="noopener">rutalive.com ↗</a>
-    </div>
-
-    <div class="hero">
-      <span class="kicker">Engineering case study</span>
-      <h1>RutaLive: a courier-logistics SaaS across four platforms</h1>
-      <p class="lede">A multi-tenant dispatch platform for courier companies in the US and Canada — competing with Onfleet, Digital&nbsp;Waybill and Track-POD at a fraction of their price. Operators dispatch from web or phone, couriers run routes offline-capable, clients order and track live.</p>
-      <p class="role"><b>My role:</b> co-founder &amp; product engineer — architecture, backend, web, mobile, desktop, and ops. Nov&nbsp;2025&nbsp;→&nbsp;present.</p>
-
-      <div class="stats">
-        <div class="stat"><b>150K+</b><span>lines of application code</span></div>
-        <div class="stat"><b>4</b><span>platforms: web, iOS, Android, Windows</span></div>
-        <div class="stat"><b>5</b><span>role workspaces on one data core</span></div>
-        <div class="stat"><b>6</b><span>interface languages</span></div>
-        <div class="stat"><b>13</b><span>public releases shipped</span></div>
-        <div class="stat"><b>36</b><span>API modules · 18 data models</span></div>
+  <nav class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-logo" href="/">nahreba</a>
+      <div class="nav-links" id="nav-links">
+        <a href="/#projects" class="nav-link" data-i18n="nav.projects">Projects</a>
+        <a href="/#about" class="nav-link" data-i18n="nav.about">About</a>
+        <a href="/#stack" class="nav-link" data-i18n="nav.stack">Stack</a>
+        <a href="/#contact" class="nav-link" data-i18n="nav.contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="uk">UA</button>
+        </div>
+        <a href="Mykhailo_Nahreba_CV.pdf" class="nav-cta" target="_blank">CV</a>
+        <button class="burger" id="burger" aria-label="Toggle menu">
+          <span></span><span></span>
+        </button>
       </div>
     </div>
+  </nav>
 
-    <section>
-      <h2>Architecture</h2>
-      <p class="sec-sub">One Node.js core serves every surface. No per-platform backends, no duplicated business logic — the same API, socket events and pricing engine feed web, mobile and desktop.</p>
-      <div class="arch">
-        <div class="arch-row r-clients">
-          <div class="node"><b>React web app</b><span>operator · dispatcher · client · admin</span></div>
-          <div class="node"><b>Flutter app (iOS + Android)</b><span>courier · operator · client</span></div>
-          <div class="node"><b>Electron for Windows</b><span>kiosk-style wrapper, auto-update</span></div>
-          <div class="node"><b>Public pages</b><span>live tracking · in-browser demo · marketing (Astro)</span></div>
-        </div>
-        <div class="arch-sep">▼ &nbsp;Nginx reverse proxy&nbsp; ▼</div>
-        <div class="arch-row r-core">
-          <div class="node core"><b>Node.js + Express API · Socket.io real-time layer</b><span>JWT auth · role guards · multi-tenant query scoping · rate limiting · pricing engine · PDF/QR generation</span></div>
-        </div>
-        <div class="arch-sep">▼</div>
-        <div class="arch-row r-deps">
-          <div class="node"><b>MongoDB</b><span>18 models</span></div>
-          <div class="node"><b>Mapbox</b><span>geocoding · routing · live maps</span></div>
-          <div class="node"><b>Firebase FCM</b><span>push, 6 languages</span></div>
-          <div class="node"><b>QuickBooks</b><span>two-way invoice sync</span></div>
-          <div class="node"><b>Lemon Squeezy</b><span>subscriptions</span></div>
-          <div class="node"><b>Resend</b><span>transactional email</span></div>
-        </div>
-        <div class="arch-foot">deploy: Docker Compose on a single VPS — mongo · api · web · marketing, memory-capped containers behind Nginx</div>
+  <main>
+    <!-- ═══ HERO ═══ -->
+    <section class="sec cs-hero">
+      <div class="wrap">
+        <p class="label" data-i18n="cs.kicker">RutaLive / Engineering case study</p>
+        <h1 data-i18n="cs.title">A courier-logistics SaaS across four platforms</h1>
+        <p class="cs-lede" data-i18n="cs.lede">A multi-tenant dispatch platform for courier companies in the US and Canada — competing with Onfleet, Digital Waybill and Track-POD at a fraction of their price. Operators dispatch from web or phone, couriers run routes offline-capable, clients order and track live.</p>
+        <p class="cs-role" data-i18n="cs.role"><b>My role:</b> co-founder &amp; product engineer — architecture, backend, web, mobile, desktop, and ops. Nov 2025 → present.</p>
       </div>
     </section>
 
-    <section>
-      <h2>Decisions that mattered</h2>
-      <p class="sec-sub">Not a feature list — the six calls that shaped the system, and why they were made.</p>
-
-      <div class="dec">
-        <h3><span class="n">01</span>Multi-tenancy enforced at the query layer</h3>
-        <p>Every courier company is an isolated workspace. All roles live in one <code>User</code> collection, and every single database query is scoped by <code>operatorId</code> — isolation is a property of the data access layer, not a per-feature promise. Couriers and clients join a workspace through a short operator code instead of invites.</p>
-        <p class="why">Why it matters: cross-tenant leaks are impossible by construction, and new features inherit isolation for free.</p>
-      </div>
-
-      <div class="dec">
-        <h3><span class="n">02</span>Real-time everywhere, polling nowhere</h3>
-        <p>Order state changes propagate to all workspaces through Socket.io rooms (<code>operator:id</code>, <code>courier:id</code>, <code>client:id</code>). Every event carries a crypto-random <code>_eventId</code> so clients deduplicate replays; updates ship as deltas — only changed fields cross the wire. The mobile socket layer queues emits while offline and re-registers every listener after reconnecting, surviving up to 20 reconnect attempts with backoff.</p>
-        <p class="why">Why it matters: a dispatcher sees a courier tap "picked up" within a second — with zero polling load on the server.</p>
-      </div>
-
-      <div class="dec">
-        <h3><span class="n">03</span>Offline-first courier app</h3>
-        <p>Couriers work in basements, parking garages and dead zones. The entire delivery flow — accept, pick up, arrive, complete — runs against a local SQLite-backed action queue with connectivity-aware sync: actions execute instantly on-device and replay to the server in order when the network returns. Location tracking keeps working with the screen locked, tuned for battery.</p>
-        <p class="why">Why it matters: the app never blocks a delivery on signal quality — the courier's day just works.</p>
-      </div>
-
-      <div class="dec">
-        <h3><span class="n">04</span>Immutable pricing snapshots</h3>
-        <p>The pricing engine supports six modes — package, distance, weight combinations and polygon delivery zones drawn on the map with point-in-polygon detection. At the moment an order is created, the full pricing configuration and calculated breakdown freeze into the order as a <code>pricingSnapshot</code>.</p>
-        <p class="why">Why it matters: prices can change tomorrow, but every historical order and invoice stays exactly as sold — pricing disputes end before they start, and the engine is free to evolve.</p>
-      </div>
-
-      <div class="dec">
-        <h3><span class="n">05</span>The demo <em>is</em> the product</h3>
-        <p>rutalive.com/demo opens the real operator dashboard with no account and no backend: in demo mode the API layer is swapped client-side for a ~1,600-line in-browser router and deterministic data store. Orders, couriers, chat, analytics — even courier routes are computed over real roads. The demo can never be down and never needs seeding.</p>
-        <p class="why">Why it matters: a prospect reaches the full product in one click — the strongest sales asset costs zero infrastructure.</p>
-      </div>
-
-      <div class="dec">
-        <h3><span class="n">06</span>Privacy-first product analytics, built in-house</h3>
-        <p>Instead of GA4: a self-built visitor analytics pipeline with no cookies and no stored IPs — sessions are salted daily hashes, geo is derived on the fly, and server-side filters drop bots, HTTP clients, AI crawlers, prefetches and foreign-origin requests before they touch the data. Reports are shareable through revocable, expiring read-only links.</p>
-        <p class="why">Why it matters: marketing decisions run on real humans only, and the analytics respects visitors by design.</p>
-      </div>
-
-      <div class="chips">
-        <span>Also in production:</span>
-        <span>per-courier session invalidation</span>
-        <span>HMAC-signed webhooks</span>
-        <span>unguessable tracking links with post-delivery privacy guard</span>
-        <span>QR / photo / signature proof of delivery</span>
-        <span>scheduled orders</span>
-        <span>PDF labels &amp; invoices</span>
+    <!-- ═══ NUMBERS ═══ -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="about-details" data-reveal>
+          <div class="about-detail"><p class="about-label" data-i18n="cs.s1">Code</p><p>150K+ <span data-i18n="cs.s1b">lines shipped</span></p></div>
+          <div class="about-detail"><p class="about-label" data-i18n="cs.s2">Platforms</p><p data-i18n="cs.s2b">Web, iOS, Android, Windows</p></div>
+          <div class="about-detail"><p class="about-label" data-i18n="cs.s3">Workspaces</p><p>5 <span data-i18n="cs.s3b">roles, one data core</span></p></div>
+          <div class="about-detail"><p class="about-label" data-i18n="cs.s4">Scale</p><p data-i18n="cs.s4b">6 languages · 13 releases · 36 API modules</p></div>
+        </div>
       </div>
     </section>
 
-    <section>
-      <h2>Shipped, not planned</h2>
-      <p class="sec-sub">Thirteen public releases so far. A few of the larger ones:</p>
-      <div class="ship">
-        <div><b>Multi-stop routes</b> — batching with road-real optimization and one-tap navigation</div>
-        <div><b>Proof of delivery</b> — configurable QR / photo / signature, geo-tagged</div>
-        <div><b>Offline mode</b> — full courier flow without signal</div>
-        <div><b>Public live tracking</b> — recipient watches the courier like a taxi app, no login</div>
-        <div><b>Invoicing suite</b> — multi-language invoices, partial payments, QuickBooks two-way sync with US &amp; Canada taxes</div>
-        <div><b>Public API</b> — keys, webhooks, three integration modes for client shops</div>
-        <div><b>Zone pricing</b> — map-drawn zones with per-zone rules</div>
-        <div><b>Money dashboard</b> — inflow → margin → payouts, per-courier settlement</div>
+    <!-- ═══ ARCHITECTURE ═══ -->
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="cs.archLabel">01 / Architecture</p>
+          <h2 data-i18n="cs.archT">One core, every surface</h2>
+        </div>
+        <p class="cs-lede" style="margin-bottom: 34px;" data-i18n="cs.archSub">No per-platform backends and no duplicated business logic — the same API, socket events and pricing engine feed web, mobile and desktop.</p>
+        <div class="cs-rows" data-reveal>
+          <div class="cs-row">
+            <span class="cs-row-num">A</span>
+            <span class="cs-row-name" data-i18n="cs.aClients">Clients</span>
+            <div class="cs-row-body"><p data-i18n="cs.aClientsBody">React web app (operator · dispatcher · client · admin) — Flutter app for iOS and Android (courier · operator · client) — Electron wrapper for Windows — public pages: live tracking, in-browser demo, marketing site on Astro.</p></div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">B</span>
+            <span class="cs-row-name" data-i18n="cs.aCore">Core</span>
+            <div class="cs-row-body"><p data-i18n="cs.aCoreBody">Node.js + Express API behind Nginx, with a Socket.io real-time layer. JWT auth, role guards, multi-tenant query scoping, rate limiting, the pricing engine and PDF/QR generation live here — once, for every platform.</p></div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">C</span>
+            <span class="cs-row-name" data-i18n="cs.aData">Data &amp; services</span>
+            <div class="cs-row-body"><p data-i18n="cs.aDataBody">MongoDB (18 models) — Mapbox for geocoding, routing and live maps — Firebase FCM push in 6 languages — QuickBooks two-way invoice sync — Lemon Squeezy subscriptions — Resend transactional email. Deployed with Docker Compose on a single VPS, memory-capped containers.</p></div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <div class="cta">
-      <h2>See it running</h2>
-      <p>The live demo opens the real operator workspace — sample data, no account, no card.</p>
-      <div class="btns">
-        <a class="btn btn-solid" href="https://rutalive.com/demo" target="_blank" rel="noopener">Open the live demo</a>
-        <a class="btn btn-ghost" href="https://rutalive.com" target="_blank" rel="noopener">rutalive.com</a>
-        <a class="btn btn-ghost" href="/">Back to portfolio</a>
+    <!-- ═══ DECISIONS ═══ -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="cs.decLabel">02 / Decisions</p>
+          <h2 data-i18n="cs.decT">Decisions that mattered</h2>
+        </div>
+        <p class="cs-lede" style="margin-bottom: 34px;" data-i18n="cs.decSub">Not a feature list — the six calls that shaped the system, and why they were made.</p>
+        <div class="cs-rows" data-reveal>
+          <div class="cs-row">
+            <span class="cs-row-num">01</span>
+            <span class="cs-row-name" data-i18n="cs.d1t">Multi-tenancy at the query layer</span>
+            <div class="cs-row-body">
+              <p data-i18n="cs.d1b">Every courier company is an isolated workspace. All roles live in one <code>User</code> collection, and every database query is scoped by <code>operatorId</code> — isolation is a property of the data access layer, not a per-feature promise. Couriers and clients join through a short operator code instead of invites.</p>
+              <p class="why" data-i18n="cs.d1w">Why it matters: cross-tenant leaks are impossible by construction, and new features inherit isolation for free.</p>
+            </div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">02</span>
+            <span class="cs-row-name" data-i18n="cs.d2t">Real-time everywhere, polling nowhere</span>
+            <div class="cs-row-body">
+              <p data-i18n="cs.d2b">Order state propagates through Socket.io rooms per user. Every event carries a crypto-random <code>_eventId</code> so clients deduplicate replays; updates ship as deltas — only changed fields cross the wire. The mobile socket layer queues emits while offline and re-registers every listener after reconnecting, surviving up to 20 reconnect attempts with backoff.</p>
+              <p class="why" data-i18n="cs.d2w">Why it matters: a dispatcher sees a courier tap "picked up" within a second — with zero polling load on the server.</p>
+            </div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">03</span>
+            <span class="cs-row-name" data-i18n="cs.d3t">Offline-first courier app</span>
+            <div class="cs-row-body">
+              <p data-i18n="cs.d3b">Couriers work in basements and dead zones. The entire delivery flow — accept, pick up, arrive, complete — runs against a local SQLite-backed action queue with connectivity-aware sync: actions execute instantly on-device and replay to the server in order when the network returns. Location tracking keeps working with the screen locked, tuned for battery.</p>
+              <p class="why" data-i18n="cs.d3w">Why it matters: the app never blocks a delivery on signal quality — the courier's day just works.</p>
+            </div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">04</span>
+            <span class="cs-row-name" data-i18n="cs.d4t">Immutable pricing snapshots</span>
+            <div class="cs-row-body">
+              <p data-i18n="cs.d4b">The pricing engine supports six modes — package, distance, weight combinations and polygon delivery zones drawn on the map with point-in-polygon detection. At the moment an order is created, the full pricing configuration and calculated breakdown freeze into the order as a <code>pricingSnapshot</code>.</p>
+              <p class="why" data-i18n="cs.d4w">Why it matters: prices can change tomorrow, but every historical order and invoice stays exactly as sold — pricing disputes end before they start.</p>
+            </div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">05</span>
+            <span class="cs-row-name" data-i18n="cs.d5t">The demo is the product</span>
+            <div class="cs-row-body">
+              <p data-i18n="cs.d5b">rutalive.com/demo opens the real operator dashboard with no account and no backend: in demo mode the API layer is swapped client-side for a ~1,600-line in-browser router and deterministic data store. Orders, couriers, chat, analytics — even courier routes are computed over real roads. The demo can never be down and never needs seeding.</p>
+              <p class="why" data-i18n="cs.d5w">Why it matters: a prospect reaches the full product in one click — the strongest sales asset costs zero infrastructure.</p>
+            </div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">06</span>
+            <span class="cs-row-name" data-i18n="cs.d6t">Privacy-first analytics, built in-house</span>
+            <div class="cs-row-body">
+              <p data-i18n="cs.d6b">Instead of GA4: a self-built visitor analytics pipeline with no cookies and no stored IPs — sessions are salted daily hashes, geo is derived on the fly, and server-side filters drop bots, HTTP clients, AI crawlers, prefetches and foreign-origin requests before they touch the data. Reports are shareable through revocable, expiring read-only links.</p>
+              <p class="why" data-i18n="cs.d6w">Why it matters: marketing decisions run on real humans only, and the analytics respects visitors by design.</p>
+            </div>
+          </div>
+        </div>
+        <p class="cs-note" data-i18n="cs.also">Also in production: per-courier session invalidation · HMAC-signed webhooks · unguessable tracking links with a post-delivery privacy guard · QR / photo / signature proof of delivery · scheduled orders · PDF labels and invoices.</p>
+      </div>
+    </section>
+
+    <!-- ═══ SHIPPED ═══ -->
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="cs.shipLabel">03 / Shipped</p>
+          <h2 data-i18n="cs.shipT">Shipped, not planned</h2>
+        </div>
+        <p class="cs-lede" style="margin-bottom: 34px;" data-i18n="cs.shipSub">Thirteen public releases so far. A few of the larger ones:</p>
+        <div class="cs-ship" data-reveal>
+          <div class="cs-ship-row"><b data-i18n="cs.sh1">Multi-stop routes</b><span data-i18n="cs.sh1b">batching with road-real optimization and one-tap navigation</span></div>
+          <div class="cs-ship-row"><b data-i18n="cs.sh2">Proof of delivery</b><span data-i18n="cs.sh2b">configurable QR / photo / signature, geo-tagged</span></div>
+          <div class="cs-ship-row"><b data-i18n="cs.sh3">Offline mode</b><span data-i18n="cs.sh3b">full courier flow without signal</span></div>
+          <div class="cs-ship-row"><b data-i18n="cs.sh4">Public live tracking</b><span data-i18n="cs.sh4b">recipient watches the courier like a taxi app, no login</span></div>
+          <div class="cs-ship-row"><b data-i18n="cs.sh5">Invoicing suite</b><span data-i18n="cs.sh5b">multi-language invoices, partial payments, QuickBooks two-way sync with US &amp; Canada taxes</span></div>
+          <div class="cs-ship-row"><b data-i18n="cs.sh6">Public API</b><span data-i18n="cs.sh6b">keys, webhooks, three integration modes for client shops</span></div>
+          <div class="cs-ship-row"><b data-i18n="cs.sh7">Zone pricing</b><span data-i18n="cs.sh7b">map-drawn zones with per-zone rules</span></div>
+          <div class="cs-ship-row"><b data-i18n="cs.sh8">Money dashboard</b><span data-i18n="cs.sh8b">inflow → margin → payouts, per-courier settlement</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="cs.ctaLabel">04 / See it running</p>
+          <h2 class="cta-title" data-i18n="cs.ctaT">The live demo opens the real workspace.</h2>
+        </div>
+        <div class="cta-links" data-reveal>
+          <a class="cta-link" href="https://rutalive.com/demo" target="_blank" rel="noopener"><span data-i18n="cs.ctaDemo">Open the live demo</span><span class="arr">&rarr;</span></a>
+          <a class="cta-link" href="https://rutalive.com" target="_blank" rel="noopener"><span>rutalive.com</span><span class="arr">&rarr;</span></a>
+          <a class="cta-link" href="/"><span data-i18n="cs.ctaBack">Back to portfolio</span><span class="arr">&rarr;</span></a>
+        </div>
+        <p class="cta-note" data-i18n="cs.ctaNote">Sample data, no account, no card.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" data-reveal>
+    <div class="wrap">
+      <div class="footer-top">
+        <div class="footer-col">
+          <p class="footer-col-title">Navigation</p>
+          <a href="/#projects" data-i18n="nav.projects">Projects</a>
+          <a href="/#about" data-i18n="nav.about">About</a>
+          <a href="/#stack" data-i18n="nav.stack">Stack</a>
+          <a href="/#contact" data-i18n="nav.contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Connect</p>
+          <a href="https://github.com/uzorgame" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.instagram.com/uzor.nm" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://t.me/uzormn" target="_blank" rel="noopener">Telegram</a>
+          <a href="mailto:NagrebaMM@gmail.com">Email</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Info</p>
+          <span>Bratislava, Slovakia</span>
+          <a href="Mykhailo_Nahreba_CV.pdf" target="_blank">Download CV</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-logo">nahreba</span>
+        <span class="footer-copy" data-i18n="footer.text">&copy; 2026 Nahreba Mykhailo. Built with precision.</span>
       </div>
     </div>
+  </footer>
 
-    <footer>
-      <a href="/">uz-or.com</a> · RutaLive case study · written from the actual codebase, numbers as of mid-2026
-    </footer>
+  <!-- Privacy modal: markup present so main.js hooks find their nodes on this page too -->
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-head">
+      <h2 class="modal-title" id="modal-title">Privacy Policy</h2>
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-body"><p>Loading&hellip;</p></div>
   </div>
+
+  <div class="theme-switcher" id="theme-switcher">
+    <button class="theme-btn" data-theme="light">Light</button>
+    <button class="theme-btn" data-theme="dark">Dark</button>
+  </div>
+
+  <script src="js/lenis.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
