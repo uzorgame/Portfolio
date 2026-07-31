@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RutaLive — Engineering Case Study | Mykhailo Nahreba</title>
+  <meta name="description" content="How RutaLive was designed and built: multi-tenant SaaS across web, iOS, Android and Windows — real-time dispatch, offline-first courier app, immutable pricing, in-browser demo.">
+  <link rel="canonical" href="https://uz-or.com/rutalive-case-study.html">
+  <meta property="og:title" content="RutaLive — Engineering Case Study">
+  <meta property="og:description" content="Multi-tenant courier SaaS across 4 platforms: the architecture and the decisions that mattered.">
+  <meta property="og:url" content="https://uz-or.com/rutalive-case-study.html">
+  <meta property="og:image" content="https://uz-or.com/RUTA.png">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a; --bg-alt: #111111; --surface: #141414;
+      --text: #f0f0f0; --text-2: #8a8a8a; --text-3: #4a4a4a;
+      --border: rgba(255,255,255,0.1); --border-h: rgba(255,255,255,0.2);
+      --accent: #3b76f6;
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Space Grotesk', 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: inherit; }
+    .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+    .top { padding: 28px 0; display: flex; justify-content: space-between; align-items: center; }
+    .top a { font-size: 14px; color: var(--text-2); text-decoration: none; }
+    .top a:hover { color: var(--text); }
+    .top .brand { font-family: var(--font-display); font-weight: 600; color: var(--text); }
+
+    .hero { padding: 48px 0 40px; border-bottom: 1px solid var(--border); }
+    .kicker { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+    h1 { font-family: var(--font-display); font-size: clamp(34px, 6vw, 54px); font-weight: 600; line-height: 1.08; margin: 14px 0 18px; color: #fff; }
+    .lede { font-size: 17px; color: var(--text-2); max-width: 62ch; }
+    .role { margin-top: 22px; font-size: 14px; color: var(--text-2); }
+    .role b { color: var(--text); font-weight: 600; }
+
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin: 40px 0 0; }
+    .stat { background: var(--bg-alt); padding: 18px 16px; }
+    .stat b { display: block; font-family: var(--font-display); font-size: 26px; font-weight: 600; color: #fff; }
+    .stat span { font-size: 12.5px; color: var(--text-2); }
+
+    section { padding: 52px 0 8px; }
+    h2 { font-family: var(--font-display); font-size: 26px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .sec-sub { color: var(--text-2); font-size: 15px; max-width: 66ch; margin-bottom: 28px; }
+
+    /* Architecture diagram */
+    .arch { border: 1px solid var(--border); border-radius: 14px; background: var(--bg-alt); padding: 22px; }
+    .arch-row { display: grid; gap: 10px; }
+    .arch-row + .arch-sep { text-align: center; color: var(--text-3); font-size: 15px; padding: 8px 0; }
+    .r-clients { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+    .r-core { grid-template-columns: 1fr; }
+    .r-deps { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+    .node { border: 1px solid var(--border-h); border-radius: 10px; padding: 12px 14px; background: var(--surface); }
+    .node b { display: block; font-size: 13.5px; color: #fff; font-weight: 600; }
+    .node span { font-size: 12px; color: var(--text-2); }
+    .node.core { border-color: var(--accent); background: rgba(59,118,246,0.07); }
+    .arch-foot { margin-top: 14px; font-size: 12.5px; color: var(--text-3); font-family: var(--font-mono); }
+
+    /* Decision cards */
+    .dec { border: 1px solid var(--border); border-radius: 14px; background: var(--bg-alt); padding: 24px; margin-bottom: 16px; }
+    .dec h3 { font-family: var(--font-display); font-size: 18px; color: #fff; font-weight: 600; margin-bottom: 10px; }
+    .dec h3 .n { color: var(--accent); font-family: var(--font-mono); font-size: 14px; margin-right: 10px; }
+    .dec p { font-size: 14.5px; color: var(--text-2); margin-bottom: 8px; }
+    .dec p:last-child { margin-bottom: 0; }
+    .dec .why { color: var(--text); }
+    .dec code { font-family: var(--font-mono); font-size: 12.5px; background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; color: var(--text); }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .chips span { font-size: 12px; color: var(--text-2); border: 1px solid var(--border); border-radius: 999px; padding: 4px 11px; }
+
+    .ship { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 10px; }
+    .ship div { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 13.5px; color: var(--text-2); background: var(--bg-alt); }
+    .ship b { color: var(--text); font-weight: 600; }
+
+    .cta { margin: 56px 0 72px; border: 1px solid var(--border); border-radius: 16px; padding: 34px 28px; text-align: center; background: linear-gradient(180deg, rgba(59,118,246,0.10), rgba(59,118,246,0.02)); }
+    .cta h2 { margin-bottom: 6px; }
+    .cta p { color: var(--text-2); font-size: 15px; margin-bottom: 22px; }
+    .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn { text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 22px; border-radius: 10px; }
+    .btn-solid { background: #f0f0f0; color: #0a0a0a; }
+    .btn-solid:hover { background: #fff; }
+    .btn-ghost { border: 1px solid var(--border-h); color: var(--text); }
+    .btn-ghost:hover { border-color: #fff; }
+
+    footer { border-top: 1px solid var(--border); padding: 26px 0 40px; font-size: 13px; color: var(--text-3); }
+    footer a { color: var(--text-2); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <div class="top">
+      <a class="brand" href="/">← Mykhailo Nahreba</a>
+      <a href="https://rutalive.com" target="_blank" rel="noopener">rutalive.com ↗</a>
+    </div>
+
+    <div class="hero">
+      <span class="kicker">Engineering case study</span>
+      <h1>RutaLive: a courier-logistics SaaS across four platforms</h1>
+      <p class="lede">A multi-tenant dispatch platform for courier companies in the US and Canada — competing with Onfleet, Digital&nbsp;Waybill and Track-POD at a fraction of their price. Operators dispatch from web or phone, couriers run routes offline-capable, clients order and track live.</p>
+      <p class="role"><b>My role:</b> co-founder &amp; product engineer — architecture, backend, web, mobile, desktop, and ops. Nov&nbsp;2025&nbsp;→&nbsp;present.</p>
+
+      <div class="stats">
+        <div class="stat"><b>150K+</b><span>lines of application code</span></div>
+        <div class="stat"><b>4</b><span>platforms: web, iOS, Android, Windows</span></div>
+        <div class="stat"><b>5</b><span>role workspaces on one data core</span></div>
+        <div class="stat"><b>6</b><span>interface languages</span></div>
+        <div class="stat"><b>13</b><span>public releases shipped</span></div>
+        <div class="stat"><b>36</b><span>API modules · 18 data models</span></div>
+      </div>
+    </div>
+
+    <section>
+      <h2>Architecture</h2>
+      <p class="sec-sub">One Node.js core serves every surface. No per-platform backends, no duplicated business logic — the same API, socket events and pricing engine feed web, mobile and desktop.</p>
+      <div class="arch">
+        <div class="arch-row r-clients">
+          <div class="node"><b>React web app</b><span>operator · dispatcher · client · admin</span></div>
+          <div class="node"><b>Flutter app (iOS + Android)</b><span>courier · operator · client</span></div>
+          <div class="node"><b>Electron for Windows</b><span>kiosk-style wrapper, auto-update</span></div>
+          <div class="node"><b>Public pages</b><span>live tracking · in-browser demo · marketing (Astro)</span></div>
+        </div>
+        <div class="arch-sep">▼ &nbsp;Nginx reverse proxy&nbsp; ▼</div>
+        <div class="arch-row r-core">
+          <div class="node core"><b>Node.js + Express API · Socket.io real-time layer</b><span>JWT auth · role guards · multi-tenant query scoping · rate limiting · pricing engine · PDF/QR generation</span></div>
+        </div>
+        <div class="arch-sep">▼</div>
+        <div class="arch-row r-deps">
+          <div class="node"><b>MongoDB</b><span>18 models</span></div>
+          <div class="node"><b>Mapbox</b><span>geocoding · routing · live maps</span></div>
+          <div class="node"><b>Firebase FCM</b><span>push, 6 languages</span></div>
+          <div class="node"><b>QuickBooks</b><span>two-way invoice sync</span></div>
+          <div class="node"><b>Lemon Squeezy</b><span>subscriptions</span></div>
+          <div class="node"><b>Resend</b><span>transactional email</span></div>
+        </div>
+        <div class="arch-foot">deploy: Docker Compose on a single VPS — mongo · api · web · marketing, memory-capped containers behind Nginx</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Decisions that mattered</h2>
+      <p class="sec-sub">Not a feature list — the six calls that shaped the system, and why they were made.</p>
+
+      <div class="dec">
+        <h3><span class="n">01</span>Multi-tenancy enforced at the query layer</h3>
+        <p>Every courier company is an isolated workspace. All roles live in one <code>User</code> collection, and every single database query is scoped by <code>operatorId</code> — isolation is a property of the data access layer, not a per-feature promise. Couriers and clients join a workspace through a short operator code instead of invites.</p>
+        <p class="why">Why it matters: cross-tenant leaks are impossible by construction, and new features inherit isolation for free.</p>
+      </div>
+
+      <div class="dec">
+        <h3><span class="n">02</span>Real-time everywhere, polling nowhere</h3>
+        <p>Order state changes propagate to all workspaces through Socket.io rooms (<code>operator:id</code>, <code>courier:id</code>, <code>client:id</code>). Every event carries a crypto-random <code>_eventId</code> so clients deduplicate replays; updates ship as deltas — only changed fields cross the wire. The mobile socket layer queues emits while offline and re-registers every listener after reconnecting, surviving up to 20 reconnect attempts with backoff.</p>
+        <p class="why">Why it matters: a dispatcher sees a courier tap "picked up" within a second — with zero polling load on the server.</p>
+      </div>
+
+      <div class="dec">
+        <h3><span class="n">03</span>Offline-first courier app</h3>
+        <p>Couriers work in basements, parking garages and dead zones. The entire delivery flow — accept, pick up, arrive, complete — runs against a local SQLite-backed action queue with connectivity-aware sync: actions execute instantly on-device and replay to the server in order when the network returns. Location tracking keeps working with the screen locked, tuned for battery.</p>
+        <p class="why">Why it matters: the app never blocks a delivery on signal quality — the courier's day just works.</p>
+      </div>
+
+      <div class="dec">
+        <h3><span class="n">04</span>Immutable pricing snapshots</h3>
+        <p>The pricing engine supports six modes — package, distance, weight combinations and polygon delivery zones drawn on the map with point-in-polygon detection. At the moment an order is created, the full pricing configuration and calculated breakdown freeze into the order as a <code>pricingSnapshot</code>.</p>
+        <p class="why">Why it matters: prices can change tomorrow, but every historical order and invoice stays exactly as sold — pricing disputes end before they start, and the engine is free to evolve.</p>
+      </div>
+
+      <div class="dec">
+        <h3><span class="n">05</span>The demo <em>is</em> the product</h3>
+        <p>rutalive.com/demo opens the real operator dashboard with no account and no backend: in demo mode the API layer is swapped client-side for a ~1,600-line in-browser router and deterministic data store. Orders, couriers, chat, analytics — even courier routes are computed over real roads. The demo can never be down and never needs seeding.</p>
+        <p class="why">Why it matters: a prospect reaches the full product in one click — the strongest sales asset costs zero infrastructure.</p>
+      </div>
+
+      <div class="dec">
+        <h3><span class="n">06</span>Privacy-first product analytics, built in-house</h3>
+        <p>Instead of GA4: a self-built visitor analytics pipeline with no cookies and no stored IPs — sessions are salted daily hashes, geo is derived on the fly, and server-side filters drop bots, HTTP clients, AI crawlers, prefetches and foreign-origin requests before they touch the data. Reports are shareable through revocable, expiring read-only links.</p>
+        <p class="why">Why it matters: marketing decisions run on real humans only, and the analytics respects visitors by design.</p>
+      </div>
+
+      <div class="chips">
+        <span>Also in production:</span>
+        <span>per-courier session invalidation</span>
+        <span>HMAC-signed webhooks</span>
+        <span>unguessable tracking links with post-delivery privacy guard</span>
+        <span>QR / photo / signature proof of delivery</span>
+        <span>scheduled orders</span>
+        <span>PDF labels &amp; invoices</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>Shipped, not planned</h2>
+      <p class="sec-sub">Thirteen public releases so far. A few of the larger ones:</p>
+      <div class="ship">
+        <div><b>Multi-stop routes</b> — batching with road-real optimization and one-tap navigation</div>
+        <div><b>Proof of delivery</b> — configurable QR / photo / signature, geo-tagged</div>
+        <div><b>Offline mode</b> — full courier flow without signal</div>
+        <div><b>Public live tracking</b> — recipient watches the courier like a taxi app, no login</div>
+        <div><b>Invoicing suite</b> — multi-language invoices, partial payments, QuickBooks two-way sync with US &amp; Canada taxes</div>
+        <div><b>Public API</b> — keys, webhooks, three integration modes for client shops</div>
+        <div><b>Zone pricing</b> — map-drawn zones with per-zone rules</div>
+        <div><b>Money dashboard</b> — inflow → margin → payouts, per-courier settlement</div>
+      </div>
+    </section>
+
+    <div class="cta">
+      <h2>See it running</h2>
+      <p>The live demo opens the real operator workspace — sample data, no account, no card.</p>
+      <div class="btns">
+        <a class="btn btn-solid" href="https://rutalive.com/demo" target="_blank" rel="noopener">Open the live demo</a>
+        <a class="btn btn-ghost" href="https://rutalive.com" target="_blank" rel="noopener">rutalive.com</a>
+        <a class="btn btn-ghost" href="/">Back to portfolio</a>
+      </div>
+    </div>
+
+    <footer>
+      <a href="/">uz-or.com</a> · RutaLive case study · written from the actual codebase, numbers as of mid-2026
+    </footer>
+  </div>
+</body>
+</html>

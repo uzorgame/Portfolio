@@ -34,7 +34,7 @@ const translations = {
     "other.ruta.title": "RutaLive", "other.ruta.tag": "Available",
     "other.ruta.desc": "A courier-logistics SaaS built to compete with the big US and Canadian dispatch platforms — Onfleet, Digital Waybill, Track-POD — at a fraction of their price. Operators run their own couriers, clients and orders from one dashboard: live GPS tracking, proof of delivery (photo, signature, QR), delivery zones with custom pricing, auto-dispatch, invoicing with QuickBooks sync, and public tracking links for recipients. Web, iOS, Android and desktop.",
     "common.googlePlay": "Google Play", "common.appStore": "App Store", "common.open": "Open",
-    "common.privacyPolicy": "Privacy", "common.screenshots": "Screenshots", "common.windows": "Windows", "common.android": "Android", "common.website": "Website",
+    "common.privacyPolicy": "Privacy", "common.caseStudy": "Case study", "common.screenshots": "Screenshots", "common.windows": "Windows", "common.android": "Android", "common.website": "Website",
     "footer.text": "© 2026 Nahreba Mykhailo. Built with precision."
   },
   uk: {
@@ -70,7 +70,7 @@ const translations = {
     "other.ruta.title": "RutaLive", "other.ruta.tag": "Доступно",
     "other.ruta.desc": "SaaS для курʼєрської логістики, створена конкурувати з великими диспетчерськими платформами США й Канади — Onfleet, Digital Waybill, Track-POD — за частку їхньої ціни. Оператор веде власних курʼєрів, клієнтів і замовлення з одного дашборду: live-GPS-трекінг, підтвердження доставки (фото, підпис, QR), зони з власним ціноутворенням, авто-диспетчеризація, інвойси з синхронізацією QuickBooks і публічні tracking-лінки для отримувачів. Веб, iOS, Android і десктоп.",
     "common.googlePlay": "Google Play", "common.appStore": "App Store", "common.open": "Відкрити",
-    "common.privacyPolicy": "Приватність", "common.screenshots": "Скриншоти", "common.windows": "Windows", "common.android": "Android", "common.website": "Сайт",
+    "common.privacyPolicy": "Приватність", "common.caseStudy": "Кейс-стаді", "common.screenshots": "Скриншоти", "common.windows": "Windows", "common.android": "Android", "common.website": "Сайт",
     "footer.text": "© 2026 Nahreba Mykhailo. Створено з точністю."
   }
 };
