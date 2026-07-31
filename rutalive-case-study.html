@@ -20,7 +20,6 @@
       --bg: #0a0a0a; --bg-alt: #111111; --surface: #141414;
       --text: #f0f0f0; --text-2: #8a8a8a; --text-3: #4a4a4a;
       --border: rgba(255,255,255,0.1); --border-h: rgba(255,255,255,0.2);
-      --accent: #3b76f6;
       --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-display: 'Space Grotesk', 'Inter', sans-serif;
       --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
@@ -36,7 +35,7 @@
     .top .brand { font-family: var(--font-display); font-weight: 600; color: var(--text); }
 
     .hero { padding: 48px 0 40px; border-bottom: 1px solid var(--border); }
-    .kicker { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); }
+    .kicker { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
     h1 { font-family: var(--font-display); font-size: clamp(34px, 6vw, 54px); font-weight: 600; line-height: 1.08; margin: 14px 0 18px; color: #fff; }
     .lede { font-size: 17px; color: var(--text-2); max-width: 62ch; }
     .role { margin-top: 22px; font-size: 14px; color: var(--text-2); }
@@ -61,13 +60,13 @@
     .node { border: 1px solid var(--border-h); border-radius: 10px; padding: 12px 14px; background: var(--surface); }
     .node b { display: block; font-size: 13.5px; color: #fff; font-weight: 600; }
     .node span { font-size: 12px; color: var(--text-2); }
-    .node.core { border-color: var(--accent); background: rgba(59,118,246,0.07); }
+    .node.core { border-color: rgba(255,255,255,0.38); background: rgba(255,255,255,0.04); }
     .arch-foot { margin-top: 14px; font-size: 12.5px; color: var(--text-3); font-family: var(--font-mono); }
 
     /* Decision cards */
     .dec { border: 1px solid var(--border); border-radius: 14px; background: var(--bg-alt); padding: 24px; margin-bottom: 16px; }
     .dec h3 { font-family: var(--font-display); font-size: 18px; color: #fff; font-weight: 600; margin-bottom: 10px; }
-    .dec h3 .n { color: var(--accent); font-family: var(--font-mono); font-size: 14px; margin-right: 10px; }
+    .dec h3 .n { color: var(--text-3); font-family: var(--font-mono); font-size: 14px; margin-right: 10px; }
     .dec p { font-size: 14.5px; color: var(--text-2); margin-bottom: 8px; }
     .dec p:last-child { margin-bottom: 0; }
     .dec .why { color: var(--text); }
@@ -80,7 +79,7 @@
     .ship div { border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 13.5px; color: var(--text-2); background: var(--bg-alt); }
     .ship b { color: var(--text); font-weight: 600; }
 
-    .cta { margin: 56px 0 72px; border: 1px solid var(--border); border-radius: 16px; padding: 34px 28px; text-align: center; background: linear-gradient(180deg, rgba(59,118,246,0.10), rgba(59,118,246,0.02)); }
+    .cta { margin: 56px 0 72px; border: 1px solid var(--border); border-radius: 16px; padding: 34px 28px; text-align: center; background: var(--bg-alt); }
     .cta h2 { margin-bottom: 6px; }
     .cta p { color: var(--text-2); font-size: 15px; margin-bottom: 22px; }
     .btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
