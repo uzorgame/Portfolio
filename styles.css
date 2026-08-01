@@ -775,3 +775,18 @@ h2 {
   .stat { padding: 0 16px; }
   .stat-num { font-size: 28px; }
 }
+
+/* ═══ MONOCHROME PROJECT ICONS ═══ */
+/* A pure black-and-white mark disappears into whichever background matches it: on the
+   dark theme the icon's black tile merges with the page and only its white interior
+   reads, which makes the whole icon look smaller than the others. Inverting it swaps
+   black and white so the tile always sits against its opposite. Dark is the default
+   theme, so the inversion is the default state. */
+.icon-mono {
+  filter: invert(1);
+  transition: filter 0.25s var(--ease);
+}
+
+[data-theme="light"] .icon-mono {
+  filter: none;
+}
