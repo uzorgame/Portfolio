@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <!-- The wallet's own monogram, taken from the approved geometry in the app's branding
+       source (tools/branding/wizard-art.mjs) rather than redrawn by eye: a stem and a
+       chevron cut back into it, which is the K the product signs itself with.
+
+       Two flat colours only, like the Poster tile beside it, so .icon-mono can invert the
+       whole thing and land on the opposite of whatever theme is showing. The previous icon
+       was a blue gradient; inverting that turns it orange, which is why it could not follow
+       the theme and why it was the one coloured thing in a monochrome row. -->
+  <rect width="64" height="64" rx="13" fill="#111111"/>
+  <g fill="#ffffff">
+    <rect x="17" y="16" width="7" height="32"/>
+    <path d="M28 32 L45 16 L45 25 L37 32 L45 39 L45 48 Z"/>
+  </g>
+</svg>

@@ -48,6 +48,12 @@
 /* ── Reset ── */
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 html { -webkit-text-size-adjust: 100%; }
+
+/* Keeps the scrollbar's channel reserved even when there is nothing to scroll.
+   Opening a dialog sets `body { overflow: hidden }`, which removes the scrollbar; the page
+   underneath then gets those ~15px back and everything on it slides sideways. That sideways
+   jump is what reads as the background twitching when the Screenshots button is pressed. */
+html { scrollbar-gutter: stable; }
 html.lenis, html.lenis body { height: auto; }
 
 body {
@@ -700,27 +706,28 @@ h2 {
 .modal-body hr { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 
 /* ── Screenshots in the modal ── */
-/* Three posters side by side on a desktop, stacked on a phone. The modal is sized for a
-   column of text, so it widens only while it is holding pictures. */
-.modal:has(.shots) { max-width: 1040px; }
+/* The modal is sized for a column of text, so it widens only while it is holding pictures. */
+.modal:has(.shots) { max-width: 1248px; }
 
 .shots {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
 }
+/* Posters are tall sheets and read best three across. Application windows are wide, so two
+   across gives each one enough width for its type to stay legible. */
+.shots--tall { grid-template-columns: repeat(3, 1fr); }
+.shots--wide { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 900px) { .shots--tall, .shots--wide { grid-template-columns: 1fr; } }
+
 .shot { margin: 0; }
 .shot img {
   display: block;
   width: 100%;
   height: auto;
-  /* A poster is a printed sheet, so it gets an edge. Without it a white poster on a white
-     page has no boundary at all, and in the dark theme it is the only bright rectangle on
-     screen — the border is what makes it read as a thing rather than a hole. */
-  border: 1px solid var(--border);
-  /* The reserved box before the picture arrives. A white placeholder would flash a bright
-     rectangle onto the dark theme on every open; the surface colour just looks like an
-     empty frame. */
+  /* No border. A hairline in --border is a light line in the dark theme, and drawn around a
+     poster whose own paper is already light it reads as a stray white stripe rather than as
+     an edge. These pictures all carry their own frame — a printed margin, or a window's
+     chrome — so the page does not need to add one. */
   background: var(--surface);
 }
 /* ═══ REVEAL ═══ */

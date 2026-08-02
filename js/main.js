@@ -239,13 +239,29 @@ document.addEventListener('DOMContentLoaded', () => {
      The same modal as the privacy policies. Escape, the overlay click, the scroll lock and
      the Lenis pause are already wired to it, and a second dialog system would have to
      reimplement all four and then keep them in step. */
+  /* Each product keeps its screenshots in its own folder under Public, so adding a project
+     never means picking apart a shared pile. `shape` decides the grid: posters are tall
+     sheets that sit three across, application windows are wide and need the room. */
   const shotSets = {
     poster: {
       title: 'Poster',
+      dir: 'Public/poster/shots',
+      shape: 'tall',
       shots: [
-        { file: 'london', place: 'London' },
-        { file: 'new-york', place: 'New York' },
-        { file: 'tokyo', place: 'Tokyo' }
+        { file: 'london', alt: 'A minimalist map poster of London made with Poster' },
+        { file: 'new-york', alt: 'A minimalist map poster of New York made with Poster' },
+        { file: 'tokyo', alt: 'A minimalist map poster of Tokyo made with Poster' }
+      ]
+    },
+    kora: {
+      title: 'Kora Wallet',
+      dir: 'Public/kora/shots',
+      shape: 'wide',
+      shots: [
+        { file: 'portfolio', alt: 'Kora Wallet portfolio: total balance, value curve and holdings' },
+        { file: 'transactions', alt: 'Kora Wallet transaction history' },
+        { file: 'market', alt: 'Kora Market: live prices for twenty coins' },
+        { file: 'chart', alt: 'Kora Market: a price chart with market statistics' }
       ]
     }
   };
@@ -254,31 +270,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const set = shotSets[key];
     if (!set) return;
 
+    // The two widths each set was exported at, and the size each is actually rendered at.
+    // Getting `sizes` right is what decides whether a phone downloads the small file or the
+    // large one, and the difference on the poster set is half a megabyte per picture.
+    const tall = set.shape === 'tall';
+    const small = tall ? 640 : 760;
+    const large = tall ? 1400 : 1520;
+    const sizes = tall
+      ? '(max-width: 700px) calc(92vw - 56px), 340px'
+      : '(max-width: 700px) calc(92vw - 56px), 560px';
+
     modalTitle.textContent = set.title;
-    // Loaded lazily and at the small size by default; the browser only fetches the 1400px
-    // version on a screen that can use it. Three posters at full width would be four
-    // megabytes for something first seen at 320 pixels across.
     modalBody.innerHTML =
-      '<div class="shots">' +
+      '<div class="shots shots--' + set.shape + '">' +
       set.shots
-        .map(
-          (s) =>
+        .map((s) => {
+          const base = set.dir + '/' + s.file;
+          return (
             '<figure class="shot">' +
-            '<img src="Public/poster/' + s.file + '.webp" ' +
-            'srcset="Public/poster/' + s.file + '.webp 640w, Public/poster/' + s.file + '@2x.webp 1400w" ' +
-            // The real rendered width, not an approximation. The modal is 92vw with 28px of
-            // padding on each side, so a phone renders these at ~289px. Declaring 90vw
-            // instead put the browser just over the 640px file's reach and it fetched the
-            // 1400px one — half a megabyte per poster, on the connection least able to
-            // afford it.
-            'sizes="(max-width: 700px) calc(92vw - 56px), 300px" ' +
-            'width="640" height="896" loading="lazy" decoding="async" ' +
-            // No caption: every poster has its city typeset across the bottom of the sheet,
-            // so a label underneath would name it twice. The alt text carries it for anyone
-            // who cannot see the print.
-            'alt="A minimalist map poster of ' + s.place + ' made with Poster">' +
+            '<img src="' + base + '.webp" ' +
+            'srcset="' + base + '.webp ' + small + 'w, ' + base + '@2x.webp ' + large + 'w" ' +
+            'sizes="' + sizes + '" ' +
+            'loading="lazy" decoding="async" ' +
+            // No caption. A poster carries its city typeset across the sheet, and an
+            // application window carries its own title bar; a label underneath would name
+            // each of them twice. The alt text carries it for anyone who cannot see them.
+            'alt="' + s.alt + '">' +
             '</figure>'
-        )
+          );
+        })
         .join('') +
       '</div>';
 
