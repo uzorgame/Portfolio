@@ -196,7 +196,7 @@
               <span>Flutter</span><span>Dart</span><span>Multi-chain</span><span>Open-source</span>
             </div>
             <div class="proj-links">
-              <a href="Public/kora/app/KoraSuite_Setup_v3.5.0.exe" download data-i18n="common.windows">Windows</a>
+              <a href="Public/kora/app/KoraSuite_Setup_v6.6.6.exe" download data-i18n="common.windows">Windows</a>
               <a href="Public/kora/app/koraandroid.apk" download data-i18n="common.android">Android</a>
               <button data-shots="kora" data-i18n="common.screenshots">Screenshots</button>
               <button data-privacy="kora" data-i18n="common.privacyPolicy">Privacy</button>
@@ -402,6 +402,12 @@
   <div class="modal-overlay" id="modal-overlay"></div>
   <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal-head">
+      <!-- Shown only while a screenshot is enlarged. It goes back one step, to the set;
+           the close button beside it leaves the dialog entirely. -->
+      <button class="modal-back" id="modal-back" aria-label="Back" data-i18n-title="common.back">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <span data-i18n="common.back">Back</span>
+      </button>
       <h2 class="modal-title" id="modal-title">Privacy Policy</h2>
       <button class="modal-close" id="modal-close" aria-label="Close">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>

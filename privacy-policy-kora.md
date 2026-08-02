@@ -6,6 +6,12 @@
 
 ## Important Notice
 
+**I built this wallet. I have no control over what is in it, and I accept no responsibility for what happens to it.**
+
+That is not a formality — it is how the software is built. Your keys are generated on your device and encrypted with a passphrase only you know. I cannot see your tokens, cannot move them, cannot freeze them, and cannot get them back. There is no account, no server holding your funds, and no support desk that can reverse anything.
+
+So the whole of the risk is yours: losing your recovery phrase, sending to a wrong or malicious address, choosing the wrong network, running the app on a compromised machine, or any other loss, misuse or unsafe use. I accept no liability for any of it, whether the outcome comes from a mistake of yours, a fault in the software, a failure of a blockchain or third-party service, or anything else. Sections 6 and 7 state this in legal terms; this paragraph states it in plain ones.
+
 By installing or using Kora Wallet, you acknowledge that you have read, understood, and agree to be bound by the terms set out in this document. If you do not agree to these terms, do not install or use the application.
 
 ---

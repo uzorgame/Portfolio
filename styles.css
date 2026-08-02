@@ -719,7 +719,7 @@ h2 {
 .shots--wide { grid-template-columns: repeat(2, 1fr); }
 @media (max-width: 900px) { .shots--tall, .shots--wide { grid-template-columns: 1fr; } }
 
-.shot { margin: 0; }
+.shot { margin: 0; cursor: zoom-in; }
 .shot img {
   display: block;
   width: 100%;
@@ -730,6 +730,48 @@ h2 {
      chrome — so the page does not need to add one. */
   background: var(--surface);
 }
+
+/* ── One screenshot, enlarged ── */
+/* The others are taken out of the flow entirely rather than hidden in place: the grid has to
+   collapse to a single cell for the open one to have the room, and a hidden-but-present
+   sibling would still hold a column open. The movement between the two layouts is animated
+   in JS with FLIP — see zoomShot — because no CSS property on a grid animates this. */
+.shots--zoomed { grid-template-columns: 1fr; }
+.shots--zoomed .shot { display: none; }
+.shots--zoomed .shot--open {
+  display: block;
+  cursor: zoom-out;
+  margin: 0 auto;
+  max-width: 100%;
+}
+/* The height is stated and the width follows from it.
+   `width: auto` alone does not work here: on an image with srcset, the `sizes` attribute is
+   what the browser uses to resolve an automatic width, so the enlarged picture came out at
+   the 340px the grid had asked for. A definite height makes the aspect ratio the deciding
+   factor instead, and `sizes` goes back to meaning only which file to fetch. */
+.shots--zoomed .shot--open img {
+  height: min(calc(85vh - 190px), 78vh);
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+/* ── Back, in the modal head ── */
+.modal-back {
+  display: none;
+  align-items: center;
+  gap: 7px;
+  margin-right: 16px;
+  font-size: 13px;
+  color: var(--text-2);
+  transition: color 0.2s;
+}
+.modal-back:hover { color: var(--text); }
+.modal--zoomed .modal-back { display: inline-flex; }
+/* The title belongs to the set, and while one picture is open the way back matters more than
+   the name of the group it came from. */
+.modal--zoomed .modal-title { color: var(--text-3); }
 /* ═══ REVEAL ═══ */
 [data-reveal] {
   opacity: 0;

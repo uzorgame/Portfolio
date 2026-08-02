@@ -144,6 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('modal');
   const modalOverlay = document.getElementById('modal-overlay');
   const modalClose = document.getElementById('modal-close');
+  const modalBack = document.getElementById('modal-back');
   const modalBody = document.getElementById('modal-body');
   const modalTitle = document.getElementById('modal-title');
 
@@ -223,6 +224,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeModal() {
     modal.classList.remove('active');
     modalOverlay.classList.remove('active');
+    // The enlarged state has to go with it. Left set, the next thing opened in this dialog —
+    // a privacy policy, say — would inherit a layout meant for one picture.
+    modal.classList.remove('modal--zoomed');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     if (lenis) lenis.start();
@@ -266,6 +270,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  /// The `sizes` the grid uses, remembered so unzooming can put it back. Set on every open.
+  let gridSizes = '';
+
   function openShots(key) {
     const set = shotSets[key];
     if (!set) return;
@@ -276,9 +283,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const tall = set.shape === 'tall';
     const small = tall ? 640 : 760;
     const large = tall ? 1400 : 1520;
+    // Width over height. Posters are A-series sheets at 1:1.4; the application windows are
+    // 1518x924. Both sets are uniform, so one ratio per shape is enough.
+    const ratio = tall ? 640 / 896 : 1518 / 924;
     const sizes = tall
       ? '(max-width: 700px) calc(92vw - 56px), 340px'
       : '(max-width: 700px) calc(92vw - 56px), 560px';
+    gridSizes = sizes;
 
     modalTitle.textContent = set.title;
     modalBody.innerHTML =
@@ -291,6 +302,10 @@ document.addEventListener('DOMContentLoaded', () => {
             '<img src="' + base + '.webp" ' +
             'srcset="' + base + '.webp ' + small + 'w, ' + base + '@2x.webp ' + large + 'w" ' +
             'sizes="' + sizes + '" ' +
+            // Stated so the grid cell has its height before the picture arrives. Without
+            // them a lazily-loaded row is zero-high until it decodes and everything below
+            // jumps when it does.
+            'width="' + small + '" height="' + Math.round(small / ratio) + '" ' +
             'loading="lazy" decoding="async" ' +
             // No caption. A poster carries its city typeset across the sheet, and an
             // application window carries its own title bar; a label underneath would name
@@ -310,6 +325,86 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lenis) lenis.stop();
   }
 
+  /* ── Enlarging one screenshot ──
+     FLIP rather than a CSS size transition. The layout change is drastic — a tile in a grid
+     becomes a single full-width figure — and no property on the grid animates that smoothly.
+     So the new layout is applied instantly, the difference against the old position is
+     measured, and the element is animated from that difference back to nothing. What the eye
+     follows is the picture it just clicked, moving to where it is going. */
+  const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+
+  function flip(shots, apply) {
+    const first = new Map(shots.map((s) => [s, s.getBoundingClientRect()]));
+    apply();
+    for (const shot of shots) {
+      const a = first.get(shot);
+      const b = shot.getBoundingClientRect();
+      if (!a.width || !b.width) continue;
+      shot.animate(
+        [
+          {
+            transformOrigin: 'top left',
+            transform: `translate(${a.x - b.x}px, ${a.y - b.y}px) scale(${a.width / b.width})`,
+          },
+          { transformOrigin: 'top left', transform: 'none' },
+        ],
+        { duration: 420, easing: EASE }
+      );
+    }
+  }
+
+  function zoomShot(shot) {
+    const shots = [...modalBody.querySelectorAll('.shot')];
+    const img = shot.querySelector('img');
+    // The picture is about to be shown several times larger, so it is told so before the
+    // layout changes and the browser has the chance to pick the bigger file for the frame it
+    // lands on rather than the one after.
+    if (img) img.sizes = '(max-width: 700px) calc(92vw - 56px), 80vh';
+    // Only the one being opened is animated in place. The others are leaving, and following
+    // them to a position they will not occupy would be motion that means nothing.
+    flip([shot], () => {
+      shots.forEach((s) => s.classList.toggle('shot--open', s === shot));
+      modalBody.querySelector('.shots').classList.add('shots--zoomed');
+      modal.classList.add('modal--zoomed');
+    });
+    modalBody.scrollTop = 0;
+  }
+
+  function unzoomShot() {
+    const grid = modalBody.querySelector('.shots');
+    if (!grid || !grid.classList.contains('shots--zoomed')) return false;
+    const open = modalBody.querySelector('.shot--open');
+    const img = open && open.querySelector('img');
+    if (img) img.sizes = gridSizes;
+    flip(open ? [open] : [], () => {
+      grid.classList.remove('shots--zoomed');
+      modalBody.querySelectorAll('.shot--open').forEach((s) => s.classList.remove('shot--open'));
+      modal.classList.remove('modal--zoomed');
+    });
+    return true;
+  }
+
+  modalBody.addEventListener('click', (e) => {
+    const img = e.target.closest('.shot img');
+    if (img && !modalBody.querySelector('.shots--zoomed')) {
+      zoomShot(img.closest('.shot'));
+      return;
+    }
+    // A click anywhere in the body that is not on the enlarged picture collapses it. The
+    // whole surround is the way back, which is what people reach for before they look for a
+    // button.
+    if (modalBody.querySelector('.shots--zoomed') && !e.target.closest('.shot--open')) {
+      unzoomShot();
+    }
+  });
+
+  if (modalBack) {
+    modalBack.addEventListener('click', (e) => {
+      e.preventDefault();
+      unzoomShot();
+    });
+  }
+
   document.querySelectorAll('[data-shots]').forEach(btn => {
     btn.addEventListener('click', e => {
       e.preventDefault();
@@ -318,10 +413,17 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (modalClose) modalClose.addEventListener('click', closeModal);
-  if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
+  if (modalOverlay) modalOverlay.addEventListener('click', () => {
+    // The overlay closes the dialog outright even from the enlarged view: it is outside the
+    // dialog altogether, so it means "leave", not "go back one step".
+    closeModal();
+  });
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
+      // One step at a time. Escape from an enlarged screenshot returns to the set; only then
+      // does it close the dialog.
+      if (unzoomShot()) return;
       if (modal.classList.contains('active')) closeModal();
       closeMobileMenu();
     }
