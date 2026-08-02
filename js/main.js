@@ -235,6 +235,68 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  /* ── Screenshots ──
+     The same modal as the privacy policies. Escape, the overlay click, the scroll lock and
+     the Lenis pause are already wired to it, and a second dialog system would have to
+     reimplement all four and then keep them in step. */
+  const shotSets = {
+    poster: {
+      title: 'Poster',
+      shots: [
+        { file: 'london', place: 'London' },
+        { file: 'new-york', place: 'New York' },
+        { file: 'tokyo', place: 'Tokyo' }
+      ]
+    }
+  };
+
+  function openShots(key) {
+    const set = shotSets[key];
+    if (!set) return;
+
+    modalTitle.textContent = set.title;
+    // Loaded lazily and at the small size by default; the browser only fetches the 1400px
+    // version on a screen that can use it. Three posters at full width would be four
+    // megabytes for something first seen at 320 pixels across.
+    modalBody.innerHTML =
+      '<div class="shots">' +
+      set.shots
+        .map(
+          (s) =>
+            '<figure class="shot">' +
+            '<img src="Public/poster/' + s.file + '.webp" ' +
+            'srcset="Public/poster/' + s.file + '.webp 640w, Public/poster/' + s.file + '@2x.webp 1400w" ' +
+            // The real rendered width, not an approximation. The modal is 92vw with 28px of
+            // padding on each side, so a phone renders these at ~289px. Declaring 90vw
+            // instead put the browser just over the 640px file's reach and it fetched the
+            // 1400px one — half a megabyte per poster, on the connection least able to
+            // afford it.
+            'sizes="(max-width: 700px) calc(92vw - 56px), 300px" ' +
+            'width="640" height="896" loading="lazy" decoding="async" ' +
+            // No caption: every poster has its city typeset across the bottom of the sheet,
+            // so a label underneath would name it twice. The alt text carries it for anyone
+            // who cannot see the print.
+            'alt="A minimalist map poster of ' + s.place + ' made with Poster">' +
+            '</figure>'
+        )
+        .join('') +
+      '</div>';
+
+    modalBody.scrollTop = 0;
+    modal.classList.add('active');
+    modalOverlay.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (lenis) lenis.stop();
+  }
+
+  document.querySelectorAll('[data-shots]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      openShots(btn.getAttribute('data-shots'));
+    });
+  });
+
   if (modalClose) modalClose.addEventListener('click', closeModal);
   if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
 
