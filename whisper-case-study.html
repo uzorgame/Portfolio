@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Whisper Local — Engineering Case Study | Mykhailo Nahreba</title>
-  <meta name="description" content="How Whisper Local was built: a speech-to-text app with no backend at all — Whisper running on the visitor's own GPU through WebGPU, with the caching and quantisation work that made it usable.">
+  <title>Whisper — Engineering Case Study | Mykhailo Nahreba</title>
+  <meta name="description" content="How Whisper was built: a speech-to-text app with no backend at all — Whisper running on the visitor's own GPU through WebGPU, with the caching and quantisation work that made it usable.">
   <link rel="canonical" href="https://uz-or.com/whisper-case-study.html">
-  <meta property="og:title" content="Whisper Local — Engineering Case Study">
+  <meta property="og:title" content="Whisper — Engineering Case Study">
   <meta property="og:description" content="A transcription product with no server: the precision, caching and decoding decisions behind running Whisper in a browser tab.">
   <meta property="og:url" content="https://uz-or.com/whisper-case-study.html">
   <meta property="og:image" content="https://uz-or.com/og-image.png?v=6">
@@ -90,10 +90,22 @@
     <!-- ═══ HERO ═══ -->
     <section class="sec cs-hero">
       <div class="wrap">
-        <p class="label" data-i18n="wcs.kicker">Whisper Local / Engineering case study</p>
+        <p class="label" data-i18n="wcs.kicker">Whisper / Engineering case study</p>
         <h1 data-i18n="wcs.title">A transcription product with no server behind it</h1>
         <p class="cs-lede" data-i18n="wcs.lede">OpenAI's Whisper, running inside the visitor's own browser tab on their own graphics card. Audio is never uploaded, because there is nowhere to upload it to — the product ships as static files and every byte of computation happens on the client.</p>
         <p class="cs-role" data-i18n="wcs.role"><b>My role:</b> sole engineer — architecture, model pipeline, design system, browser performance work. August 2026.</p>
+      </div>
+    </section>
+
+    <!-- ═══ WHY ═══ -->
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="wcs.whyLabel">00 / Why</p>
+          <h2 data-i18n="wcs.whyT">Free, because it costs nothing to run</h2>
+        </div>
+        <p class="cs-lede" data-i18n="wcs.whyBody">Whisper is open source and free to use. That has not stopped a whole category of products from wrapping it in a login screen and charging a monthly fee — the model is someone else's work, the heavy lifting often happens on the customer's own hardware anyway, and the subscription is really for the wrapper around it.</p>
+        <p class="cs-lede" style="margin-top: 16px;" data-i18n="wcs.whyBody2">This is the same capability, given away. It can be free because it genuinely costs nothing to operate: no server to pay for, no per-minute inference bill, no storage, no bandwidth beyond the model download — and that comes from a public CDN. The entire infrastructure is static file hosting. Charging a subscription for it would mean charging for something with no cost behind it.</p>
       </div>
     </section>
 
