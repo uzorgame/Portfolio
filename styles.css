@@ -171,25 +171,71 @@ html.theme-switching *::after { transition: none !important; }
 }
 .mobile-overlay.open { opacity: 1; pointer-events: all; }
 
+/* The panel itself carries no background — the four slats below are the panel.
+   Off-canvas by default so nothing is reachable above the 768px breakpoint,
+   where the burger is hidden and this whole system is inert. */
 .mobile-menu {
   position: fixed; top: 0; right: 0; z-index: 95;
   width: min(360px,90vw); height: 100vh;
-  background: var(--bg); border-left: 1px solid var(--border);
   padding: 100px 32px 40px;
   display: flex; flex-direction: column;
-  transform: translateX(100%); transition: transform 0.4s var(--ease);
+  transform: translateX(100%);
 }
 .mobile-menu.open { transform: translateX(0); }
 
+/* ── Shutter: four slabs drop in sequence, like a departure board ──
+   Mechanical easing on the slabs, soft expo on the links, so the panel lands
+   hard and the text settles after it. */
+.mobile-slats {
+  display: none;
+  position: fixed; top: 0; right: 0; z-index: 94;
+  width: min(360px,90vw); height: 100vh;
+  pointer-events: none;
+}
+.mobile-slats i {
+  flex: 1;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  transform: translateY(-100%);
+  transition: transform 0.6s cubic-bezier(.85,0,.15,1);
+}
+.mobile-slats.open i { transform: translateY(0); }
+/* Opening runs left to right; closing reverses, so the shutter reads as one
+   movement in both directions instead of a rewind. */
+.mobile-slats i:nth-child(1) { transition-delay: 0.18s; }
+.mobile-slats i:nth-child(2) { transition-delay: 0.12s; }
+.mobile-slats i:nth-child(3) { transition-delay: 0.06s; }
+.mobile-slats i:nth-child(4) { transition-delay: 0s; }
+.mobile-slats.open i:nth-child(1) { transition-delay: 0s; }
+.mobile-slats.open i:nth-child(2) { transition-delay: 0.06s; }
+.mobile-slats.open i:nth-child(3) { transition-delay: 0.12s; }
+.mobile-slats.open i:nth-child(4) { transition-delay: 0.18s; }
+
+.mm-row { overflow: hidden; border-bottom: 1px solid var(--border); }
+
 .mobile-link {
+  display: block;
   font-family: var(--font-display);
   font-size: 28px; font-weight: 500; letter-spacing: -0.02em;
   color: var(--text);
   padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-  transition: opacity 0.2s;
+  opacity: 0; transform: translateY(22px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
 }
+.mobile-menu.open .mobile-link { opacity: 1; transform: translateY(0); }
 .mobile-link:hover { opacity: 0.6; }
+
+.mobile-menu.open .mm-row:nth-of-type(1) .mobile-link { transition-delay: 0.20s; }
+.mobile-menu.open .mm-row:nth-of-type(2) .mobile-link { transition-delay: 0.26s; }
+.mobile-menu.open .mm-row:nth-of-type(3) .mobile-link { transition-delay: 0.32s; }
+.mobile-menu.open .mm-row:nth-of-type(4) .mobile-link { transition-delay: 0.38s; }
+.mobile-menu.open .mm-row:nth-of-type(5) .mobile-link { transition-delay: 0.44s; }
+.mobile-menu.open .mm-row:nth-of-type(6) .mobile-link { transition-delay: 0.50s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-slats i,
+  .mobile-link { transition: none !important; transition-delay: 0s !important; }
+}
 
 .mobile-bottom { margin-top: auto; padding-top: 24px; border-top: 1px solid var(--border); }
 .mobile-lang { display: flex; gap: 12px; margin-bottom: 16px; }
@@ -817,6 +863,8 @@ h2 {
   .nav-links { display: none; }
   .nav-inner .lang-switch { display: none; }
   .burger { display: flex; }
+  /* The shutter exists only where the burger does — never on desktop. */
+  .mobile-slats { display: flex; }
   .hero-title { font-size: 48px; }
   h2 { font-size: 32px; }
   .proj-name { font-size: 20px; }

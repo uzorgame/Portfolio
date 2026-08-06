@@ -129,12 +129,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const burger = document.getElementById('burger');
   const mobileMenu = document.getElementById('mobile-menu');
   const mobileOverlay = document.getElementById('mobile-overlay');
+  // The four slabs that draw the panel; they carry the background the menu used
+  // to have, so they must open and close in step with it.
+  const mobileSlats = document.getElementById('mobile-slats');
 
   function toggleMobileMenu() {
     const isOpen = mobileMenu.classList.contains('open');
     mobileMenu.classList.toggle('open');
     mobileOverlay.classList.toggle('open');
     burger.classList.toggle('open');
+    if (mobileSlats) mobileSlats.classList.toggle('open');
     mobileMenu.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
     document.body.style.overflow = isOpen ? '' : 'hidden';
     if (lenis) isOpen ? lenis.start() : lenis.stop();
@@ -145,6 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileMenu.classList.remove('open');
     mobileOverlay.classList.remove('open');
     burger.classList.remove('open');
+    if (mobileSlats) mobileSlats.classList.remove('open');
     mobileMenu.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
     if (lenis) lenis.start();
