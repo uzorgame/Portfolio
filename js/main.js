@@ -96,14 +96,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const target = document.getElementById(href.slice(1));
     if (!target) return;
 
-    const top = target.offsetTop - 80;
-    if (lenis) {
-      lenis.scrollTo(top, { duration: 1.2 });
-    } else {
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-
+    // Close first. Opening the mobile menu calls lenis.stop(), and a scrollTo
+    // issued against a stopped instance is silently dropped — which is why every
+    // link in the mobile menu appeared to do nothing. closeMobileMenu() restarts
+    // Lenis, so the scroll has to be queued after it.
     closeMobileMenu();
+
+    // getBoundingClientRect survives transformed/positioned ancestors; offsetTop
+    // does not, and returns an offset relative to the wrong parent.
+    const top = target.getBoundingClientRect().top + window.scrollY - 80;
+
+    requestAnimationFrame(() => {
+      if (lenis) {
+        lenis.scrollTo(top, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
   }
 
   document.querySelectorAll('.nav-link, .mobile-link').forEach(link => {
