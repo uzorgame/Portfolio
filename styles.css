@@ -232,6 +232,43 @@ html.theme-switching *::after { transition: none !important; }
 .mobile-menu.open .mm-row:nth-of-type(5) .mobile-link { transition-delay: 0.44s; }
 .mobile-menu.open .mm-row:nth-of-type(6) .mobile-link { transition-delay: 0.50s; }
 
+/* The footer block belongs to the panel, so it rides in on the same stagger
+   instead of being there from the first frame. */
+.mobile-bottom {
+  opacity: 0; transform: translateY(22px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.mobile-menu.open .mobile-bottom { opacity: 1; transform: translateY(0); transition-delay: 0.56s; }
+
+/* ── Exit sideways when a link was used ──
+   Navigating is a different intent from dismissing: the panel gets out of the
+   way to the right, quickly, so the destination is visible sooner. Dismissing
+   with the overlay or the burger still lifts the slabs back up. */
+.mobile-slats.exit-right i {
+  transform: translateX(105%);
+  transition-duration: 0.36s;
+}
+.mobile-slats.exit-right i:nth-child(1) { transition-delay: 0.09s; }
+.mobile-slats.exit-right i:nth-child(2) { transition-delay: 0.06s; }
+.mobile-slats.exit-right i:nth-child(3) { transition-delay: 0.03s; }
+.mobile-slats.exit-right i:nth-child(4) { transition-delay: 0s; }
+
+/* Hold the panel in place while its contents leave, otherwise it would jump
+   off-canvas instantly and the exit would never be seen. */
+.mobile-menu.exit-right { transform: translateX(0); }
+
+.mobile-menu.exit-right .mobile-link,
+.mobile-menu.exit-right .mobile-bottom {
+  opacity: 0;
+  transform: translateX(28px);
+  transition-duration: 0.2s;
+  transition-delay: 0s;
+}
+
+/* Used for a single frame while the sideways state is swapped back to the
+   default upward one, so the slabs do not sweep across the screen doing it. */
+.mobile-slats.no-anim i { transition: none !important; }
+
 @media (prefers-reduced-motion: reduce) {
   .mobile-slats i,
   .mobile-link { transition: none !important; transition-delay: 0s !important; }

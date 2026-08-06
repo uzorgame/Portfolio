@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // issued against a stopped instance is silently dropped — which is why every
     // link in the mobile menu appeared to do nothing. closeMobileMenu() restarts
     // Lenis, so the scroll has to be queued after it.
-    closeMobileMenu();
+    closeMobileMenu(true);
 
     // getBoundingClientRect survives transformed/positioned ancestors; offsetTop
     // does not, and returns an offset relative to the wrong parent.
@@ -144,8 +144,28 @@ document.addEventListener('DOMContentLoaded', () => {
     if (lenis) isOpen ? lenis.start() : lenis.stop();
   }
 
-  function closeMobileMenu() {
+  // sideways = the visitor picked a destination rather than dismissing the menu.
+  // The panel then clears to the right, faster, so the target is visible sooner.
+  function closeMobileMenu(sideways) {
     if (!mobileMenu.classList.contains('open')) return;
+
+    if (sideways) {
+      mobileMenu.classList.add('exit-right');
+      if (mobileSlats) mobileSlats.classList.add('exit-right');
+
+      // Once it has played, swap back to the default upward state with
+      // transitions muted for one frame — otherwise the slabs would travel
+      // back across the screen on their way to the top.
+      setTimeout(function () {
+        mobileMenu.classList.remove('exit-right');
+        if (!mobileSlats) return;
+        mobileSlats.classList.add('no-anim');
+        mobileSlats.classList.remove('exit-right');
+        void mobileSlats.offsetWidth;
+        mobileSlats.classList.remove('no-anim');
+      }, 460);
+    }
+
     mobileMenu.classList.remove('open');
     mobileOverlay.classList.remove('open');
     burger.classList.remove('open');
@@ -156,7 +176,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (burger) burger.addEventListener('click', toggleMobileMenu);
-  if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileMenu);
+  // Wrapped rather than passed directly: as a bare handler the event object
+  // would arrive as `sideways` and make every dismissal exit to the right.
+  if (mobileOverlay) mobileOverlay.addEventListener('click', function () { closeMobileMenu(); });
 
   /* ── Privacy Modal ── */
   const modal = document.getElementById('modal');
