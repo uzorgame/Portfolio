@@ -60,6 +60,18 @@
     .cs-bench td.num { font-family: var(--font-mono); }
     .cs-bench tr:last-child td { border-bottom: 1px solid var(--border); }
     .cs-bench-wrap { overflow-x: auto; }
+
+    /* Code: hairline box, no fill, mono at a size that survives a phone. */
+    .cs-code { margin: 18px 0 6px; border: 1px solid var(--border); overflow-x: auto; }
+    .cs-code pre { margin: 0; padding: 18px 20px; }
+    .cs-code code { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; color: var(--text-2); white-space: pre; display: block; }
+    .cs-code .c { color: var(--text-3); }
+    .cs-code .k { color: var(--text); }
+    .cs-cap { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+    .cs-after { font-size: 14.5px; color: var(--text-2); max-width: 68ch; margin-top: 12px; }
+    .cs-block { border-top: 1px solid var(--border); padding: 30px 0; }
+    .cs-block:last-child { border-bottom: 1px solid var(--border); }
+    .cs-block h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-hero); margin-bottom: 10px; }
   </style>
 </head>
 <body>
@@ -149,11 +161,77 @@
       </div>
     </section>
 
-    <!-- ═══ DECISIONS ═══ -->
+    <!-- ═══ MODEL LOADING ═══ -->
     <section class="sec">
       <div class="wrap">
         <div class="sec-head" data-reveal>
-          <p class="label" data-i18n="wcs.decLabel">02 / Decisions</p>
+          <p class="label" data-i18n="wcs.loadLabel">02 / Loading the model</p>
+          <h2 data-i18n="wcs.loadT">What happens before a word is transcribed</h2>
+        </div>
+        <p class="cs-lede" style="margin-bottom: 8px;" data-i18n="wcs.loadSub">Between pressing Transcribe and the first line of text there are three steps, and each of them was where something went wrong at least once.</p>
+
+        <div data-reveal>
+          <div class="cs-block">
+            <h3 data-i18n="wcs.l1t">1 — Choose the precision for this model</h3>
+            <p class="cs-after" data-i18n="wcs.l1b">A single shared setting is what broke the largest model: an fp32 encoder is fine at 79 MB and impossible at 1215 MB. Each model now carries its own table, so the choice is data rather than a branch.</p>
+            <p class="cs-cap" style="margin-top:16px;">worker/pipelineFactory.ts</p>
+            <div class="cs-code"><pre><code><span class="c">// Quantising the encoder is what costs accuracy, so the small models</span>
+<span class="c">// keep theirs. Turbo cannot afford to — fp16 alone is 1215 MB.</span>
+<span class="k">const</span> WEBGPU_DTYPE = {
+  <span class="c">'…/whisper-base'</span>:  { encoder_model: <span class="c">'fp32'</span>,  decoder_model_merged: <span class="c">'q4'</span> },
+  <span class="c">'…/whisper-small'</span>: { encoder_model: <span class="c">'fp16'</span>,  decoder_model_merged: <span class="c">'q4'</span> },
+  <span class="c">'…/whisper-large-v3-turbo'</span>:
+                     { encoder_model: <span class="c">'q4f16'</span>, decoder_model_merged: <span class="c">'q4f16'</span> },
+}</code></pre></div>
+          </div>
+
+          <div class="cs-block">
+            <h3 data-i18n="wcs.l2t">2 — Build the pipeline once, keep it warm</h3>
+            <p class="cs-after" data-i18n="wcs.l2b">The pipeline is cached against the model and backend pair. Running the same file twice, or a second file with the same settings, skips loading entirely — and switching away disposes the old one instead of leaving two sets of weights in GPU memory.</p>
+            <p class="cs-cap" style="margin-top:16px;">worker/pipelineFactory.ts</p>
+            <div class="cs-code"><pre><code><span class="k">const</span> key = <span class="c">`${model}::${device}`</span>
+<span class="k">if</span> (cached &amp;&amp; cacheKey === key) <span class="k">return</span> { transcriber: cached, wasCached: <span class="k">true</span> }
+<span class="k">if</span> (cached) { <span class="k">await</span> cached.dispose?.(); cached = <span class="k">null</span> }
+
+cached = <span class="k">await</span> pipeline(<span class="c">'automatic-speech-recognition'</span>, model, {
+  device,
+  dtype: dtypeFor(model, device),
+  progress_callback: (e) =&gt; {
+    <span class="k">if</span> (e.status === <span class="c">'progress'</span> &amp;&amp; e.file)
+      onDownload({ file: e.file, loaded: e.loaded, total: e.total })
+  },
+})</code></pre></div>
+          </div>
+
+          <div class="cs-block">
+            <h3 data-i18n="wcs.l3t">3 — Keep the weights out of Cache Storage</h3>
+            <p class="cs-after" data-i18n="wcs.l3b">The library caches downloads in Cache Storage, which silently refuses entries past a few hundred megabytes — the 185 MB decoder was kept and the 353 MB encoder was not, so it was re-downloaded on every single run. IndexedDB has no such ceiling, and transformers.js accepts any object with match and put.</p>
+            <p class="cs-cap" style="margin-top:16px;">worker/modelCache.ts</p>
+            <div class="cs-code"><pre><code>env.useCustomCache = <span class="k">true</span>
+env.customCache = indexedDbCache
+
+<span class="k">export const</span> indexedDbCache = {
+  <span class="k">async</span> match(request) {
+    <span class="k">const</span> row = <span class="k">await</span> read(keyOf(request))
+    <span class="k">if</span> (!row) <span class="k">return</span> undefined
+    <span class="k">return new</span> Response(row.body, { headers: <span class="k">new</span> Headers(row.headers) })
+  },
+  <span class="k">async</span> put(request, response) {
+    <span class="k">const</span> body = <span class="k">await</span> response.clone().arrayBuffer()
+    <span class="k">await</span> write({ url: keyOf(request), body, headers: [...response.headers] })
+  },
+}</code></pre></div>
+            <p class="cs-after" data-i18n="wcs.l3w"><b>Result:</b> a repeat run of the largest model went from 143 seconds to 12, measured after a full page reload.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ DECISIONS ═══ -->
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="wcs.decLabel">03 / Decisions</p>
           <h2 data-i18n="wcs.decT">Decisions that mattered</h2>
         </div>
         <p class="cs-lede" style="margin-bottom: 34px;" data-i18n="wcs.decSub">Five calls, each made after a measurement contradicted the obvious answer.</p>
@@ -209,10 +287,10 @@
     </section>
 
     <!-- ═══ BENCHMARKS ═══ -->
-    <section class="sec sec--alt">
+    <section class="sec">
       <div class="wrap">
         <div class="sec-head" data-reveal>
-          <p class="label" data-i18n="wcs.benchLabel">03 / Measurements</p>
+          <p class="label" data-i18n="wcs.benchLabel">04 / Measurements</p>
           <h2 data-i18n="wcs.benchT">What the numbers actually say</h2>
         </div>
         <p class="cs-lede" style="margin-bottom: 34px;" data-i18n="wcs.benchSub">19 seconds of speech, weights already cached. Realtime is audio length divided by compute time — higher is faster.</p>
@@ -238,10 +316,10 @@
     </section>
 
     <!-- ═══ WHAT SHIPPED ═══ -->
-    <section class="sec">
+    <section class="sec sec--alt">
       <div class="wrap">
         <div class="sec-head" data-reveal>
-          <p class="label" data-i18n="wcs.shipLabel">04 / Shipped</p>
+          <p class="label" data-i18n="wcs.shipLabel">05 / Shipped</p>
           <h2 data-i18n="wcs.shipT">What is in the product</h2>
         </div>
         <div class="cs-ship" data-reveal>
@@ -256,10 +334,10 @@
     </section>
 
     <!-- ═══ CTA ═══ -->
-    <section class="sec sec--alt">
+    <section class="sec">
       <div class="wrap">
         <div class="sec-head" data-reveal>
-          <p class="label" data-i18n="wcs.tryLabel">05 / Try it</p>
+          <p class="label" data-i18n="wcs.tryLabel">06 / Try it</p>
           <h2 data-i18n="wcs.tryT">Open it and speak</h2>
         </div>
         <p class="cs-lede" data-i18n="wcs.tryBody">No account and no upload — the first run downloads the model, and after that it works with the network switched off.</p>

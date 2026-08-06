@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Poster — Engineering Case Study | Mykhailo Nahreba</title>
+  <meta name="description" content="How Poster builds a print-ready city map in the browser: vector tiles instead of an Overpass query, a zoom chosen from the bounding box, and SVG as the deliverable.">
+  <link rel="canonical" href="https://uz-or.com/poster-case-study.html">
+  <meta property="og:title" content="Poster — Engineering Case Study">
+  <meta property="og:description" content="Vector tiles, a zoom picked from the viewport, and an SVG that a print shop can scale to any size — all client-side.">
+  <meta property="og:url" content="https://uz-or.com/poster-case-study.html">
+  <meta property="og:image" content="https://uz-or.com/Poster/og-image.png">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+
+  <script>
+    (function(){
+      var t = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .cs-hero { padding: 150px 0 24px; }
+    .cs-hero h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(38px, 6vw, 64px); line-height: 1.06; color: var(--text-hero); margin: 16px 0 22px; letter-spacing: -0.02em; }
+    .cs-lede { font-size: 17px; color: var(--text-2); max-width: 68ch; }
+    .cs-role { margin-top: 20px; font-size: 14.5px; color: var(--text-2); max-width: 68ch; }
+    .cs-role b { color: var(--text); font-weight: 600; }
+
+    .cs-rows { border-bottom: 1px solid var(--border); }
+    .cs-row { border-top: 1px solid var(--border); padding: 26px 0; display: grid; grid-template-columns: 72px 220px 1fr; gap: 20px; align-items: start; }
+    .cs-row-num { font-family: var(--font-mono); font-size: 13px; color: var(--text-3); padding-top: 3px; }
+    .cs-row-name { font-family: var(--font-display); font-size: 19px; font-weight: 600; color: var(--text-hero); }
+    .cs-row-body p { font-size: 14.5px; color: var(--text-2); margin: 0 0 8px; }
+    .cs-row-body p:last-child { margin-bottom: 0; }
+    .cs-row-body .why { color: var(--text); }
+    .cs-row-body code { font-family: var(--font-mono); font-size: 12.5px; color: var(--text); border: 1px solid var(--border); padding: 1px 6px; }
+    @media (max-width: 820px) { .cs-row { grid-template-columns: 44px 1fr; } .cs-row-name { grid-column: 2; } .cs-row-body { grid-column: 2; } }
+
+    .cs-ship { border-bottom: 1px solid var(--border); }
+    .cs-ship-row { border-top: 1px solid var(--border); padding: 16px 0; display: grid; grid-template-columns: 260px 1fr; gap: 20px; font-size: 14.5px; color: var(--text-2); }
+    .cs-ship-row b { color: var(--text); font-weight: 600; font-size: 14.5px; }
+    @media (max-width: 700px) { .cs-ship-row { grid-template-columns: 1fr; gap: 4px; } }
+
+    .cs-note { margin-top: 26px; font-size: 13px; color: var(--text-3); }
+
+    /* Code: hairline box, no fill, mono at a size that survives a phone. */
+    .cs-code { margin: 18px 0 6px; border: 1px solid var(--border); overflow-x: auto; }
+    .cs-code pre { margin: 0; padding: 18px 20px; }
+    .cs-code code { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; color: var(--text-2); white-space: pre; display: block; }
+    .cs-code .c { color: var(--text-3); }
+    .cs-code .k { color: var(--text); }
+    .cs-cap { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+    .cs-after { font-size: 14.5px; color: var(--text-2); max-width: 68ch; margin-top: 12px; }
+    .cs-block { border-top: 1px solid var(--border); padding: 30px 0; }
+    .cs-block:last-child { border-bottom: 1px solid var(--border); }
+    .cs-block h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-hero); margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-logo" href="/">nahreba</a>
+      <div class="nav-links" id="nav-links">
+        <a href="/#projects" class="nav-link" data-i18n="nav.projects">Projects</a>
+        <a href="/#about" class="nav-link" data-i18n="nav.about">About</a>
+        <a href="/#stack" class="nav-link" data-i18n="nav.stack">Stack</a>
+        <a href="/#contact" class="nav-link" data-i18n="nav.contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="uk">UA</button>
+        </div>
+        <a href="Mykhailo_Nahreba_CV.pdf" class="nav-cta" target="_blank">CV</a>
+        <button class="burger" id="burger" aria-label="Toggle menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="sec cs-hero">
+      <div class="wrap">
+        <p class="label" data-i18n="pcs.kicker">Poster / Engineering case study</p>
+        <h1 data-i18n="pcs.title">A print shop file, made in a browser tab</h1>
+        <p class="cs-lede" data-i18n="pcs.lede">Pick any place on earth, choose a paper size, download a file that a printer can put on a wall. The map is drawn from raw vector tiles rather than a map library, because the output is not a map you pan around — it is a document that has to survive being scaled to a metre wide.</p>
+        <p class="cs-role" data-i18n="pcs.role"><b>My role:</b> sole engineer — data pipeline, projection, renderer, export, interface. August 2026.</p>
+      </div>
+    </section>
+
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="pcs.whyLabel">00 / Why</p>
+          <h2 data-i18n="pcs.whyT">The same poster, without the checkout</h2>
+        </div>
+        <p class="cs-lede" data-i18n="pcs.whyBody">Minimalist city map posters are a whole product category, and most of them sell a PNG for twenty to forty euros. The underlying data is OpenStreetMap, which is free and open. What is being charged for is the arrangement of it.</p>
+        <p class="cs-lede" style="margin-top:16px;" data-i18n="pcs.whyBody2">So this does the same job and gives it away, and it can afford to because nothing about it costs money to run: tiles come from a public CDN, every pixel is drawn on the visitor's machine, and the only hosting involved is a folder of static files. There is no watermark and no account, because there is nothing to protect or upsell.</p>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="pcs.archLabel">01 / Architecture</p>
+          <h2 data-i18n="pcs.archT">Four steps, no map library</h2>
+        </div>
+        <div class="cs-rows" data-reveal>
+          <div class="cs-row">
+            <span class="cs-row-num">A</span>
+            <span class="cs-row-name" data-i18n="pcs.aData">Data</span>
+            <div class="cs-row-body"><p data-i18n="pcs.aDataBody">Vector tiles fetched straight from OpenFreeMap and decoded in the browser. Roads arrive already classified and already generalised for their zoom level, so a poster of a whole city does not drown in driveways.</p></div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">B</span>
+            <span class="cs-row-name" data-i18n="pcs.aProj">Projection</span>
+            <div class="cs-row-body"><p data-i18n="pcs.aProjBody">Web Mercator by hand — four short functions. The bounding box is derived from a centre point and a width in kilometres, then a projector maps every coordinate into the poster's own pixel space.</p></div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">C</span>
+            <span class="cs-row-name" data-i18n="pcs.aRender">Renderer</span>
+            <div class="cs-row-body"><p data-i18n="pcs.aRenderBody">The poster is emitted as an SVG string. It is split into a map body and the chrome around it, because one walks tens of thousands of coordinates and the other is a handful of elements — typing a title should not re-project a city.</p></div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">D</span>
+            <span class="cs-row-name" data-i18n="pcs.aExport">Export</span>
+            <div class="cs-row-body"><p data-i18n="pcs.aExportBody">SVG is the real deliverable — a print shop scales it to any size with no loss. PNG exists alongside it, rasterised at the pixel count the chosen paper size and DPI imply.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="pcs.mapLabel">02 / How the map is built</p>
+          <h2 data-i18n="pcs.mapT">From a place name to a drawn street</h2>
+        </div>
+        <p class="cs-lede" style="margin-bottom: 8px;" data-i18n="pcs.mapSub">Four stages, and the whole chain runs client-side. The short version of each, in the code that actually does it.</p>
+
+        <div data-reveal>
+          <div class="cs-block">
+            <h3 data-i18n="pcs.m1t">1 — Pick a zoom the poster can carry</h3>
+            <p class="cs-after" data-i18n="pcs.m1b">Detail is not a setting, it is a consequence. The widest zoom whose tile count stays under a ceiling wins, so a village gets fine streets and a metropolis gets arterials, without anyone choosing.</p>
+            <p class="cs-cap" style="margin-top:16px;">src/data/tiles.ts</p>
+            <div class="cs-code"><pre><code><span class="c">// Highest zoom whose tile count stays reasonable.</span>
+<span class="k">export function</span> zoomFor(bbox: Bbox): number {
+  <span class="k">for</span> (<span class="k">let</span> z = MAX_ZOOM; z &gt;= 8; z--) {
+    <span class="k">const</span> r = tileRange(bbox, z)
+    <span class="k">const</span> count = (r.maxX - r.minX + 1) * (r.maxY - r.minY + 1)
+    <span class="k">if</span> (count &lt;= MAX_TILES) <span class="k">return</span> z
+  }
+  <span class="k">return</span> 8
+}</code></pre></div>
+          </div>
+
+          <div class="cs-block">
+            <h3 data-i18n="pcs.m2t">2 — Fetch the tiles in parallel</h3>
+            <p class="cs-after" data-i18n="pcs.m2b">Every tile in range is requested at once rather than in sequence, and the whole batch carries an AbortSignal — dragging the map cancels the previous request set instead of racing it.</p>
+            <p class="cs-cap" style="margin-top:16px;">src/data/tiles.ts</p>
+            <div class="cs-code"><pre><code><span class="k">const</span> z = zoomFor(bbox)
+<span class="k">const</span> range = tileRange(bbox, z)
+<span class="k">const</span> jobs: Promise&lt;VectorTile | null&gt;[] = []
+
+<span class="k">for</span> (<span class="k">let</span> x = range.minX; x &lt;= range.maxX; x++)
+  <span class="k">for</span> (<span class="k">let</span> y = range.minY; y &lt;= range.maxY; y++)
+    jobs.push(fetchTile(z, x, y, signal))
+
+<span class="k">const</span> tiles = <span class="k">await</span> Promise.all(jobs)</code></pre></div>
+          </div>
+
+          <div class="cs-block">
+            <h3 data-i18n="pcs.m3t">3 — Project coordinates into the page</h3>
+            <p class="cs-after" data-i18n="pcs.m3b">Web Mercator written out rather than imported. The projector is built once per render and closes over the bounding box, so drawing a line is a pair of multiplications and nothing else.</p>
+            <p class="cs-cap" style="margin-top:16px;">src/data/geometry.ts</p>
+            <div class="cs-code"><pre><code><span class="k">export function</span> lonToX(lon: number) { <span class="k">return</span> (lon + 180) / 360 }
+
+<span class="k">export function</span> latToY(lat: number) {
+  <span class="k">const</span> s = Math.sin((lat * Math.PI) / 180)
+  <span class="k">return</span> 0.5 - Math.log((1 + s) / (1 - s)) / (4 * Math.PI)
+}
+
+<span class="c">// One closure per render; every point goes through this.</span>
+<span class="k">export function</span> projector(bbox: Bbox, width: number, height: number) {
+  <span class="k">const</span> x0 = lonToX(bbox.west),  xSpan = lonToX(bbox.east) - x0
+  <span class="k">const</span> y0 = latToY(bbox.north), ySpan = latToY(bbox.south) - y0
+
+  <span class="k">return</span> (lat: number, lon: number): [number, number] =&gt; [
+    ((lonToX(lon) - x0) / xSpan) * width,
+    ((latToY(lat) - y0) / ySpan) * height,
+  ]
+}</code></pre></div>
+          </div>
+
+          <div class="cs-block">
+            <h3 data-i18n="pcs.m4t">4 — Hand over a file, not a screenshot</h3>
+            <p class="cs-after" data-i18n="pcs.m4b">SVG goes straight out as a blob. PNG is rasterised at the size the physical format implies, so a 50×70 cm poster at 300 DPI comes out at the pixel count a printer expects rather than whatever the screen happened to be.</p>
+            <p class="cs-cap" style="margin-top:16px;">src/poster/export.ts</p>
+            <div class="cs-code"><pre><code><span class="c">// Physical size decides the pixels, not the viewport.</span>
+<span class="k">const</span> pxPerMm = dpi / 25.4
+<span class="k">const</span> width  = Math.round(widthMm  * pxPerMm)
+<span class="k">const</span> height = Math.round(heightMm * pxPerMm)
+
+<span class="k">const</span> image = <span class="k">new</span> Image()
+image.src = URL.createObjectURL(
+  <span class="k">new</span> Blob([svg], { type: <span class="c">'image/svg+xml;charset=utf-8'</span> }),
+)</code></pre></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="pcs.decLabel">03 / Decisions</p>
+          <h2 data-i18n="pcs.decT">Decisions that mattered</h2>
+        </div>
+        <div class="cs-rows" data-reveal>
+          <div class="cs-row">
+            <span class="cs-row-num">01</span>
+            <span class="cs-row-name" data-i18n="pcs.d1t">Vector tiles, not Overpass</span>
+            <div class="cs-row-body">
+              <p data-i18n="pcs.d1b">The obvious source for OpenStreetMap geometry is an Overpass query. It was rejected for three reasons that all bite the same user: a shared free endpoint queues under load, the response is raw and ungeneralised, and it can rate-limit somebody in the middle of an edit. Tiles come off a CDN in milliseconds and arrive pre-thinned per zoom.</p>
+              <p class="why" data-i18n="pcs.d1w">Why it matters: the cost is that detail is whatever the tile schema decided — which, for something meant to be looked at rather than navigated by, is the right trade.</p>
+            </div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">02</span>
+            <span class="cs-row-name" data-i18n="pcs.d2t">SVG as the product</span>
+            <div class="cs-row-body">
+              <p data-i18n="pcs.d2b">Most tools in this category hand back a raster at a fixed size. Here the document is vector all the way through — the renderer emits an SVG string and the download is that string. Nothing is ever rasterised unless the visitor asks for a PNG.</p>
+              <p class="why" data-i18n="pcs.d2w">Why it matters: the same file works as a phone wallpaper and as a metre-wide print, and a print shop can open it without asking for a bigger export.</p>
+            </div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">03</span>
+            <span class="cs-row-name" data-i18n="pcs.d3t">Two documents, not one</span>
+            <div class="cs-row-body">
+              <p data-i18n="pcs.d3b">The map body and the chrome around it — title, subtitle, coordinates, frame — are rendered as separate fragments with their own ids. Editing text swaps only the chrome.</p>
+              <p class="why" data-i18n="pcs.d3w">Why it matters: typing in the title field stays instant on a large city, because the tens of thousands of projected points underneath are never touched.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="pcs.shipLabel">04 / Shipped</p>
+          <h2 data-i18n="pcs.shipT">What is in the product</h2>
+        </div>
+        <div class="cs-ship" data-reveal>
+          <div class="cs-ship-row"><b data-i18n="pcs.f1">Any place</b><span data-i18n="pcs.f1b">Search by name or drop a pin, then set the width of the frame in kilometres rather than by fighting a zoom slider.</span></div>
+          <div class="cs-ship-row"><b data-i18n="pcs.f2">Paper sizes</b><span data-i18n="pcs.f2b">Standard print formats with the aspect ratio locked to the paper, so what is composed on screen is what gets cut.</span></div>
+          <div class="cs-ship-row"><b data-i18n="pcs.f3">Styling</b><span data-i18n="pcs.f3b">Themes, road weighting by class, separate treatment for open sea and inland water, optional frame and coordinates.</span></div>
+          <div class="cs-ship-row"><b data-i18n="pcs.f4">Export</b><span data-i18n="pcs.f4b">Vector SVG, or PNG at a chosen DPI. No watermark, no account, no export limit.</span></div>
+        </div>
+        <p class="cs-note" data-i18n="pcs.shipNote">Attribution to OpenStreetMap is baked into the poster itself rather than the page, because the file is what leaves the site.</p>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="pcs.tryLabel">05 / Try it</p>
+          <h2 data-i18n="pcs.tryT">Make one and print it</h2>
+        </div>
+        <p class="cs-lede" data-i18n="pcs.tryBody">Pick a place that means something, set the frame, download the SVG. Nothing to sign up for.</p>
+        <div class="proj-links" style="margin-top: 26px;">
+          <a href="https://uz-or.com/Poster/" target="_blank" rel="noopener" data-i18n="common.website">Website</a>
+          <a href="https://github.com/uzorgame/Poster" target="_blank" rel="noopener">GitHub</a>
+          <a href="/#projects" data-i18n="common.back">Back</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <p class="footer-col-title">Navigate</p>
+          <a href="/#projects" data-i18n="nav.projects">Projects</a>
+          <a href="/#about" data-i18n="nav.about">About</a>
+          <a href="/#stack" data-i18n="nav.stack">Stack</a>
+          <a href="/#contact" data-i18n="nav.contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Connect</p>
+          <a href="https://github.com/uzorgame" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.instagram.com/nahrebam?igsh=b3RrdzY2M2E1emh3" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://t.me/uzormn" target="_blank" rel="noopener">Telegram</a>
+          <a href="mailto:NagrebaMM@gmail.com">Email</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Info</p>
+          <span>Bratislava, Slovakia</span>
+          <a href="Mykhailo_Nahreba_CV.pdf" target="_blank">Download CV</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-logo">nahreba</span>
+        <span class="footer-copy" data-i18n="footer.text">&copy; 2026 Nahreba Mykhailo. Built with precision.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-head">
+      <h2 class="modal-title" id="modal-title">Privacy Policy</h2>
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-body"><p>Loading&hellip;</p></div>
+  </div>
+
+  <div class="theme-switcher" id="theme-switcher">
+    <button class="theme-btn" data-theme="light">Light</button>
+    <button class="theme-btn" data-theme="dark">Dark</button>
+  </div>
+
+  <script src="js/lenis.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
