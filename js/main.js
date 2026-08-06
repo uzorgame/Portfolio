@@ -108,7 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     requestAnimationFrame(() => {
       if (lenis) {
-        lenis.scrollTo(top, { duration: 1.2 });
+        // force:true is the part that matters. Lenis drops a scrollTo whenever the
+        // instance is stopped, and the mobile menu stops it while open — the exact
+        // window in which these links are clicked. Closing first is not enough on
+        // its own, because start() does not take effect until the next tick.
+        lenis.scrollTo(top, { duration: 1.2, force: true });
       } else {
         window.scrollTo({ top, behavior: 'smooth' });
       }
