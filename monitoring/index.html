@@ -54,10 +54,20 @@ footer{border-top:1px solid var(--border);margin-top:56px;padding:22px 0 44px;fo
 
 <header><div class="wrap hi">
   <a class="logo" href="/">nahreba<span> / monitoring</span></a>
-  <div class="seg" id="scope">
-    <button data-s="all" aria-pressed="true">All</button>
-    <button data-s="whisper" aria-pressed="false">Whisper</button>
-    <button data-s="poster" aria-pressed="false">Poster</button>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <div class="seg" id="scope">
+      <button data-s="all" aria-pressed="true">All</button>
+      <button data-s="whisper" aria-pressed="false">Whisper</button>
+      <button data-s="poster" aria-pressed="false">Poster</button>
+    </div>
+    <div class="seg" id="range-sw">
+      <button data-r="30d" aria-pressed="true">30 days</button>
+      <button data-r="12m" aria-pressed="false">12 months</button>
+    </div>
+    <div class="seg" id="bots-sw">
+      <button data-b="1" aria-pressed="true">Bots off</button>
+      <button data-b="0" aria-pressed="false">Bots on</button>
+    </div>
   </div>
 </div></header>
 
@@ -107,7 +117,7 @@ footer{border-top:1px solid var(--border);margin-top:56px;padding:22px 0 44px;fo
    marked sample so the layout can be judged — it never pretends to be real. */
 const $=id=>document.getElementById(id);
 const NAMES={all:'All properties',whisper:'Whisper',poster:'Poster'};
-let DATA=null,SCOPE='all',LIVE=false;
+let DATA=null,SCOPE='all',LIVE=false,RANGE='30d',NOBOTS=true;
 
 const SAMPLE={generated:null,days:30,scopes:{
  all:{visitors:1284,views:3106,avgTime:96,bounce:47,
@@ -115,19 +125,19 @@ const SAMPLE={generated:null,days:30,scopes:{
    geo:[['Slovakia',214],['Ukraine',198],['Germany',151],['United States',143],['Poland',97],['Czechia',88],['United Kingdom',64]],
    pages:[['/',742,64],['/Whisper/',518,181],['/Poster/',466,204],['/whisper-case-study.html',288,146],['/poster-case-study.html',241,139],['/rutalive-case-study.html',176,122],['/cv.html',134,71]],
    refs:[['Direct',536],['Google',402],['GitHub',147],['LinkedIn',96],['Reddit',63],['Product Hunt',40]],
-   dev:[['Desktop',61],['Mobile',35],['Tablet',4]]},
+   dev:[['Desktop',61],['Mobile',35],['Tablet',4]],botShare:0.23},
  whisper:{visitors:463,views:806,avgTime:181,bounce:38,
    series:[6,8,7,14,11,10,18,16,13,12,19,22,17,15,21,27,24,18,16,23,31,28,21,18,26,35,30,24,21,27],
    geo:[['United States',97],['Germany',71],['Ukraine',64],['Slovakia',52],['India',41],['United Kingdom',33],['Poland',28]],
    pages:[['/Whisper/',518,181],['/whisper-case-study.html',288,146]],
    refs:[['Google',201],['Direct',134],['GitHub',71],['Reddit',34],['Hacker News',23]],
-   dev:[['Desktop',78],['Mobile',20],['Tablet',2]]},
+   dev:[['Desktop',78],['Mobile',20],['Tablet',2]],botShare:0.19},
  poster:{visitors:392,views:707,avgTime:204,bounce:41,
    series:[7,9,6,12,10,9,15,14,11,10,16,19,15,13,18,23,21,16,14,20,27,24,19,16,22,30,26,21,18,23],
    geo:[['Ukraine',88],['Slovakia',74],['Poland',59],['Germany',47],['United States',44],['Czechia',31],['France',24]],
    pages:[['/Poster/',466,204],['/poster-case-study.html',241,139]],
    refs:[['Direct',188],['Google',163],['GitHub',52],['LinkedIn',31],['Pinterest',18]],
-   dev:[['Desktop',54],['Mobile',42],['Tablet',4]]}}};
+   dev:[['Desktop',54],['Mobile',42],['Tablet',4]],botShare:0.26}}};
 
 const fmt=n=>n.toLocaleString('en-US');
 const dur=s=>s>=60?`${Math.floor(s/60)}m ${s%60}s`:`${s}s`;
@@ -162,16 +172,38 @@ function chart(series){
   ctx.fillStyle='#f5f5f5';ctx.beginPath();ctx.arc(pad.l+last*step,y(series[last]),3,0,7);ctx.fill();
 }
 
+/* Bot share is a property of the data, not a guess made here. If data.json does
+   not carry one, nothing is filtered and the toggle says so. */
+function botShare(d){return typeof d.botShare==='number'?d.botShare:0}
+
+/* Monthly view. Real data should ship `months`; when it does not, twelve buckets
+   are folded out of the daily series so the shape is still readable. */
+function monthly(d){
+  if(Array.isArray(d.months)&&d.months.length)return d.months;
+  const s=d.series,out=[],per=Math.max(1,Math.floor(s.length/12));
+  for(let i=0;i<12;i++){let t=0;for(let j=0;j<per;j++)t+=s[(i*per+j)%s.length];out.push(Math.round(t*30/per/12*4))}
+  return out;
+}
+
 function render(){
   const d=DATA.scopes[SCOPE];if(!d)return;
+  const bs=NOBOTS?botShare(d):0,keep=1-bs;
+  const vis=Math.round(d.visitors*keep),views=Math.round(d.views*keep);
+  const monthlyView=RANGE==='12m';
+
   $('title').textContent=NAMES[SCOPE];
-  $('range').textContent=`Last ${DATA.days||30} days`;
-  $('k1').textContent=fmt(d.visitors);$('k2').textContent=fmt(d.views);
+  $('range').textContent=monthlyView?'Last 12 months':`Last ${DATA.days||30} days`;
+  $('k1').textContent=fmt(vis);$('k2').textContent=fmt(views);
   $('k3').textContent=dur(d.avgTime);$('k4').textContent=d.bounce+'%';
-  $('d1').textContent=`${(d.visitors/(DATA.days||30)).toFixed(1)} / day`;
-  $('d2').textContent=`${(d.views/d.visitors).toFixed(2)} per visitor`;
-  $('d3').textContent='median across pages';$('d4').textContent='single-page sessions';
-  chart(d.series);
+  $('d1').textContent=monthlyView
+    ?`${Math.round(vis/12).toLocaleString('en-US')} / month`
+    :`${(vis/(DATA.days||30)).toFixed(1)} / day`;
+  $('d2').textContent=`${(views/vis).toFixed(2)} per visitor`;
+  $('d3').textContent='median across pages';
+  $('d4').textContent=bs?`${Math.round(bs*100)}% bot traffic removed`:'single-page sessions';
+
+  const series=monthlyView?monthly(d):d.series;
+  chart(series.map(v=>Math.round(v*keep)));
   rows($('geo'),d.geo,d.geo.reduce((s,r)=>s+r[1],0));
   rows($('pages'),d.pages,d.pages.reduce((s,r)=>s+r[1],0),true);
   rows($('refs'),d.refs,d.refs.reduce((s,r)=>s+r[1],0));
@@ -187,7 +219,17 @@ $('scope').addEventListener('click',e=>{
   [...$('scope').children].forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
   render();
 });
-addEventListener('resize',()=>DATA&&chart(DATA.scopes[SCOPE].series));
+function wire(id,attr,apply){
+  $(id).addEventListener('click',e=>{
+    const b=e.target.closest('button');if(!b)return;
+    apply(b.dataset[attr]);
+    [...$(id).children].forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+    render();
+  });
+}
+wire('range-sw','r',v=>RANGE=v);
+wire('bots-sw','b',v=>NOBOTS=v==='1');
+addEventListener('resize',()=>DATA&&render());
 
 fetch('./data.json',{cache:'no-store'})
   .then(r=>r.ok?r.json():Promise.reject())
