@@ -579,7 +579,12 @@ h2 {
 /* Timeline */
 .timeline {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* One column per entry, however many there are. A fixed four left the row
+     stopping halfway across once there were two; `auto-fit` with a zero
+     minimum fixes the look but generates a thousand empty tracks to do it.
+     Flowing into columns creates exactly as many as there are children. */
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   gap: 0;
   margin-top: 56px;
   border-top: 1px solid var(--border);
@@ -591,7 +596,6 @@ h2 {
 }
 .timeline-item:first-child { padding-left: 0; }
 .timeline-item:last-child {
-  grid-column: span 2;
   border-right: none;
   padding-right: 0;
 }
@@ -880,14 +884,9 @@ h2 {
   .about-detail { padding: 20px 28px; }
   .about-detail:nth-child(2) { border-right: none; padding-right: 0; }
   .about-detail:nth-child(3) { padding-left: 0; }
-  .timeline { grid-template-columns: repeat(2, 1fr); }
+  /* Two entries fit side by side down to here; the rules that made a third
+     wrap onto its own row went with the third entry. */
   .timeline-item { padding: 24px 28px 8px; }
-  .timeline-item:nth-child(2) { border-right: none; padding-right: 0; }
-  .timeline-item:last-child {
-    grid-column: span 2;
-    padding-left: 0;
-    border-top: 1px solid var(--border);
-  }
   .timeline-year { font-size: 40px; }
   .timeline-text { max-width: 36ch; }
   .stack-row { grid-template-columns: 36px 1fr 32px; }
@@ -908,11 +907,10 @@ h2 {
   .proj-head { flex-wrap: wrap; }
   .about-details { grid-template-columns: 1fr; }
   .about-detail { border-right: none !important; padding: 16px 0 !important; border-bottom: 1px solid var(--border); }
-  .timeline { grid-template-columns: 1fr; }
-  .timeline-item,
-  .timeline-item:nth-child(2),
-  .timeline-item:last-child {
-    grid-column: auto;
+  /* Stacked on a phone, with the divider turned through ninety degrees so the
+     entries still read as one sequence rather than two loose blocks. */
+  .timeline { grid-auto-flow: row; grid-auto-columns: auto; }
+  .timeline-item {
     border-right: none;
     border-top: 1px solid var(--border);
     padding: 20px 0 4px;
