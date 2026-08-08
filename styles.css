@@ -616,6 +616,17 @@ h2 {
   max-width: 30ch;
 }
 
+/* The product names lift out of the sentence around them.
+   Each year now carries several projects in one paragraph, and at a single
+   muted grey the names disappear into the connective tissue — you have to read
+   the whole line to find out what was actually shipped. Full-strength ink on
+   the names and muted grey on everything else lets the eye pick out the four
+   things that matter before reading a word. */
+.timeline-text b {
+  color: var(--text);
+  font-weight: 500;
+}
+
 /* ═══ STACK GRID ═══ */
 .stack-grid { display: flex; flex-direction: column; }
 
