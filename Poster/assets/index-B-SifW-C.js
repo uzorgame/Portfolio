@@ -81,7 +81,16 @@
     </section>
 
     <footer class="panel-foot">
-      <span>Built by <a href="https://uz-or.com" target="_blank" rel="noopener">Nahreba Mykhailo</a></span>
+      <a class="author" href="https://uz-or.com/" target="_blank" rel="noopener">
+        <span class="author-ico">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" fill="#0a0a0a"/><polygon fill="#fff" points="12,52 12,12 24,12 40,36 40,12 52,12 52,52 40,52 24,28 24,52"/></svg>
+        </span>
+        <span class="author-txt">
+          <b>Mykhailo Nahreba</b>
+          <em>Author · see the portfolio</em>
+        </span>
+        <svg class="author-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8.5 7H17v8.5"/></svg>
+      </a>
       <span>Map data © OpenStreetMap contributors. Open source.</span>
     </footer>
   `}function k0(O){return O.replace(/"/g,"&quot;")}async function R0(O,L){const X=new URL("https://nominatim.openstreetmap.org/search");X.searchParams.set("q",O),X.searchParams.set("format","jsonv2"),X.searchParams.set("limit","6"),X.searchParams.set("addressdetails","1"),X.searchParams.set("accept-language","en");const ie=await fetch(X,{signal:L,headers:{Accept:"application/json"}});if(!ie.ok)throw new Error("Search failed");return(await ie.json()).map(oe=>({name:oe.display_name,title:F0(oe),center:{lat:Number(oe.lat),lon:Number(oe.lon)}}))}function F0(O){const L=O.address??{};return O.name||L.city||L.town||L.village||L.municipality||L.county||O.display_name.split(",")[0]}function L0(O){return O&&O.__esModule&&Object.prototype.hasOwnProperty.call(O,"default")?O.default:O}var Zu={exports:{}};/**
