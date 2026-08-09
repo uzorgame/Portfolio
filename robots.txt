@@ -3,4 +3,3 @@ User-agent: *
 Allow: /
 
 Sitemap: https://uz-or.com/sitemap.xml
-Sitemap: https://uz-or.com/quirePDF/sitemap.xml
