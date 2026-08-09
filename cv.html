@@ -248,7 +248,7 @@
   <div class="page">
     <header>
       <h1>Mykhailo Nahreba</h1>
-      <p class="title">Full-Stack Developer</p>
+      <p class="title">Product Engineer &mdash; Full-Stack</p>
       <div class="contact">
         <a href="mailto:nagrebamm@gmail.com">nagrebamm@gmail.com</a>
         <span class="sep">&middot;</span>
@@ -264,26 +264,20 @@
 
     <section>
       <h2>Summary</h2>
-      <p class="summary">Full-stack developer who shipped 5 products across 4 platforms (Web, iOS, Android, Windows) in under a year. Co-founder of RutaLive, a multi-tenant courier logistics SaaS serving the US and Canadian markets. Owns the full product lifecycle from design and architecture through deployment and live operations.</p>
+      <p class="summary">Product engineer who ships complete products end to end &mdash; eight across web, iOS, Android and Windows in under a year, built solo from design to live operations. Co-founder and active developer of RutaLive, a courier-logistics SaaS in production against Onfleet and Track-POD. Three of the eight run entirely in the browser, with no backend at all.</p>
     </section>
 
     <section>
       <h2>Technical Skills</h2>
       <dl class="skills">
         <dt>Languages</dt>
-        <dd>JavaScript, Dart, HTML, CSS</dd>
-        <dt>Frontend</dt>
-        <dd>React 18, Vite, Three.js, WebGL</dd>
+        <dd>TypeScript, JavaScript, Dart, HTML/CSS</dd>
+        <dt>Web</dt>
+        <dd>React&nbsp;18, Vite, Astro, Canvas, WebGPU, WebAssembly, MapLibre&nbsp;/&nbsp;Mapbox GL</dd>
         <dt>Mobile</dt>
         <dd>Flutter, Firebase, App Store &amp; Google Play publishing</dd>
-        <dt>Backend</dt>
-        <dd>Node.js, Express.js, Socket.io, REST APIs</dd>
-        <dt>Database</dt>
-        <dd>MongoDB</dd>
-        <dt>Infrastructure</dt>
-        <dd>Docker, Nginx, Git, CI/CD</dd>
-        <dt>Integrations</dt>
-        <dd>Mapbox, QuickBooks API, Lemon Squeezy, Astro</dd>
+        <dt>Back end &amp; infra</dt>
+        <dd>Node.js, Express, Socket.io, MongoDB, SQLite, IndexedDB, Docker, Nginx, Codemagic CI, QuickBooks &amp; Lemon Squeezy APIs</dd>
       </dl>
     </section>
 
@@ -292,7 +286,7 @@
       <div class="job">
         <div class="job-row">
           <span class="job-title">Co-Founder &amp; Full-Stack Developer</span>
-          <span class="job-date">Nov 2025 &ndash; Present</span>
+          <span class="job-date">Dec 2025 &ndash; Present</span>
         </div>
         <p class="job-company">RutaLive &middot; rutalive.com &middot; Bratislava, Slovakia</p>
         <p class="job-tagline">Multi-tenant courier logistics SaaS competing with Onfleet, Track-POD, and Digital Waybill.</p>
@@ -302,21 +296,44 @@
           <li>Built proof-of-delivery system supporting photo capture, digital signature, and QR-code verification at drop-off</li>
           <li>Developed a delivery-zone engine with custom pricing rules, auto-dispatch logic, and public tracking links for end-recipients</li>
           <li>Integrated QuickBooks for automated invoicing and Lemon Squeezy for subscription billing, reducing manual finance work</li>
-          <li>Containerized the stack with Docker; deployed and managed production infrastructure behind Nginx reverse proxy</li>
-          <li>Published and maintained live listings on both Apple App Store and Google Play</li>
+          <li>Containerized the stack with Docker and run production behind Nginx; published and maintain the live listings on both the App Store and Google Play</li>
         </ul>
       </div>
     </section>
 
     <section>
-      <h2>Projects</h2>
+      <h2>Shipped Products</h2>
+
+      <div class="project">
+        <div class="proj-row">
+          <span class="proj-name">QuirePDF</span>
+          <span class="proj-meta">TypeScript, pdf.js, pdf-lib &middot; Aug 2026</span>
+        </div>
+        <p class="proj-desc">PDF editor, converter and form library running entirely in the browser. Edits the text a document already contains &mdash; paragraphs are found in its text layer and reopened in its own embedded typeface. 74 conversions, 105 fillable US forms, no server.</p>
+      </div>
+
+      <div class="project">
+        <div class="proj-row">
+          <span class="proj-name">Whisper</span>
+          <span class="proj-meta">TypeScript, WebGPU, ONNX Runtime &middot; Aug 2026</span>
+        </div>
+        <p class="proj-desc">Speech transcription on the visitor&rsquo;s own graphics card through WebGPU, with a WebAssembly fallback; audio never leaves the machine. Caching the weights in IndexedDB took a repeat run of the largest model from 143&nbsp;s to 12&nbsp;s.</p>
+      </div>
+
+      <div class="project">
+        <div class="proj-row">
+          <span class="proj-name">Poster</span>
+          <span class="proj-meta">TypeScript, MapLibre GL, SVG &middot; Aug 2026</span>
+        </div>
+        <p class="proj-desc">Print-ready minimalist city-map posters made in a browser tab. Vector tiles are decoded on the client and drawn straight to SVG, so the file survives being scaled to a metre wide. Free, no watermark, no account.</p>
+      </div>
 
       <div class="project">
         <div class="proj-row">
           <span class="proj-name">Kora Wallet</span>
           <span class="proj-meta">Flutter, Dart, Multi-chain &middot; Feb 2026</span>
         </div>
-        <p class="proj-desc">Open-source non-custodial multi-chain crypto wallet (BTC, ETH, SOL, TRX, BNB, LTC, DOGE). QR scan, address book, PIN lock, and a live market-tracking desktop widget. Windows &amp; Android.</p>
+        <p class="proj-desc">Open-source non-custodial multi-chain wallet (BTC, ETH, SOL, TRX, BNB, LTC, DOGE): QR scan, address book, PIN lock, live market widget. Windows and Android.</p>
       </div>
 
       <div class="project">
@@ -324,7 +341,7 @@
           <span class="proj-name">Retro Arcade</span>
           <span class="proj-meta">Flutter, Dart &middot; Oct&ndash;Nov 2025</span>
         </div>
-        <p class="proj-desc">Collection of classic arcade mini-games with pixel-perfect graphics, retro sound, and haptic feedback. Published on Google Play.</p>
+        <p class="proj-desc">Classic arcade mini-games with pixel-perfect graphics, retro sound and haptic feedback. On Google Play.</p>
       </div>
 
       <div class="project">
@@ -332,7 +349,7 @@
           <span class="proj-name">Currency Converter+</span>
           <span class="proj-meta">Flutter, Dart, JS &middot; Oct 2025</span>
         </div>
-        <p class="proj-desc">Offline-first currency converter with daily rate updates, 5-year historical charts, and smart 24-hour caching. Google Play + companion web app.</p>
+        <p class="proj-desc">Offline-first converter: daily rates, five-year charts, 24-hour caching. Google Play and a companion web app.</p>
       </div>
 
       <div class="project">
@@ -340,7 +357,7 @@
           <span class="proj-name">Sudoku</span>
           <span class="proj-meta">Flutter, Dart &middot; Sep&ndash;Oct 2025</span>
         </div>
-        <p class="proj-desc">Minimalist Sudoku with 4 game modes, 5 difficulty levels, and smart pencil marks. Published on Google Play.</p>
+        <p class="proj-desc">Minimalist Sudoku: four modes, five difficulty levels, smart pencil marks. On Google Play.</p>
       </div>
     </section>
 
