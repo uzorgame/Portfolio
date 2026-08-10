@@ -1,9 +1,9 @@
 /* One sitemap for the whole domain.
  *
- * uz-or.com serves the portfolio at the root and three apps in folders under
- * it, and search engines want one file per host, not one per project. The app
- * generates its own list as part of its build; this reads that list, rewrites
- * nothing, and prepends the pages the portfolio owns.
+ * uz-or.com serves the portfolio at the root and several apps in folders under
+ * it, and search engines want one file per host, not one per project. An app
+ * that has more than one page generates its own list as part of its build; this
+ * reads those lists, rewrites nothing, and prepends the pages the portfolio owns.
  *
  * It exists because the merge used to be done by hand, and a hand-merged
  * sitemap goes stale the first time a page is added or removed — which is
@@ -12,7 +12,10 @@ import {readFileSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 
 const ROOT = 'C:/Work/Active/Portfolio';
-const APP = 'C:/Work/Active/QuirePDF/sitemap.xml';
+const APPS = [
+  ['QuirePDF', 'C:/Work/Active/QuirePDF/sitemap.xml'],
+  ['MorseWorld', 'C:/Work/Active/morseworld/dist/sitemap.xml'],
+];
 const stamp = new Date().toISOString().slice(0, 10);
 
 /* Pages the portfolio itself serves. The apps in folders are listed by their
@@ -27,13 +30,13 @@ const OWN = [
   ['morseworld-case-study.html', 0.7, 'monthly'],
   ['Poster/', 0.8, 'monthly'],
   ['Whisper/', 0.8, 'monthly'],
-  /* MorseWorld routes on the hash, so only the entry point is a URL a crawler
-     can fetch. There is nothing else of it to list. */
-  ['MorseWorld/', 0.8, 'monthly'],
 ];
 
-const app = [...readFileSync(APP, 'utf8').matchAll(/<url>[\s\S]*?<\/url>/g)].map(m => m[0]);
-if (!app.length) throw new Error('the app sitemap is empty — run its build first');
+const app = APPS.flatMap(([name, path]) => {
+  const urls = [...readFileSync(path, 'utf8').matchAll(/<url>[\s\S]*?<\/url>/g)].map(m => m[0]);
+  if (!urls.length) throw new Error(`the ${name} sitemap is empty — run its build first`);
+  return urls;
+});
 
 const own = OWN.map(([path, priority, freq]) =>
   `  <url><loc>https://uz-or.com/${path}</loc><lastmod>${stamp}</lastmod>` +
@@ -49,4 +52,6 @@ const xml = [
 ].join('\n');
 
 writeFileSync(join(ROOT, 'sitemap.xml'), xml, 'utf8');
-console.log(`sitemap.xml — ${own.length + app.length} URLs (${own.length} portfolio, ${app.length} QuirePDF)`);
+const counts = APPS.map(([name, path]) =>
+  `${[...readFileSync(path, 'utf8').matchAll(/<url>/g)].length} ${name}`).join(', ');
+console.log(`sitemap.xml — ${own.length + app.length} URLs (${own.length} portfolio, ${counts})`);
