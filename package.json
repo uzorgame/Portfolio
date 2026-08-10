@@ -1,0 +1,13 @@
+{
+  "name": "uz-or-portfolio",
+  "private": true,
+  "type": "module",
+  "description": "Tooling for the uz-or.com portfolio. The site itself is static and needs no build.",
+  "scripts": {
+    "og": "node tools/og-card.mjs",
+    "sitemap": "node tools/sitemap.mjs"
+  },
+  "devDependencies": {
+    "@napi-rs/canvas": "^0.1.68"
+  }
+}

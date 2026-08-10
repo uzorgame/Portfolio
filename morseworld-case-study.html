@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXXYPLC4ZM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    // Consent Mode v2. Nothing here is used for advertising, so the ad signals
+    // stay denied permanently; only the analytics cookie is set.
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+    gtag('js', new Date());
+    gtag('config', 'G-HXXYPLC4ZM');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MorseWorld — Engineering Case Study | Mykhailo Nahreba</title>
+  <meta name="description" content="How MorseWorld reads a straight key: thresholds derived from the chosen speed instead of fitted to the strokes, presses timed from the event rather than the handler, and scoring by alignment instead of position.">
+  <link rel="canonical" href="https://uz-or.com/morseworld-case-study.html">
+  <meta property="og:title" content="MorseWorld — Engineering Case Study">
+  <meta property="og:description" content="Four ways a hand-keyed Morse decoder goes wrong, and what each one cost to fix. All client-side, no server.">
+  <meta property="og:url" content="https://uz-or.com/morseworld-case-study.html">
+  <meta property="og:image" content="https://uz-or.com/MorseWorld/og-image.png">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+
+  <script>
+    (function(){
+      var t = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .cs-hero { padding: 150px 0 24px; }
+    .cs-hero h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(38px, 6vw, 64px); line-height: 1.06; color: var(--text-hero); margin: 16px 0 22px; letter-spacing: -0.02em; }
+    .cs-lede { font-size: 17px; color: var(--text-2); max-width: 68ch; }
+    .cs-role { margin-top: 20px; font-size: 14.5px; color: var(--text-2); max-width: 68ch; }
+    .cs-role b { color: var(--text); font-weight: 600; }
+
+    .cs-rows { border-bottom: 1px solid var(--border); }
+    .cs-row { border-top: 1px solid var(--border); padding: 26px 0; display: grid; grid-template-columns: 72px 220px 1fr; gap: 20px; align-items: start; }
+    .cs-row-num { font-family: var(--font-mono); font-size: 13px; color: var(--text-3); padding-top: 3px; }
+    .cs-row-name { font-family: var(--font-display); font-size: 19px; font-weight: 600; color: var(--text-hero); }
+    .cs-row-body p { font-size: 14.5px; color: var(--text-2); margin: 0 0 8px; }
+    .cs-row-body p:last-child { margin-bottom: 0; }
+    .cs-row-body .why { color: var(--text); }
+    .cs-row-body code { font-family: var(--font-mono); font-size: 12.5px; color: var(--text); border: 1px solid var(--border); padding: 1px 6px; }
+    @media (max-width: 820px) { .cs-row { grid-template-columns: 44px 1fr; } .cs-row-name { grid-column: 2; } .cs-row-body { grid-column: 2; } }
+
+    .cs-ship { border-bottom: 1px solid var(--border); }
+    .cs-ship-row { border-top: 1px solid var(--border); padding: 16px 0; display: grid; grid-template-columns: 260px 1fr; gap: 20px; font-size: 14.5px; color: var(--text-2); }
+    .cs-ship-row b { color: var(--text); font-weight: 600; font-size: 14.5px; }
+    @media (max-width: 700px) { .cs-ship-row { grid-template-columns: 1fr; gap: 4px; } }
+
+    .cs-note { margin-top: 26px; font-size: 13px; color: var(--text-3); }
+
+    /* Code: hairline box, no fill, mono at a size that survives a phone. */
+    .cs-code { margin: 18px 0 6px; border: 1px solid var(--border); overflow-x: auto; }
+    .cs-code pre { margin: 0; padding: 18px 20px; }
+    .cs-code code { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; color: var(--text-2); white-space: pre; display: block; }
+    .cs-code .c { color: var(--text-3); }
+    .cs-code .k { color: var(--text); }
+    .cs-cap { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+    .cs-after { font-size: 14.5px; color: var(--text-2); max-width: 68ch; margin-top: 12px; }
+    .cs-block { border-top: 1px solid var(--border); padding: 30px 0; }
+    .cs-block:last-child { border-bottom: 1px solid var(--border); }
+    .cs-block h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-hero); margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-logo" href="/">nahreba</a>
+      <div class="nav-links" id="nav-links">
+        <a href="/#projects" class="nav-link" data-i18n="nav.projects">Projects</a>
+        <a href="/#about" class="nav-link" data-i18n="nav.about">About</a>
+        <a href="/#stack" class="nav-link" data-i18n="nav.stack">Stack</a>
+        <a href="/#contact" class="nav-link" data-i18n="nav.contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="uk">UA</button>
+        </div>
+        <a href="Mykhailo_Nahreba_CV.pdf" class="nav-cta" target="_blank">CV</a>
+        <button class="burger" id="burger" aria-label="Toggle menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="sec cs-hero">
+      <div class="wrap">
+        <p class="label" data-i18n="mcs.kicker">MorseWorld / Engineering case study</p>
+        <h1 data-i18n="mcs.title">Reading a hand that has no rhythm</h1>
+        <p class="cs-lede" data-i18n="mcs.lede">Translating text to Morse is a lookup table. The hard part is the other direction, from a human hand: a beginner's dot and dash differ by tens of milliseconds, and their pauses do not hold any ratio at all. This is what it took to read that reliably, in a browser tab, with no server behind it.</p>
+        <p class="cs-role" data-i18n="mcs.role"><b>My role:</b> sole engineer — timing core, key decoder, audio, lesson design, interface, both languages. August 2026.</p>
+      </div>
+    </section>
+
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="mcs.whyLabel">00 / Why</p>
+          <h2 data-i18n="mcs.whyT">A saturated niche with nothing good in it</h2>
+        </div>
+        <p class="cs-lede" data-i18n="mcs.whyBody">There are dozens of Morse translators online and almost all of them do the same three things. Competing on a feature list would be pointless. Everything that separates them sits below the feature list: whether the timing drifts at forty words per minute, whether the speaker clicks at the start of every dot, whether you can key a message by hand and see immediately how it was read.</p>
+        <p class="cs-lede" style="margin-top:16px;" data-i18n="mcs.whyBody2">So the interesting product question was not what to build but what to be honest about. The site states which code tables have been checked against a primary source and which have not, and the page for the microphone decoder says plainly that it is specified and not yet built. A tool that is trusted with timing has to be trustworthy about itself first.</p>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="mcs.archLabel">01 / Architecture</p>
+          <h2 data-i18n="mcs.archT">One representation, four sources</h2>
+        </div>
+        <div class="cs-rows" data-reveal>
+          <div class="cs-row">
+            <span class="cs-row-num">A</span>
+            <span class="cs-row-name" data-i18n="mcs.aCore">Core</span>
+            <div class="cs-row-body"><p data-i18n="mcs.aCoreBody">Everything in <code>src/core</code> imports nothing from the browser. It takes numbers and returns numbers: durations, thresholds, groupings, scores. That is what makes the timing testable in principle and identical no matter which source fed it.</p></div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">B</span>
+            <span class="cs-row-name" data-i18n="mcs.aSignal">Signal</span>
+            <div class="cs-row-body"><p data-i18n="mcs.aSignalBody">A keyboard press, a mouse, a touch and — once it exists — a microphone all reduce to the same shape: how long the key was down, how long the silence before it was. Four inputs, one decoder.</p></div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">C</span>
+            <span class="cs-row-name" data-i18n="mcs.aAudio">Audio</span>
+            <div class="cs-row-body"><p data-i18n="mcs.aAudioBody">Playback is scheduled against <code>AudioContext.currentTime</code>, not timers, so a busy main thread cannot smear the rhythm. Each tone opens and closes on a short gain ramp — without it the speaker clicks on every dot, which at twenty words per minute is a click every sixty milliseconds.</p></div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">D</span>
+            <span class="cs-row-name" data-i18n="mcs.aState">State</span>
+            <div class="cs-row-body"><p data-i18n="mcs.aStateBody">Lesson level and per-letter statistics live in <code>localStorage</code>. There is no account and no sync, because there is no backend at all — the page makes no network request once it has loaded.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="mcs.keyLabel">02 / How the key is read</p>
+          <h2 data-i18n="mcs.keyT">From a press to a letter</h2>
+        </div>
+        <p class="cs-lede" style="margin-bottom: 8px;" data-i18n="mcs.keySub">Three stages, and each one was rewritten after it failed on a real hand. The short version of each, in the code that does it.</p>
+
+        <div data-reveal>
+          <div class="cs-block">
+            <h3 data-i18n="mcs.k1t">1 — Thresholds come from the speed, not from the strokes</h3>
+            <p class="cs-after" data-i18n="mcs.k1b">The first version measured the strokes and split them into short and long by their own median. It reads well in a description and fails on the first press of the session: with one stroke recorded there is no median, the boundary collapses to zero, and every dot is reported as a dash. Deriving the boundary from the speed the person chose removes the circularity — the dot length is <code>1200 / WPM</code> by definition, and the boundary sits halfway between one unit and three.</p>
+            <p class="cs-cap" style="margin-top:16px;">src/core/keyDecoder.ts</p>
+            <div class="cs-code"><pre><code><span class="k">export function</span> unitFor(wpm: number): number {
+  <span class="k">return</span> 1200 / Math.min(WPM_MAX, Math.max(WPM_MIN, wpm))
+}
+
+<span class="k">export function</span> thresholdsFor(wpm: number): Thresholds {
+  <span class="k">const</span> unit = unitFor(wpm)
+  <span class="k">return</span> { dashAt: unit * 2, letterAt: unit * 3, wordAt: unit * 7 }
+}</code></pre></div>
+          </div>
+
+          <div class="cs-block">
+            <h3 data-i18n="mcs.k2t">2 — Time the press, not the handler</h3>
+            <p class="cs-after" data-i18n="mcs.k2b">A short dot kept reading as a dash, but only ever the first one. The cause was not the decoder: the first press of a page builds the <code>AudioContext</code>, which blocks the main thread for tens of milliseconds. The release happens on time and is handled late, so a clock read inside the handler measures the freeze as part of the press. The event's own timestamp sits on the same scale and records when the press actually happened.</p>
+            <p class="cs-cap" style="margin-top:16px;">src/components/practice/useStraightKey.ts</p>
+            <div class="cs-code"><pre><code><span class="c">// The event's timestamp, not the moment the handler got round to it.</span>
+<span class="k">const</span> press = useCallback((at?: number) =&gt; {
+  <span class="k">if</span> (downAt.current) <span class="k">return</span>
+  downAt.current = at ?? performance.now()
+  <span class="c">// ...</span>
+}, [])
+
+<span class="k">const</span> release = useCallback((at?: number) =&gt; {
+  <span class="k">if</span> (!downAt.current) <span class="k">return</span>
+  <span class="k">const</span> now = at ?? performance.now()
+  <span class="k">const</span> hold = Math.max(0, now - downAt.current)
+  <span class="k">const</span> gap = releasedAt.current
+    ? Math.max(0, downAt.current - releasedAt.current)
+    : 0
+  <span class="c">// ...</span>
+}, [])</code></pre></div>
+            <p class="cs-after" data-i18n="mcs.k2after">Verified by delivering a pre-stamped release four hundred milliseconds late: still read as a dot.</p>
+          </div>
+
+          <div class="cs-block">
+            <h3 data-i18n="mcs.k3t">3 — Composing is slower than copying, so the gaps differ</h3>
+            <p class="cs-after" data-i18n="mcs.k3b">In the sending exercise the target is on screen and the person keys it. Their characters come out right and their pauses do not: recalling the next letter takes far longer than the standard gap, so at twenty words per minute a five-hundred-millisecond pause between letters crossed the word boundary and the message fell apart into single-letter words. The fix is the Farnsworth idea applied to listening rather than sending — stretch the gaps, keep the characters — with each boundary placed at the geometric midpoint between the two gaps it separates.</p>
+            <p class="cs-cap" style="margin-top:16px;">src/core/keyDecoder.ts</p>
+            <div class="cs-code"><pre><code><span class="k">export function</span> sendingThresholds(
+  charWpm: number,
+  effectiveWpm: number,
+): Thresholds {
+  <span class="k">const</span> gaps = gapsFor(charWpm, Math.min(effectiveWpm, charWpm))
+  <span class="k">const</span> between = (a: number, b: number) =&gt; Math.sqrt(a * b)
+
+  <span class="k">return</span> {
+    dashAt: unitFor(charWpm) * 2,
+    letterAt: between(gaps.element, gaps.letter),
+    wordAt: between(gaps.letter, gaps.word),
+  }
+}</code></pre></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="mcs.decLabel">03 / Decisions</p>
+          <h2 data-i18n="mcs.decT">Decisions that mattered</h2>
+        </div>
+        <div class="cs-rows" data-reveal>
+          <div class="cs-row">
+            <span class="cs-row-num">01</span>
+            <span class="cs-row-name" data-i18n="mcs.d1t">The person sets the speed</span>
+            <div class="cs-row-body">
+              <p data-i18n="mcs.d1b">An earlier build inferred the speed from how the person was keying and adapted as it went. It was the cleverer design and it was worse: the reference moved while they were still learning to hit it, so the same hand got different readings and there was nothing stable to improve against. The speed is now a slider they own, and the decoder only ever advises — and only when the current setting would genuinely misread what was just sent.</p>
+              <p class="why" data-i18n="mcs.d1w">Why it matters: a practice tool has to be a fixed target. Adaptive timing hides the very error the learner is trying to see.</p>
+            </div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">02</span>
+            <span class="cs-row-name" data-i18n="mcs.d2t">Score by alignment, not by position</span>
+            <div class="cs-row-body">
+              <p data-i18n="mcs.d2b">Comparing the target and the attempt index by index punishes one dropped character as if every character after it were also wrong. Scoring runs a Levenshtein alignment with backtracking instead, so a miss is reported as a miss and an extra as an extra.</p>
+              <p class="why" data-i18n="mcs.d2w">Why it matters: the feedback names the actual mistake. A learner who dropped one letter is told they dropped one letter, not that the second half of the message was wrong.</p>
+            </div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">03</span>
+            <span class="cs-row-name" data-i18n="mcs.d3t">Don't grade what was never asked</span>
+            <div class="cs-row-body">
+              <p data-i18n="mcs.d3b">The sending exercise used to infer word boundaries from the pauses and mark them. But the target is known and printed on screen — the word breaks were never the exercise. They were removed from the comparison entirely rather than made more forgiving.</p>
+              <p class="why" data-i18n="mcs.d3w">Why it matters: every inferred quantity is a place to be wrong about something nobody was being tested on.</p>
+            </div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">04</span>
+            <span class="cs-row-name" data-i18n="mcs.d4t">One alphabet chosen by hand, the direction guessed</span>
+            <div class="cs-row-body">
+              <p data-i18n="mcs.d4b">Latin and Cyrillic overlap heavily by code — <code>.-</code> is both A and А — so the table cannot be determined while decoding, and it is always an explicit switch. The direction is a different matter: Morse in the text field unambiguously means a request to decode, so the site works that out itself.</p>
+              <p class="why" data-i18n="mcs.d4w">Why it matters: guessing what is ambiguous produces confident nonsense. Guessing what is not saves a click.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="mcs.shipLabel">04 / Shipped</p>
+          <h2 data-i18n="mcs.shipT">What is in the product</h2>
+        </div>
+        <div class="cs-ship" data-reveal>
+          <div class="cs-ship-row"><b data-i18n="mcs.f1">Translator</b><span data-i18n="mcs.f1b">Both directions on every keystroke, with the alphabet on an explicit switch and the direction detected. Playback at any speed and tone.</span></div>
+          <div class="cs-ship-row"><b data-i18n="mcs.f2">Sandbox</b><span data-i18n="mcs.f2b">A straight key from keyboard, mouse or touch, decoded live, with the dot, dash and gap boundaries shown in milliseconds rather than hidden.</span></div>
+          <div class="cs-ship-row"><b data-i18n="mcs.f3">Koch lessons</b><span data-i18n="mcs.f3b">Three directions — meeting a character, sending it by hand, copying it by ear — at full character speed from the first lesson, each with its own level and per-letter statistics.</span></div>
+          <div class="cs-ship-row"><b data-i18n="mcs.f4">Reading</b><span data-i18n="mcs.f4b">Public-domain excerpts instead of random letters, in both directions. Every text carries its source.</span></div>
+          <div class="cs-ship-row"><b data-i18n="mcs.f5">Two languages</b><span data-i18n="mcs.f5b">English and Ukrainian throughout. The Q-codes stay as they are on air; only their expansions are translated.</span></div>
+        </div>
+        <p class="cs-note" data-i18n="mcs.shipNote">Not in it yet: the decoder for a microphone and an audio file. The pipeline is specified down to the window size and the threshold hysteresis, and the page for it is marked as planned rather than dressed up as working. There are also no automated tests, which is the largest gap here — the key decoder was rewritten twice without one.</p>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="mcs.tryLabel">05 / Try it</p>
+          <h2 data-i18n="mcs.tryT">Send something by hand</h2>
+        </div>
+        <p class="cs-lede" data-i18n="mcs.tryBody">Open the sandbox, hold the space bar, and watch what comes back. Nothing to sign up for, and nothing leaves the tab.</p>
+        <div class="proj-links" style="margin-top: 26px;">
+          <a href="https://uz-or.com/MorseWorld/" target="_blank" rel="noopener" data-i18n="common.website">Website</a>
+          <a href="https://github.com/uzorgame/MorseWorld" target="_blank" rel="noopener">GitHub</a>
+          <a href="/#projects" data-i18n="common.back">Back</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <p class="footer-col-title">Navigate</p>
+          <a href="/#projects" data-i18n="nav.projects">Projects</a>
+          <a href="/#about" data-i18n="nav.about">About</a>
+          <a href="/#stack" data-i18n="nav.stack">Stack</a>
+          <a href="/#contact" data-i18n="nav.contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Connect</p>
+          <a href="https://github.com/uzorgame" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.instagram.com/nahrebam?igsh=b3RrdzY2M2E1emh3" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://t.me/uzormn" target="_blank" rel="noopener">Telegram</a>
+          <a href="mailto:NagrebaMM@gmail.com">Email</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Info</p>
+          <span>Bratislava, Slovakia</span>
+          <a href="Mykhailo_Nahreba_CV.pdf" target="_blank">Download CV</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-logo">nahreba</span>
+        <span class="footer-copy" data-i18n="footer.text">&copy; 2026 Nahreba Mykhailo. Built with precision.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-head">
+      <h2 class="modal-title" id="modal-title">Privacy Policy</h2>
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-body"><p>Loading&hellip;</p></div>
+  </div>
+
+  <div class="theme-switcher" id="theme-switcher">
+    <button class="theme-btn" data-theme="light">Light</button>
+    <button class="theme-btn" data-theme="dark">Dark</button>
+  </div>
+
+  <script src="js/lenis.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

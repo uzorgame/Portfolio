@@ -24,8 +24,12 @@ const OWN = [
   ['whisper-case-study.html', 0.7, 'monthly'],
   ['poster-case-study.html', 0.7, 'monthly'],
   ['quirepdf-case-study.html', 0.7, 'monthly'],
+  ['morseworld-case-study.html', 0.7, 'monthly'],
   ['Poster/', 0.8, 'monthly'],
   ['Whisper/', 0.8, 'monthly'],
+  /* MorseWorld routes on the hash, so only the entry point is a URL a crawler
+     can fetch. There is nothing else of it to list. */
+  ['MorseWorld/', 0.8, 'monthly'],
 ];
 
 const app = [...readFileSync(APP, 'utf8').matchAll(/<url>[\s\S]*?<\/url>/g)].map(m => m[0]);
