@@ -48,9 +48,26 @@
     }
 
     @media print {
+      /* The sheet, stated rather than left to the printer. Chrome's own default
+         margin puts the last line of the CV — the languages — alone on a second
+         page, and a one-line page two is worse than a slightly fuller page one.
+         Declared here rather than passed to whatever prints it, so the file that
+         `npm run cv` produces and the one a reader prints from the page are the
+         same document. */
+      @page { size: A4; margin: 7mm 12mm; }
       .page { padding: 0; max-width: none; }
+      /* Tightened by two or three points each, which is invisible on the sheet
+         and is the difference between one page and a second one carrying a single
+         line. Print only: on screen there is no page to fit inside. */
+      section { margin-bottom: 7px; }
+      h2 { margin-bottom: 5px; }
+      .project { margin-bottom: 3px; }
       .no-print { display: none !important; }
       a { color: #1a1a1a !important; }
+      /* One entry should not be split across a break. A whole section may be —
+         keeping a section together pushes the last of them onto a page of its
+         own, which is the thing being avoided in the first place. */
+      .project, .job { break-inside: avoid; }
     }
 
     /* --- Header --- */
@@ -309,7 +326,7 @@
           <span class="proj-name">MorseWorld</span>
           <span class="proj-meta">TypeScript, React, Web Audio API &middot; Aug 2026</span>
         </div>
-        <p class="proj-desc">Morse translator, straight-key sandbox and Koch-method trainer, entirely client-side. Playback is scheduled against the audio clock rather than timers, and a hand-keyed press is timed from the event rather than the handler &mdash; the whole difference between a dot and a dash is tens of milliseconds. English and Ukrainian throughout.</p>
+        <p class="proj-desc">Morse translator, straight-key sandbox and Koch-method trainer, entirely client-side. Playback is scheduled against the audio clock, and a keyed press timed from the event rather than the handler &mdash; a dot and a dash differ by tens of milliseconds. English and Ukrainian.</p>
       </div>
 
       <div class="project">
