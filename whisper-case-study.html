@@ -90,6 +90,42 @@
     .cs-block:last-child { border-bottom: 1px solid var(--border); }
     .cs-block h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-hero); margin-bottom: 10px; }
   </style>
+  <!-- The case study as an article, tied to its author and to the product it is
+       about, so the three are one graph rather than three unrelated pages. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://uz-or.com/#person",
+        "name": "Nahreba Mykhailo",
+        "url": "https://uz-or.com/",
+        "jobTitle": "Product Engineer"
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "Whisper — Engineering Case Study",
+        "description": "How Whisper was built: a speech-to-text app with no backend at all — Whisper running on the visitor's own GPU through WebGPU, with the caching and quantisation work that made it usable.",
+        "url": "https://uz-or.com/whisper-case-study.html",
+        "image": "https://uz-or.com/Whisper/og-image.png",
+        "datePublished": "2026-08-05",
+        "inLanguage": "en",
+        "author": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "publisher": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "about": {
+          "@type": "SoftwareApplication",
+          "name": "Whisper",
+          "url": "https://uz-or.com/Whisper/"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 

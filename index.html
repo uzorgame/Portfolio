@@ -58,17 +58,228 @@
 
   <link rel="stylesheet" href="styles.css">
 
+  <!-- The person, with an id so everything else on the domain can point at it
+       rather than repeat the name. A case study says "written by @id", a product
+       says "made by @id", and the graph joins up on its own. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Nahreba Mykhailo",
-    "url": "https://uz-or.com/",
-    "sameAs": ["https://github.com/uzorgame","https://www.instagram.com/nahrebam?igsh=b3RrdzY2M2E1emh3"],
-    "jobTitle": "Product Engineer",
-    "knowsAbout": ["Flutter","React","Node.js","Mobile App Development"]
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://uz-or.com/#person",
+        "name": "Nahreba Mykhailo",
+        "url": "https://uz-or.com/",
+        "sameAs": [
+          "https://github.com/uzorgame",
+          "https://www.instagram.com/nahrebam?igsh=b3RrdzY2M2E1emh3"
+        ],
+        "jobTitle": "Product Engineer",
+        "knowsAbout": [
+          "Flutter",
+          "React",
+          "Node.js",
+          "Mobile App Development"
+        ]
+      },
+      {
+        "@type": "ItemList",
+        "name": "Products by Nahreba Mykhailo",
+        "itemListOrder": "https://schema.org/ItemListUnordered",
+        "numberOfItems": 9,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "RutaLive",
+              "description": "A courier-logistics SaaS with live dispatch, route planning and public order tracking.",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web, iOS, Android, Windows",
+              "url": "https://rutalive.com",
+              "sameAs": [
+                "https://apps.apple.com/pl/app/rutalive/id6759526163",
+                "https://play.google.com/store/apps/details?id=com.ruta.app"
+              ],
+              "author": {
+                "@id": "https://uz-or.com/#person"
+              }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "MorseWorld",
+              "description": "A Morse code translator, a sandbox for a straight key, and a Koch method trainer that runs entirely in the browser.",
+              "applicationCategory": "EducationalApplication",
+              "operatingSystem": "Web browser",
+              "url": "https://uz-or.com/MorseWorld/",
+              "sameAs": [
+                "https://github.com/uzorgame/MorseWorld"
+              ],
+              "author": {
+                "@id": "https://uz-or.com/#person"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "QuirePDF",
+              "description": "A PDF editor with file converters and fillable US forms. Nothing is uploaded: every file stays in the browser.",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web browser",
+              "url": "https://uz-or.com/quirePDF/",
+              "sameAs": [
+                "https://github.com/uzorgame/QuirePDF"
+              ],
+              "author": {
+                "@id": "https://uz-or.com/#person"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "Whisper",
+              "description": "Speech transcription that runs on your own GPU through WebGPU. No upload, no account, no server.",
+              "applicationCategory": "UtilitiesApplication",
+              "operatingSystem": "Web browser",
+              "url": "https://uz-or.com/Whisper/",
+              "sameAs": [
+                "https://github.com/uzorgame/Whisper"
+              ],
+              "author": {
+                "@id": "https://uz-or.com/#person"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 5,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "Poster",
+              "description": "Minimalist city map posters made in the browser and exported as print-ready vector SVG.",
+              "applicationCategory": "DesignApplication",
+              "operatingSystem": "Web browser",
+              "url": "https://uz-or.com/Poster/",
+              "sameAs": [
+                "https://github.com/uzorgame/Poster"
+              ],
+              "author": {
+                "@id": "https://uz-or.com/#person"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 6,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "Kora Wallet",
+              "description": "A non-custodial multi-chain crypto wallet across seven networks, on mobile and Windows.",
+              "applicationCategory": "FinanceApplication",
+              "operatingSystem": "Android, Windows",
+              "downloadUrl": "https://uz-or.com/Public/kora/app/koraandroid.apk",
+              "author": {
+                "@id": "https://uz-or.com/#person"
+              }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 7,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "Retro Arcade",
+              "description": "A collection of arcade games rebuilt for touch.",
+              "applicationCategory": "GameApplication",
+              "operatingSystem": "Android",
+              "url": "https://play.google.com/store/apps/details?id=com.uzorgame.retroarcade",
+              "author": {
+                "@id": "https://uz-or.com/#person"
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+              }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 8,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "Currency Converter+",
+              "description": "A currency converter with offline rates, on Android and the web.",
+              "applicationCategory": "FinanceApplication",
+              "operatingSystem": "Android, Web browser",
+              "url": "https://uz-or.com/CurrencyConverter-Web/",
+              "sameAs": [
+                "https://play.google.com/store/apps/details?id=com.uzorgame.converter"
+              ],
+              "author": {
+                "@id": "https://uz-or.com/#person"
+              }
+            }
+          },
+          {
+            "@type": "ListItem",
+            "position": 9,
+            "item": {
+              "@type": "SoftwareApplication",
+              "name": "Sudoku",
+              "description": "A minimalist Sudoku with four modes, dark mode and smart pencil marks.",
+              "applicationCategory": "GameApplication",
+              "operatingSystem": "Android",
+              "url": "https://play.google.com/store/apps/details?id=com.sudoku.uzor",
+              "author": {
+                "@id": "https://uz-or.com/#person"
+              }
+            }
+          }
+        ]
+      }
+    ]
   }
   </script>
+
+  <!-- The nine products as software rather than as headings in a list.
+       Deliberately absent: aggregateRating. There are no real reviews to
+       aggregate, and inventing one is both a policy violation and useless —
+       Google ignores self-declared ratings that no review backs.
+       `offers` is stated only for the four that the page itself calls free;
+       for the rest the price is simply not asserted. -->
+  
 </head>
 <body>
 

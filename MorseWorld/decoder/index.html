@@ -32,6 +32,18 @@
       content="The planned pipeline for decoding a tone from the microphone or an audio file: signal, Goertzel, threshold, core. Specified, not yet built."
     />
     <meta name="twitter:image" content="https://uz-or.com/MorseWorld/og-image.png" />
+
+    <!--
+      Що це за річ, машинозчитувано. Без цього для пошуку MorseWorld лишається
+      просто словом на сторінці, а не програмою з автором і ціною.
+
+      Свідомо без aggregateRating: справжніх відгуків немає, а вигаданий рейтинг
+      це і порушення правил, і марно — Google не показує оцінку, за якою не
+      стоїть жодного відгуку.
+
+      Блок стоїть тільки на кореневій сторінці: продукт — це /MorseWorld/, а не
+      кожен його розділ. Решту сторінок tools/prerender.mjs від нього звільняє.
+    -->
     <script type="module" crossorigin src="/MorseWorld/assets/index-CwEUnrQW.js"></script>
     <link rel="stylesheet" crossorigin href="/MorseWorld/assets/index-Dh_xfHM0.css">
   </head>

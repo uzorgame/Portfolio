@@ -69,6 +69,42 @@
 
     .cs-note { margin-top: 26px; font-size: 13px; color: var(--text-3); }
   </style>
+  <!-- The case study as an article, tied to its author and to the product it is
+       about, so the three are one graph rather than three unrelated pages. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://uz-or.com/#person",
+        "name": "Nahreba Mykhailo",
+        "url": "https://uz-or.com/",
+        "jobTitle": "Product Engineer"
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "RutaLive — Engineering Case Study",
+        "description": "How RutaLive was designed and built: multi-tenant SaaS across web, iOS, Android and Windows — real-time dispatch, offline-first courier app, immutable pricing, in-browser demo.",
+        "url": "https://uz-or.com/rutalive-case-study.html",
+        "image": "https://uz-or.com/og-image.png",
+        "datePublished": "2026-07-31",
+        "inLanguage": "en",
+        "author": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "publisher": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "about": {
+          "@type": "SoftwareApplication",
+          "name": "RutaLive",
+          "url": "https://rutalive.com"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 

@@ -79,6 +79,42 @@
     .cs-block:last-child { border-bottom: 1px solid var(--border); }
     .cs-block h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-hero); margin-bottom: 10px; }
   </style>
+  <!-- The case study as an article, tied to its author and to the product it is
+       about, so the three are one graph rather than three unrelated pages. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://uz-or.com/#person",
+        "name": "Nahreba Mykhailo",
+        "url": "https://uz-or.com/",
+        "jobTitle": "Product Engineer"
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "QuirePDF — Engineering Case Study",
+        "description": "How QuirePDF edits the text a PDF already contains: paragraphs found in the text layer, reopened in the document's own embedded font, and written back at the measured baseline.",
+        "url": "https://uz-or.com/quirepdf-case-study.html",
+        "image": "https://uz-or.com/quirePDF/og-image.png",
+        "datePublished": "2026-08-09",
+        "inLanguage": "en",
+        "author": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "publisher": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "about": {
+          "@type": "SoftwareApplication",
+          "name": "QuirePDF",
+          "url": "https://uz-or.com/quirePDF/"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 

@@ -80,6 +80,42 @@
     .cs-block:last-child { border-bottom: 1px solid var(--border); }
     .cs-block h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-hero); margin-bottom: 10px; }
   </style>
+  <!-- The case study as an article, tied to its author and to the product it is
+       about, so the three are one graph rather than three unrelated pages. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://uz-or.com/#person",
+        "name": "Nahreba Mykhailo",
+        "url": "https://uz-or.com/",
+        "jobTitle": "Product Engineer"
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "Poster — Engineering Case Study",
+        "description": "How Poster builds a print-ready city map in the browser: vector tiles instead of an Overpass query, a zoom chosen from the bounding box, and SVG as the deliverable.",
+        "url": "https://uz-or.com/poster-case-study.html",
+        "image": "https://uz-or.com/Poster/og-image.png",
+        "datePublished": "2026-08-06",
+        "inLanguage": "en",
+        "author": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "publisher": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "about": {
+          "@type": "SoftwareApplication",
+          "name": "Poster",
+          "url": "https://uz-or.com/Poster/"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 

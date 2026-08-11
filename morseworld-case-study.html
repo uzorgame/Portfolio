@@ -80,6 +80,42 @@
     .cs-block:last-child { border-bottom: 1px solid var(--border); }
     .cs-block h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-hero); margin-bottom: 10px; }
   </style>
+  <!-- The case study as an article, tied to its author and to the product it is
+       about, so the three are one graph rather than three unrelated pages. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://uz-or.com/#person",
+        "name": "Nahreba Mykhailo",
+        "url": "https://uz-or.com/",
+        "jobTitle": "Product Engineer"
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "MorseWorld — Engineering Case Study",
+        "description": "How MorseWorld reads a straight key: thresholds derived from the chosen speed instead of fitted to the strokes, presses timed from the event rather than the handler, and scoring by alignment instead of position.",
+        "url": "https://uz-or.com/morseworld-case-study.html",
+        "image": "https://uz-or.com/MorseWorld/og-image.png",
+        "datePublished": "2026-08-11",
+        "inLanguage": "en",
+        "author": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "publisher": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "about": {
+          "@type": "SoftwareApplication",
+          "name": "MorseWorld",
+          "url": "https://uz-or.com/MorseWorld/"
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
