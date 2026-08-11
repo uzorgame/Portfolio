@@ -55,6 +55,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   reveals.forEach(el => revealObserver.observe(el));
 
+  /* ── Older work, folded ──
+     The state lives on the button's aria-expanded and on one data attribute; the
+     CSS reads both, so there is no height to measure here and nothing to keep in
+     sync. Labels are two spans in the markup rather than text written from here,
+     which keeps the translator in charge of them. */
+  const fold = document.getElementById('proj-fold');
+  const older = document.getElementById('proj-older');
+  if (fold && older) {
+    fold.addEventListener('click', () => {
+      const open = fold.getAttribute('aria-expanded') === 'true';
+      fold.setAttribute('aria-expanded', String(!open));
+      if (open) older.removeAttribute('data-open');
+      else older.setAttribute('data-open', '');
+    });
+  }
+
   /* ── Nav Active State ── */
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-link');

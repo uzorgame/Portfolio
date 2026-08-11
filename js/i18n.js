@@ -4,7 +4,7 @@ const translations = {
   en: {
     "nav.home": "Home", "nav.projects": "Projects", "nav.about": "About", "nav.stack": "Stack", "nav.contact": "Contact",
     "eyebrow.projects": "01 / Work", "eyebrow.about": "02 / About", "eyebrow.stack": "03 / Stack", "eyebrow.contact": "04 / Contact",
-    "projects.title": "Projects",
+    "projects.title": "Projects", "projects.more": "More", "projects.less": "Less",
     "date.ruta": "Dec 2025 – Present", "date.morseworld": "August 2026", "date.quirepdf": "August 2026", "date.whisper": "August 2026", "date.poster": "August 2026", "date.kora": "Feb 2026", "date.retro": "Oct – Nov 2025", "date.currency": "Oct 2025", "date.sudoku": "Sep – Oct 2025",
     "hero.title": "Design. Develop.<br>Ship.",
     "hero.subtitle": "Product engineer with my own apps, games and web products. Co-founder and active developer of RutaLive — a courier-logistics SaaS competing with major dispatch companies across the US and Canada.",
@@ -335,7 +335,7 @@ const translations = {
   uk: {
     "nav.home": "Головна", "nav.projects": "Проєкти", "nav.about": "Про мене", "nav.stack": "Стек", "nav.contact": "Контакт",
     "eyebrow.projects": "01 / Роботи", "eyebrow.about": "02 / Про мене", "eyebrow.stack": "03 / Стек", "eyebrow.contact": "04 / Контакт",
-    "projects.title": "Проєкти",
+    "projects.title": "Проєкти", "projects.more": "Ще", "projects.less": "Менше",
     "date.ruta": "Грудень 2025 – зараз", "date.morseworld": "Серпень 2026", "date.quirepdf": "Серпень 2026", "date.whisper": "Серпень 2026", "date.poster": "Серпень 2026", "date.kora": "Лютий 2026", "date.retro": "Жовтень – Листопад 2025", "date.currency": "Жовтень 2025", "date.sudoku": "Вересень – Жовтень 2025",
     "hero.title": "Проєктую. Розробляю.<br>Випускаю.",
     "hero.subtitle": "Продуктовий інженер із власними застосунками, іграми та вебпродуктами. Співзасновник і активний розробник RutaLive — SaaS для курʼєрської логістики, що конкурує з великими диспетчерськими компаніями США та Канади.",

@@ -289,8 +289,26 @@
             </div>
           </article>
 
+          <!-- The three oldest ship folded away: the list had grown long enough
+               that the newest work was competing with 2025 for the same glance.
+               The row below is the ninth item in the same rhythm, not a control
+               bolted onto the list. -->
+          <button class="proj-fold" id="proj-fold" aria-expanded="false" aria-controls="proj-older">
+            <span class="proj-fold-label" data-fold="closed" data-i18n="projects.more">More</span>
+            <span class="proj-fold-label" data-fold="open" data-i18n="projects.less">Less</span>
+            <span class="proj-fold-count">3</span>
+            <span class="proj-fold-mark" aria-hidden="true"></span>
+          </button>
+
+          <!-- No data-reveal on the three inside: it holds an element transparent
+               until it crosses the visibility threshold, and a folded card has no
+               height, so it would never cross it — the three would stay invisible
+               even once opened. The row above reveals them instead. -->
+          <div class="proj-older" id="proj-older">
+            <div class="proj-older-inner">
+
           <!-- Retro Arcade -->
-          <article class="proj" data-reveal>
+          <article class="proj">
             <div class="proj-head">
               <div class="proj-icon"><img src="RetroArcade.png" alt="Retro Arcade app icon" width="52" height="52"></div>
               <div class="proj-meta">
@@ -310,7 +328,7 @@
           </article>
 
           <!-- Currency Converter+ -->
-          <article class="proj" data-reveal>
+          <article class="proj">
             <div class="proj-head">
               <div class="proj-icon"><img src="CurrencyConverter.png" alt="Currency Converter+ app icon" width="52" height="52"></div>
               <div class="proj-meta">
@@ -331,7 +349,7 @@
           </article>
 
           <!-- Sudoku -->
-          <article class="proj" data-reveal>
+          <article class="proj">
             <div class="proj-head">
               <div class="proj-icon"><img src="Sudoku.png" alt="Sudoku app icon" width="52" height="52"></div>
               <div class="proj-meta">
@@ -349,6 +367,9 @@
               <button data-privacy="sudoku" data-i18n="common.privacyPolicy">Privacy</button>
             </div>
           </article>
+
+            </div>
+          </div>
 
         </div>
       </div>
