@@ -406,7 +406,11 @@ html.booting body > *:not(.boot) { visibility: hidden; }
 .mobile-slats.open i:nth-child(3) { transition-delay: 0.12s; }
 .mobile-slats.open i:nth-child(4) { transition-delay: 0.18s; }
 
-.mm-row { overflow: hidden; border-bottom: 1px solid var(--border); }
+.mm-row {
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+  transition: opacity 0.5s var(--ease);
+}
 
 .mobile-link {
   display: block;
@@ -418,7 +422,15 @@ html.booting body > *:not(.boot) { visibility: hidden; }
   transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
 }
 .mobile-menu.open .mobile-link { opacity: 1; transform: translateY(0); }
-.mobile-link:hover { opacity: 0.6; }
+
+/* Gated on a real pointer. A tap leaves :hover stuck on a phone, and this rule
+   outweighs the base opacity of 0, so the row that was tapped hung around at
+   60% while the rest of the column left. It never showed while the menu was
+   open either, since the `open` rule above outweighs it in turn: the only thing
+   it ever did on a touch screen was leave a ghost behind. */
+@media (hover: hover) {
+  .mobile-link:hover { opacity: 0.6; }
+}
 
 .mobile-menu.open .mm-row:nth-of-type(1) .mobile-link { transition-delay: 0.20s; }
 .mobile-menu.open .mm-row:nth-of-type(2) .mobile-link { transition-delay: 0.26s; }
@@ -427,6 +439,41 @@ html.booting body > *:not(.boot) { visibility: hidden; }
 .mobile-menu.open .mm-row:nth-of-type(5) .mobile-link { transition-delay: 0.44s; }
 .mobile-menu.open .mm-row:nth-of-type(6) .mobile-link { transition-delay: 0.50s; }
 
+/* ── Closing is the opening run backwards ──
+   The panel carries no transition on transform, so the moment `open` comes off
+   it returns to translateX(100%) in a single frame and takes the text off
+   canvas with it. The fades and slides written for the links then play out
+   somewhere nobody can see, which is why they looked like they vanished rather
+   than left. Holding the panel is what makes the exit visible at all.
+
+   pointer-events matters as much as the transform: the rows are invisible by
+   then but still on top of the page, and without this they would swallow taps
+   for the best part of a second after the menu was dismissed. */
+.mobile-menu.closing { transform: translateX(0); pointer-events: none; }
+
+/* Last one in is the first one out, so the cascade reverses instead of the
+   whole column dropping at once. Mirrors the open delays above. */
+.mobile-menu.closing .mobile-bottom { transition-delay: 0s; }
+.mobile-menu.closing .mm-row:nth-of-type(6) .mobile-link { transition-delay: 0.06s; }
+.mobile-menu.closing .mm-row:nth-of-type(5) .mobile-link { transition-delay: 0.12s; }
+.mobile-menu.closing .mm-row:nth-of-type(4) .mobile-link { transition-delay: 0.18s; }
+.mobile-menu.closing .mm-row:nth-of-type(3) .mobile-link { transition-delay: 0.24s; }
+.mobile-menu.closing .mm-row:nth-of-type(2) .mobile-link { transition-delay: 0.30s; }
+.mobile-menu.closing .mm-row:nth-of-type(1) .mobile-link { transition-delay: 0.36s; }
+
+/* The dividing lines live on the rows, not on the links, so they never left
+   with them. Nothing showed that while the panel snapped off canvas in one
+   frame; now that it is held for the length of the cascade, the lines would
+   otherwise hang over the page as loose rules across the content. Each row
+   fades on the same beat as the link it holds. */
+.mobile-menu.closing .mm-row { opacity: 0; }
+.mobile-menu.closing .mm-row:nth-of-type(6) { transition-delay: 0.06s; }
+.mobile-menu.closing .mm-row:nth-of-type(5) { transition-delay: 0.12s; }
+.mobile-menu.closing .mm-row:nth-of-type(4) { transition-delay: 0.18s; }
+.mobile-menu.closing .mm-row:nth-of-type(3) { transition-delay: 0.24s; }
+.mobile-menu.closing .mm-row:nth-of-type(2) { transition-delay: 0.30s; }
+.mobile-menu.closing .mm-row:nth-of-type(1) { transition-delay: 0.36s; }
+
 /* The footer block belongs to the panel, so it rides in on the same stagger
    instead of being there from the first frame. */
 .mobile-bottom {
@@ -434,35 +481,6 @@ html.booting body > *:not(.boot) { visibility: hidden; }
   transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
 }
 .mobile-menu.open .mobile-bottom { opacity: 1; transform: translateY(0); transition-delay: 0.56s; }
-
-/* ── Exit sideways when a link was used ──
-   Navigating is a different intent from dismissing: the panel gets out of the
-   way to the right, quickly, so the destination is visible sooner. Dismissing
-   with the overlay or the burger still lifts the slabs back up. */
-.mobile-slats.exit-right i {
-  transform: translateX(105%);
-  transition-duration: 0.36s;
-}
-.mobile-slats.exit-right i:nth-child(1) { transition-delay: 0.09s; }
-.mobile-slats.exit-right i:nth-child(2) { transition-delay: 0.06s; }
-.mobile-slats.exit-right i:nth-child(3) { transition-delay: 0.03s; }
-.mobile-slats.exit-right i:nth-child(4) { transition-delay: 0s; }
-
-/* Hold the panel in place while its contents leave, otherwise it would jump
-   off-canvas instantly and the exit would never be seen. */
-.mobile-menu.exit-right { transform: translateX(0); }
-
-.mobile-menu.exit-right .mobile-link,
-.mobile-menu.exit-right .mobile-bottom {
-  opacity: 0;
-  transform: translateX(28px);
-  transition-duration: 0.2s;
-  transition-delay: 0s;
-}
-
-/* Used for a single frame while the sideways state is swapped back to the
-   default upward one, so the slabs do not sweep across the screen doing it. */
-.mobile-slats.no-anim i { transition: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
   .mobile-slats i,

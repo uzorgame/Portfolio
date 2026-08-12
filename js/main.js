@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // issued against a stopped instance is silently dropped — which is why every
     // link in the mobile menu appeared to do nothing. closeMobileMenu() restarts
     // Lenis, so the scroll has to be queued after it.
-    closeMobileMenu(true);
+    closeMobileMenu();
 
     // getBoundingClientRect survives transformed/positioned ancestors; offsetTop
     // does not, and returns an offset relative to the wrong parent.
@@ -187,38 +187,47 @@ document.addEventListener('DOMContentLoaded', () => {
   // to have, so they must open and close in step with it.
   const mobileSlats = document.getElementById('mobile-slats');
 
-  function toggleMobileMenu() {
-    const isOpen = mobileMenu.classList.contains('open');
-    mobileMenu.classList.toggle('open');
-    mobileOverlay.classList.toggle('open');
-    burger.classList.toggle('open');
-    if (mobileSlats) mobileSlats.classList.toggle('open');
-    mobileMenu.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
-    document.body.style.overflow = isOpen ? '' : 'hidden';
-    if (lenis) isOpen ? lenis.start() : lenis.stop();
+  /* Long enough for the closing cascade to finish: the first row starts last,
+     at 0.36s, and takes 0.5s to go. Only after that may the panel leave. */
+  const CLOSE_MS = 900;
+  let closeTimer = 0;
+
+  function openMobileMenu() {
+    // A dismissal still in flight would otherwise keep holding the panel, fight
+    // the delays being applied for the way in, and then strip its classes from
+    // under the newly opened menu when its timer came due.
+    clearTimeout(closeTimer);
+    mobileMenu.classList.remove('closing');
+
+    mobileMenu.classList.add('open');
+    mobileOverlay.classList.add('open');
+    burger.classList.add('open');
+    if (mobileSlats) mobileSlats.classList.add('open');
+    mobileMenu.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    if (lenis) lenis.stop();
   }
 
-  // sideways = the visitor picked a destination rather than dismissing the menu.
-  // The panel then clears to the right, faster, so the target is visible sooner.
-  function closeMobileMenu(sideways) {
+  function toggleMobileMenu() {
+    if (mobileMenu.classList.contains('open')) closeMobileMenu();
+    else openMobileMenu();
+  }
+
+  /* One dismissal for every way out of the menu. There used to be a second,
+     sideways one for when a link was picked, on the theory that navigating is a
+     different intent from dismissing. In practice the difference never read,
+     and it cost a separate timer, a class swap and a frame with transitions
+     muted, which is where its jank came from. */
+  function closeMobileMenu() {
     if (!mobileMenu.classList.contains('open')) return;
 
-    if (sideways) {
-      mobileMenu.classList.add('exit-right');
-      if (mobileSlats) mobileSlats.classList.add('exit-right');
-
-      // Once it has played, swap back to the default upward state with
-      // transitions muted for one frame — otherwise the slabs would travel
-      // back across the screen on their way to the top.
-      setTimeout(function () {
-        mobileMenu.classList.remove('exit-right');
-        if (!mobileSlats) return;
-        mobileSlats.classList.add('no-anim');
-        mobileSlats.classList.remove('exit-right');
-        void mobileSlats.offsetWidth;
-        mobileSlats.classList.remove('no-anim');
-      }, 460);
-    }
+    // Keeps the panel on screen while the rows leave, so the reverse cascade is
+    // actually visible rather than played off canvas.
+    mobileMenu.classList.add('closing');
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(function () {
+      mobileMenu.classList.remove('closing');
+    }, CLOSE_MS);
 
     mobileMenu.classList.remove('open');
     mobileOverlay.classList.remove('open');
@@ -230,9 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (burger) burger.addEventListener('click', toggleMobileMenu);
-  // Wrapped rather than passed directly: as a bare handler the event object
-  // would arrive as `sideways` and make every dismissal exit to the right.
-  if (mobileOverlay) mobileOverlay.addEventListener('click', function () { closeMobileMenu(); });
+  if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileMenu);
 
   /* ── Privacy Modal ── */
   const modal = document.getElementById('modal');
