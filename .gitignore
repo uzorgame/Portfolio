@@ -1,2 +1,5 @@
 node_modules
 .claude
+
+# Serena code-intelligence cache (project.yml is committed, cache is not)
+**/.serena/cache/
