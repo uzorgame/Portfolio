@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function setTheme(t) {
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce || !document.startViewTransition) { applyTheme(t); return; }
+    // Dark falls from the top left, light returns from the bottom right, so the
+    // two switches read as one motion and its reverse.
+    document.documentElement.dataset.wipe = t === 'dark' ? 'tl' : 'br';
     document.startViewTransition(() => applyTheme(t));
   }
 

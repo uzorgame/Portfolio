@@ -110,6 +110,28 @@ html.theme-switching *::after { transition: none !important; }
       12.9% 257.6%, 0.0% 270.0%);
   }
 }
+/* Light comes back from the opposite corner, so the two themes undo each other
+   rather than both sweeping the same way. The shape is the same ridge mirrored
+   through the centre, which is why the point count still matches. */
+:root[data-wipe="br"]::view-transition-new(root) { animation-name: theme-wipe-br; }
+@keyframes theme-wipe-br {
+  from {
+    clip-path: polygon(100% 100%,
+      100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+      100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+      100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+      100% 100%);
+  }
+  to {
+    clip-path: polygon(100% 100%,
+      -170.0% 100.0%, -159.0% 87.0%, -146.6% 74.0%, -134.6% 60.9%, -122.3% 47.7%,
+      -104.9% 36.0%, -83.6% 26.6%, -66.8% 16.6%, -59.2% 2.0%, -55.2% -16.4%,
+      -46.4% -33.1%, -32.8% -46.1%, -19.6% -59.4%, -7.7% -75.0%, 6.1% -87.8%,
+      22.5% -93.7%, 38.2% -97.7%, 50.9% -108.5%, 62.3% -126.2%, 74.3% -143.7%,
+      87.1% -157.6%, 100.0% -170.0%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-new(root) { animation: none; }
 }
