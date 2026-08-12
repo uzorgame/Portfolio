@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXXYPLC4ZM"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    // Consent Mode v2. Nothing here is used for advertising, so the ad signals
+    // stay denied permanently; only the analytics cookie is set.
+    gtag('consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'granted'
+    });
+    gtag('js', new Date());
+    gtag('config', 'G-HXXYPLC4ZM');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scriptor — Engineering Case Study | Mykhailo Nahreba</title>
+  <meta name="description" content="How Scriptor was built: a speech-to-text app with no backend at all — Whisper running on the visitor's own GPU through WebGPU, with the caching and quantisation work that made it usable.">
+  <link rel="canonical" href="https://uz-or.com/scriptor-case-study.html">
+  <meta property="og:title" content="Scriptor — Engineering Case Study">
+  <meta property="og:description" content="A transcription product with no server: the precision, caching and decoding decisions behind running Whisper in a browser tab.">
+  <meta property="og:url" content="https://uz-or.com/scriptor-case-study.html">
+  <meta property="og:image" content="https://uz-or.com/scriptor/og-image.png">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
+
+  <script>
+    (function(){
+      var t = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* Case-study specific: flat rows + hairlines only, square corners, site tokens. */
+    .cs-hero { padding: 150px 0 24px; }
+    .cs-hero h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(38px, 6vw, 64px); line-height: 1.06; color: var(--text-hero); margin: 16px 0 22px; letter-spacing: -0.02em; }
+    .cs-lede { font-size: 17px; color: var(--text-2); max-width: 68ch; }
+    .cs-role { margin-top: 20px; font-size: 14.5px; color: var(--text-2); max-width: 68ch; }
+    .cs-role b { color: var(--text); font-weight: 600; }
+
+    .cs-rows { border-bottom: 1px solid var(--border); }
+    .cs-row { border-top: 1px solid var(--border); padding: 26px 0; display: grid; grid-template-columns: 72px 220px 1fr; gap: 20px; align-items: start; }
+    .cs-row-num { font-family: var(--font-mono); font-size: 13px; color: var(--text-3); padding-top: 3px; }
+    .cs-row-name { font-family: var(--font-display); font-size: 19px; font-weight: 600; color: var(--text-hero); }
+    .cs-row-body p { font-size: 14.5px; color: var(--text-2); margin: 0 0 8px; }
+    .cs-row-body p:last-child { margin-bottom: 0; }
+    .cs-row-body .why { color: var(--text); }
+    .cs-row-body code { font-family: var(--font-mono); font-size: 12.5px; color: var(--text); border: 1px solid var(--border); padding: 1px 6px; }
+    @media (max-width: 820px) { .cs-row { grid-template-columns: 44px 1fr; } .cs-row-name { grid-column: 2; } .cs-row-body { grid-column: 2; } }
+
+    .cs-ship { border-bottom: 1px solid var(--border); }
+    .cs-ship-row { border-top: 1px solid var(--border); padding: 16px 0; display: grid; grid-template-columns: 260px 1fr; gap: 20px; font-size: 14.5px; color: var(--text-2); }
+    .cs-ship-row b { color: var(--text); font-weight: 600; font-size: 14.5px; }
+    @media (max-width: 700px) { .cs-ship-row { grid-template-columns: 1fr; gap: 4px; } }
+
+    .cs-note { margin-top: 26px; font-size: 13px; color: var(--text-3); }
+
+    /* Benchmark table — mono figures, hairlines, no fills. */
+    .cs-bench { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    .cs-bench th, .cs-bench td { border-top: 1px solid var(--border); padding: 12px 14px 12px 0; text-align: left; font-size: 14.5px; color: var(--text-2); }
+    .cs-bench th { color: var(--text-3); font-weight: 500; font-size: 12.5px; letter-spacing: 0.06em; text-transform: uppercase; border-top: none; }
+    .cs-bench td:first-child { color: var(--text); font-weight: 600; }
+    .cs-bench td.num { font-family: var(--font-mono); }
+    .cs-bench tr:last-child td { border-bottom: 1px solid var(--border); }
+    .cs-bench-wrap { overflow-x: auto; }
+
+    /* Code: hairline box, no fill, mono at a size that survives a phone. */
+    .cs-code { margin: 18px 0 6px; border: 1px solid var(--border); overflow-x: auto; }
+    .cs-code pre { margin: 0; padding: 18px 20px; }
+    .cs-code code { font-family: var(--font-mono); font-size: 12.5px; line-height: 1.7; color: var(--text-2); white-space: pre; display: block; }
+    .cs-code .c { color: var(--text-3); }
+    .cs-code .k { color: var(--text); }
+    .cs-cap { font-family: var(--font-mono); font-size: 11.5px; color: var(--text-3); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+    .cs-after { font-size: 14.5px; color: var(--text-2); max-width: 68ch; margin-top: 12px; }
+    .cs-block { border-top: 1px solid var(--border); padding: 30px 0; }
+    .cs-block:last-child { border-bottom: 1px solid var(--border); }
+    .cs-block h3 { font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--text-hero); margin-bottom: 10px; }
+  </style>
+  <!-- The case study as an article, tied to its author and to the product it is
+       about, so the three are one graph rather than three unrelated pages. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        "@id": "https://uz-or.com/#person",
+        "name": "Nahreba Mykhailo",
+        "url": "https://uz-or.com/",
+        "jobTitle": "Product Engineer"
+      },
+      {
+        "@type": "TechArticle",
+        "headline": "Scriptor — Engineering Case Study",
+        "description": "How Scriptor was built: a speech-to-text app with no backend at all — Whisper running on the visitor's own GPU through WebGPU, with the caching and quantisation work that made it usable.",
+        "url": "https://uz-or.com/scriptor-case-study.html",
+        "image": "https://uz-or.com/scriptor/og-image.png",
+        "datePublished": "2026-08-05",
+        "inLanguage": "en",
+        "author": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "publisher": {
+          "@id": "https://uz-or.com/#person"
+        },
+        "about": {
+          "@type": "SoftwareApplication",
+          "name": "Scriptor",
+          "url": "https://uz-or.com/scriptor/"
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-logo" href="/">nahreba</a>
+      <div class="nav-links" id="nav-links">
+        <a href="/#projects" class="nav-link" data-i18n="nav.projects">Projects</a>
+        <a href="/#about" class="nav-link" data-i18n="nav.about">About</a>
+        <a href="/#stack" class="nav-link" data-i18n="nav.stack">Stack</a>
+        <a href="/#contact" class="nav-link" data-i18n="nav.contact">Contact</a>
+      </div>
+      <div class="nav-right">
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button class="lang-btn active" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="uk">UA</button>
+        </div>
+        <a href="cv.html" class="nav-cta">CV</a>
+        <button class="burger" id="burger" aria-label="Toggle menu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ═══ HERO ═══ -->
+    <section class="sec cs-hero">
+      <div class="wrap">
+        <p class="label" data-i18n="wcs.kicker">Scriptor / Engineering case study</p>
+        <h1 data-i18n="wcs.title">A transcription product with no server behind it</h1>
+        <p class="cs-lede" data-i18n="wcs.lede">OpenAI's Whisper, running inside the visitor's own browser tab on their own graphics card. Audio is never uploaded, because there is nowhere to upload it to — the product ships as static files and every byte of computation happens on the client.</p>
+        <p class="cs-role" data-i18n="wcs.role"><b>My role:</b> sole engineer — architecture, model pipeline, design system, browser performance work. 2026.</p>
+      </div>
+    </section>
+
+    <!-- ═══ WHY ═══ -->
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="wcs.whyLabel">00 / Why</p>
+          <h2 data-i18n="wcs.whyT">Free, because it costs nothing to run</h2>
+        </div>
+        <p class="cs-lede" data-i18n="wcs.whyBody">Whisper is open source and free to use. That has not stopped a whole category of products from wrapping it in a login screen and charging a monthly fee — the model is someone else's work, the heavy lifting often happens on the customer's own hardware anyway, and the subscription is really for the wrapper around it.</p>
+        <p class="cs-lede" style="margin-top: 16px;" data-i18n="wcs.whyBody2">This is the same capability, given away. It can be free because it genuinely costs nothing to operate: no server to pay for, no per-minute inference bill, no storage, no bandwidth beyond the model download — and that comes from a public CDN. The entire infrastructure is static file hosting. Charging a subscription for it would mean charging for something with no cost behind it.</p>
+      </div>
+    </section>
+
+    <!-- ═══ NUMBERS ═══ -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="about-details" data-reveal>
+          <div class="about-detail"><p class="about-label" data-i18n="wcs.s1">Backend</p><p data-i18n="wcs.s1b">None — static hosting only</p></div>
+          <div class="about-detail"><p class="about-label" data-i18n="wcs.s2">Speed</p><p>5.7× <span data-i18n="wcs.s2b">faster than realtime</span></p></div>
+          <div class="about-detail"><p class="about-label" data-i18n="wcs.s3">Models</p><p>3 <span data-i18n="wcs.s3b">sizes · 10 languages</span></p></div>
+          <div class="about-detail"><p class="about-label" data-i18n="wcs.s4">Export</p><p data-i18n="wcs.s4b">PDF, DOCX, TXT, SRT, VTT</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ ARCHITECTURE ═══ -->
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="wcs.archLabel">01 / Architecture</p>
+          <h2 data-i18n="wcs.archT">Everything on the client</h2>
+        </div>
+        <p class="cs-lede" style="margin-bottom: 34px;" data-i18n="wcs.archSub">Three layers, none of them on a server. The privacy claim is not a policy — it is a consequence of there being no place for the audio to go.</p>
+        <div class="cs-rows" data-reveal>
+          <div class="cs-row">
+            <span class="cs-row-num">A</span>
+            <span class="cs-row-name" data-i18n="wcs.aUi">Interface</span>
+            <div class="cs-row-body"><p data-i18n="wcs.aUiBody">React and TypeScript, sliced by feature rather than by file type — transcription and recording are separate modules, each owning its own model, hooks, worker and components. Design tokens were measured off a reference site's computed styles rather than eyeballed, so colour, radius and stroke values are exact rather than approximate.</p></div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">B</span>
+            <span class="cs-row-name" data-i18n="wcs.aEngine">Inference</span>
+            <div class="cs-row-body"><p data-i18n="wcs.aEngineBody">Whisper runs through transformers.js on ONNX Runtime Web, inside a dedicated Web Worker so a long file never freezes the interface. WebGPU is the primary backend with a WebAssembly CPU fallback. Audio of any length is cut into 30-second windows with 5 seconds of overlap and stitched back together.</p></div>
+          </div>
+          <div class="cs-row">
+            <span class="cs-row-num">C</span>
+            <span class="cs-row-name" data-i18n="wcs.aStore">Storage &amp; capture</span>
+            <div class="cs-row-body"><p data-i18n="wcs.aStoreBody">Model weights live in IndexedDB. Microphone capture uses MediaRecorder with a separate Web Audio graph feeding the waveform, so visualisation never touches the recording itself. Export to PDF and DOCX is generated in the browser and loaded on demand, keeping two megabytes of libraries out of the initial bundle.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ MODEL LOADING ═══ -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="wcs.loadLabel">02 / Loading the model</p>
+          <h2 data-i18n="wcs.loadT">What happens before a word is transcribed</h2>
+        </div>
+        <p class="cs-lede" style="margin-bottom: 8px;" data-i18n="wcs.loadSub">Between pressing Transcribe and the first line of text there are three steps, and each of them was where something went wrong at least once.</p>
+
+        <div data-reveal>
+          <div class="cs-block">
+            <h3 data-i18n="wcs.l1t">1 — Choose the precision for this model</h3>
+            <p class="cs-after" data-i18n="wcs.l1b">A single shared setting is what broke the largest model: an fp32 encoder is fine at 79 MB and impossible at 1215 MB. Each model now carries its own table, so the choice is data rather than a branch.</p>
+            <p class="cs-cap" style="margin-top:16px;">worker/pipelineFactory.ts</p>
+            <div class="cs-code"><pre><code><span class="c">// Quantising the encoder is what costs accuracy, so the small models</span>
+<span class="c">// keep theirs. Turbo cannot afford to — fp16 alone is 1215 MB.</span>
+<span class="k">const</span> WEBGPU_DTYPE = {
+  <span class="c">'…/whisper-base'</span>:  { encoder_model: <span class="c">'fp32'</span>,  decoder_model_merged: <span class="c">'q4'</span> },
+  <span class="c">'…/whisper-small'</span>: { encoder_model: <span class="c">'fp16'</span>,  decoder_model_merged: <span class="c">'q4'</span> },
+  <span class="c">'…/whisper-large-v3-turbo'</span>:
+                     { encoder_model: <span class="c">'q4f16'</span>, decoder_model_merged: <span class="c">'q4f16'</span> },
+}</code></pre></div>
+          </div>
+
+          <div class="cs-block">
+            <h3 data-i18n="wcs.l2t">2 — Build the pipeline once, keep it warm</h3>
+            <p class="cs-after" data-i18n="wcs.l2b">The pipeline is cached against the model and backend pair. Running the same file twice, or a second file with the same settings, skips loading entirely — and switching away disposes the old one instead of leaving two sets of weights in GPU memory.</p>
+            <p class="cs-cap" style="margin-top:16px;">worker/pipelineFactory.ts</p>
+            <div class="cs-code"><pre><code><span class="k">const</span> key = <span class="c">`${model}::${device}`</span>
+<span class="k">if</span> (cached &amp;&amp; cacheKey === key) <span class="k">return</span> { transcriber: cached, wasCached: <span class="k">true</span> }
+<span class="k">if</span> (cached) { <span class="k">await</span> cached.dispose?.(); cached = <span class="k">null</span> }
+
+cached = <span class="k">await</span> pipeline(<span class="c">'automatic-speech-recognition'</span>, model, {
+  device,
+  dtype: dtypeFor(model, device),
+  progress_callback: (e) =&gt; {
+    <span class="k">if</span> (e.status === <span class="c">'progress'</span> &amp;&amp; e.file)
+      onDownload({ file: e.file, loaded: e.loaded, total: e.total })
+  },
+})</code></pre></div>
+          </div>
+
+          <div class="cs-block">
+            <h3 data-i18n="wcs.l3t">3 — Keep the weights out of Cache Storage</h3>
+            <p class="cs-after" data-i18n="wcs.l3b">The library caches downloads in Cache Storage, which silently refuses entries past a few hundred megabytes — the 185 MB decoder was kept and the 353 MB encoder was not, so it was re-downloaded on every single run. IndexedDB has no such ceiling, and transformers.js accepts any object with match and put.</p>
+            <p class="cs-cap" style="margin-top:16px;">worker/modelCache.ts</p>
+            <div class="cs-code"><pre><code>env.useCustomCache = <span class="k">true</span>
+env.customCache = indexedDbCache
+
+<span class="k">export const</span> indexedDbCache = {
+  <span class="k">async</span> match(request) {
+    <span class="k">const</span> row = <span class="k">await</span> read(keyOf(request))
+    <span class="k">if</span> (!row) <span class="k">return</span> undefined
+    <span class="k">return new</span> Response(row.body, { headers: <span class="k">new</span> Headers(row.headers) })
+  },
+  <span class="k">async</span> put(request, response) {
+    <span class="k">const</span> body = <span class="k">await</span> response.clone().arrayBuffer()
+    <span class="k">await</span> write({ url: keyOf(request), body, headers: [...response.headers] })
+  },
+}</code></pre></div>
+            <p class="cs-after" data-i18n="wcs.l3w"><b>Result:</b> a repeat run of the largest model went from 143 seconds to 12, measured after a full page reload.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ DECISIONS ═══ -->
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="wcs.decLabel">03 / Decisions</p>
+          <h2 data-i18n="wcs.decT">Decisions that mattered</h2>
+        </div>
+        <p class="cs-lede" style="margin-bottom: 34px;" data-i18n="wcs.decSub">Five calls, each made after a measurement contradicted the obvious answer.</p>
+        <div class="cs-rows" data-reveal>
+
+          <div class="cs-row">
+            <span class="cs-row-num">01</span>
+            <span class="cs-row-name" data-i18n="wcs.d1t">Precision is chosen per model</span>
+            <div class="cs-row-body">
+              <p data-i18n="wcs.d1b">The largest model first looked broken: the download reached 100% and then hung with no error, forever. The cause was requesting an <code>fp32</code> encoder for every model uniformly — for Large that is over a gigabyte of weights, past what WebGPU will allocate in a single buffer. Each model now has its own precision table. Large runs <code>q4f16</code> at 538 MB instead of 1.5 GB; the smaller models keep a higher-precision encoder, because quantising the encoder is what costs accuracy and there is nothing to save at under 200 MB.</p>
+              <p class="why" data-i18n="wcs.d1w">Why it matters: the same model went from never finishing to the fastest option in the product.</p>
+            </div>
+          </div>
+
+          <div class="cs-row">
+            <span class="cs-row-num">02</span>
+            <span class="cs-row-name" data-i18n="wcs.d2t">Weights moved to IndexedDB</span>
+            <div class="cs-row-body">
+              <p data-i18n="wcs.d2b">The library caches weights in Cache Storage, and the interface promised they would be reused. Inspecting the cache after a run showed the promise was false: the 185 MB decoder was stored, the 353 MB encoder was not. Chrome silently refuses to persist single entries past a few hundred megabytes, so the biggest file of every large model was re-downloaded on every single run. Swapping in an IndexedDB-backed cache removed the ceiling.</p>
+              <p class="why" data-i18n="wcs.d2w">Why it matters: a repeat run of the largest model dropped from 143 seconds to 12, measured after a full page reload.</p>
+            </div>
+          </div>
+
+          <div class="cs-row">
+            <span class="cs-row-num">03</span>
+            <span class="cs-row-name" data-i18n="wcs.d3t">A setting removed after reading the library</span>
+            <div class="cs-row-body">
+              <p data-i18n="wcs.d3b">Beam search was exposed as a quality toggle, since it is what the reference Whisper implementation uses. Two things looked wrong in testing: the output was byte-identical to greedy decoding, and the "slower" mode was sometimes faster. Reading the library's generation loop explained both — it accepts a <code>num_beams</code> argument, computes the candidates, then keeps the first and breaks, with a <code>TODO: Support beam search</code> beside it.</p>
+              <p class="why" data-i18n="wcs.d3w">Why it matters: the control was deleted rather than kept. A setting that does nothing is worse than no setting, because it spends the user's trust.</p>
+            </div>
+          </div>
+
+          <div class="cs-row">
+            <span class="cs-row-num">04</span>
+            <span class="cs-row-name" data-i18n="wcs.d4t">Unusable options are shown as unusable</span>
+            <div class="cs-row-body">
+              <p data-i18n="wcs.d4b">Every model was offered on both backends, which looked generous and was in fact a trap: the largest model on CPU would pull a 2.4 GB encoder and run several times slower than realtime. Benchmarking each pair produced a table of what genuinely works, and the interface now reflects it — Large is greyed out with the reason in place of its size when CPU is selected, and choosing CPU while it is active moves the selection down automatically.</p>
+              <p class="why" data-i18n="wcs.d4w">Why it matters: a choice the product cannot honour is not a feature. Failing at the point of selection beats failing after a gigabyte of download.</p>
+            </div>
+          </div>
+
+          <div class="cs-row">
+            <span class="cs-row-num">05</span>
+            <span class="cs-row-name" data-i18n="wcs.d5t">Progress measured in bytes, not files</span>
+            <div class="cs-row-body">
+              <p data-i18n="wcs.d5b">The loading bar averaged the percentage of each file, so six tiny configuration files at 100% and one 353 MB file at 6% displayed as 87% complete. It now weights by bytes and prints the size of each file next to its progress. The recording timer was moved out of React entirely for a related reason: updating state ten times a second was re-rendering the dialog and tearing down any open dropdown inside it.</p>
+              <p class="why" data-i18n="wcs.d5w">Why it matters: on a download this large, a progress bar that lies is the difference between waiting and giving up.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ BENCHMARKS ═══ -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="wcs.benchLabel">04 / Measurements</p>
+          <h2 data-i18n="wcs.benchT">What the numbers actually say</h2>
+        </div>
+        <p class="cs-lede" style="margin-bottom: 34px;" data-i18n="wcs.benchSub">19 seconds of speech, weights already cached. Realtime is audio length divided by compute time — higher is faster.</p>
+        <div class="cs-bench-wrap" data-reveal>
+          <table class="cs-bench">
+            <thead>
+              <tr>
+                <th data-i18n="wcs.bhModel">Model</th>
+                <th data-i18n="wcs.bhSize">Download</th>
+                <th data-i18n="wcs.bhGpu">WebGPU</th>
+                <th data-i18n="wcs.bhCpu">CPU</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Base</td><td class="num">197 MB</td><td class="num">5.8×</td><td class="num">1.4×</td></tr>
+              <tr><td>Small</td><td class="num">391 MB</td><td class="num">4.9×</td><td class="num">0.4×</td></tr>
+              <tr><td>Large v3 Turbo</td><td class="num">538 MB</td><td class="num">5.7×</td><td class="num" data-i18n="wcs.bUnavailable">unavailable</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="cs-note" data-i18n="wcs.benchNote">The result that reorders everything: Large is both the most accurate and the fastest. Its decoder is only four layers deep, and the decoder is the part that runs sequentially, one token at a time — a bigger encoder costs one pass per window, a deeper decoder costs every token.</p>
+      </div>
+    </section>
+
+    <!-- ═══ WHAT SHIPPED ═══ -->
+    <section class="sec sec--alt">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="wcs.shipLabel">05 / Shipped</p>
+          <h2 data-i18n="wcs.shipT">What is in the product</h2>
+        </div>
+        <div class="cs-ship" data-reveal>
+          <div class="cs-ship-row"><b data-i18n="wcs.f1">Input</b><span data-i18n="wcs.f1b">Drag and drop audio or video, or record from the microphone with a live waveform driven straight from the audio graph.</span></div>
+          <div class="cs-ship-row"><b data-i18n="wcs.f2">Models</b><span data-i18n="wcs.f2b">Three sizes with real measured download sizes shown before selection, and the tradeoff spelled out in plain language.</span></div>
+          <div class="cs-ship-row"><b data-i18n="wcs.f3">Languages</b><span data-i18n="wcs.f3b">Ten languages plus auto-detect. Naming the language explicitly is more reliable than detection, and the interface says so.</span></div>
+          <div class="cs-ship-row"><b data-i18n="wcs.f4">Output</b><span data-i18n="wcs.f4b">Timestamped transcript, word count, and export to PDF, DOCX, TXT, SRT and VTT — subtitle formats included, generated client-side.</span></div>
+          <div class="cs-ship-row"><b data-i18n="wcs.f5">Honesty</b><span data-i18n="wcs.f5b">Compute time, realtime factor and active backend are printed on every result, so the cost of each choice is visible rather than claimed.</span></div>
+        </div>
+        <p class="cs-note" data-i18n="wcs.shipNote">Recording defaults were changed too: the browser's echo cancellation and noise suppression are tuned for phone calls and reshape the spectrum the model was trained on, so both are switched off and the bitrate is raised.</p>
+      </div>
+    </section>
+
+    <!-- ═══ CTA ═══ -->
+    <section class="sec">
+      <div class="wrap">
+        <div class="sec-head" data-reveal>
+          <p class="label" data-i18n="wcs.tryLabel">06 / Try it</p>
+          <h2 data-i18n="wcs.tryT">Open it and speak</h2>
+        </div>
+        <p class="cs-lede" data-i18n="wcs.tryBody">No account and no upload — the first run downloads the model, and after that it works with the network switched off.</p>
+        <div class="proj-links" style="margin-top: 26px;">
+          <a href="https://uz-or.com/scriptor/" target="_blank" rel="noopener" data-i18n="common.website">Website</a>
+          <a href="https://github.com/uzorgame/Scriptor" target="_blank" rel="noopener">GitHub</a>
+          <a href="/#projects" data-i18n="common.back">Back</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <p class="footer-col-title">Navigate</p>
+          <a href="/#projects" data-i18n="nav.projects">Projects</a>
+          <a href="/#about" data-i18n="nav.about">About</a>
+          <a href="/#stack" data-i18n="nav.stack">Stack</a>
+          <a href="/#contact" data-i18n="nav.contact">Contact</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Connect</p>
+          <a href="https://github.com/uzorgame" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.instagram.com/nahrebam?igsh=b3RrdzY2M2E1emh3" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://t.me/uzormn" target="_blank" rel="noopener">Telegram</a>
+          <a href="mailto:NagrebaMM@gmail.com">Email</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-title">Info</p>
+          <span>Bratislava, Slovakia</span>
+          <a href="Mykhailo_Nahreba_CV.pdf" target="_blank">Download CV</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-logo">nahreba</span>
+        <span class="footer-copy" data-i18n="footer.text">&copy; 2026 Nahreba Mykhailo. Built with precision.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Privacy modal: markup present so main.js hooks find their nodes on this page too -->
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-head">
+      <h2 class="modal-title" id="modal-title">Privacy Policy</h2>
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-body"><p>Loading&hellip;</p></div>
+  </div>
+
+  <div class="theme-switcher" id="theme-switcher">
+    <button class="theme-btn" data-theme="light">Light</button>
+    <button class="theme-btn" data-theme="dark">Dark</button>
+  </div>
+
+  <script src="js/lenis.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script src="/js/track.js" data-app="site"></script>
+</body>
+</html>

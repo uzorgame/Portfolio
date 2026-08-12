@@ -5,7 +5,7 @@
  * city are filled in by the edge, so no IP address is ever stored.
  *
  * Usage: <script src="/js/track.js" data-app="poster"></script>
- * Known app ids: site, poster, morse, pdf, whisper, converter.
+ * Known app ids: site, poster, morse, pdf, scriptor, converter.
  */
 (function () {
   var ENDPOINT = 'https://uzor-analytics.uzorplay.workers.dev/e';

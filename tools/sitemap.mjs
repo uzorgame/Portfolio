@@ -24,12 +24,12 @@ const OWN = [
   ['', 1.0, 'weekly'],
   ['cv.html', 0.8, 'monthly'],
   ['rutalive-case-study.html', 0.7, 'monthly'],
-  ['whisper-case-study.html', 0.7, 'monthly'],
+  ['scriptor-case-study.html', 0.7, 'monthly'],
   ['poster-case-study.html', 0.7, 'monthly'],
   ['quirepdf-case-study.html', 0.7, 'monthly'],
   ['morseworld-case-study.html', 0.7, 'monthly'],
   ['Poster/', 0.8, 'monthly'],
-  ['Whisper/', 0.8, 'monthly'],
+  ['scriptor/', 0.8, 'monthly'],
 ];
 
 const app = APPS.flatMap(([name, path]) => {
