@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── Theme ── */
   const currentTheme = () => document.documentElement.getAttribute('data-theme') || 'dark';
 
-  function setTheme(t) {
+  function applyTheme(t) {
     document.documentElement.classList.add('theme-switching');
     document.documentElement.setAttribute('data-theme', t);
     localStorage.setItem('theme', t);
@@ -19,7 +19,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  setTheme(currentTheme());
+  /* The page in the new theme is painted over the old one and then uncovered
+     from the top left corner, so the switch reads as a sheet unrolling across
+     the screen. Browsers without view transitions get the instant swap. */
+  function setTheme(t) {
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !document.startViewTransition) { applyTheme(t); return; }
+    document.startViewTransition(() => applyTheme(t));
+  }
+
+  applyTheme(currentTheme());
 
   document.querySelectorAll('.theme-btn').forEach(btn => {
     btn.addEventListener('click', () => setTheme(btn.dataset.theme));
