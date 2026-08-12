@@ -277,6 +277,23 @@ html.booting body > *:not(.boot) { visibility: hidden; }
   border-bottom: 1px solid var(--border);
 }
 
+/* Safari 26 no longer reads theme-color. It tints each toolbar from the
+   background-color of whichever fixed or sticky element sits nearest that edge,
+   and falls back to the body. The bottom bar therefore works on its own, since
+   the theme switcher down there is opaque, but the nav is deliberately
+   translucent and a translucent colour is not something Safari can use.
+   This strip gives the top edge one solid colour to read.
+   It is a single pixel tall on purpose: a full height panel behind the nav
+   would give backdrop-filter nothing left to blur and the glass would die. */
+.chrome-tint {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--bg);
+  z-index: 99;
+  pointer-events: none;
+}
+
 .nav-inner {
   height: 100%;
   display: flex;
