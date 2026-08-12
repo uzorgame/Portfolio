@@ -5,12 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <title>Monitoring — uz-or.com</title>
+<meta name="theme-color" content="#0a0a0a">
 <link rel="icon" href="../favicon.svg">
+<script>
+  /* Before the first paint: the theme was previously applied at the end of the
+     body, so a light visitor got a frame of dark first. */
+  (function () {
+    var t = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    document.querySelector('meta[name="theme-color"]')
+      .setAttribute('content', t === 'light' ? '#ffffff' : '#0a0a0a');
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root, [data-theme="dark"] {
+  color-scheme:dark;
   --bg:#0a0a0a; --bg-alt:#111111; --text:#f0f0f0; --text-2:#8a8a8a; --text-3:#4a4a4a;
   --text-hero:#ffffff; --border:rgba(255,255,255,0.1); --border-h:rgba(255,255,255,0.2);
   --surface:#141414; --sel:rgba(255,255,255,0.08);
@@ -20,6 +32,7 @@
   --ease:cubic-bezier(0.16,1,0.3,1);
 }
 [data-theme="light"] {
+  color-scheme:light;
   --bg:#ffffff; --bg-alt:#f5f5f5; --text:#111111; --text-2:#666666; --text-3:#aaaaaa;
   --text-hero:#0a0a0a; --border:rgba(0,0,0,0.1); --border-h:rgba(0,0,0,0.2);
   --surface:#ffffff; --sel:rgba(0,0,0,0.06);
@@ -331,9 +344,15 @@ function applyLanguage(l) {
 document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => applyLanguage(b.dataset.lang)));
 
 /* ── тема: та сама логіка й той самий ключ, що в js/main.js ── */
+// колір панелей браузера; тримати в парі з --bg
+const CHROME = { dark: '#0a0a0a', light: '#ffffff' };
+function setChromeColor(th) {
+  document.querySelector('meta[name="theme-color"]').setAttribute('content', CHROME[th] || CHROME.dark);
+}
 function applyTheme(th) {
   document.documentElement.setAttribute('data-theme', th);
   localStorage.setItem('theme', th);
+  setChromeColor(th);
   document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === th));
 }
 function setTheme(th) {
@@ -341,7 +360,13 @@ function setTheme(th) {
   if (reduce || !document.startViewTransition) { applyTheme(th); return; }
   // dark падає з лівого верхнього кута, light повертається з правого нижнього
   document.documentElement.dataset.wipe = th === 'dark' ? 'tl' : 'br';
-  document.startViewTransition(() => applyTheme(th));
+  const vt = document.startViewTransition(() => applyTheme(th));
+  // Перервана анімація відхиляє `ready`, і без цього ловця браузер пише в
+  // консоль InvalidStateError на кожне швидке перемикання.
+  vt.ready.catch(() => {});
+  // повторюємо після анімації: під час переходу сторінка це знімок, і браузер
+  // може зчитати колір посеред руху
+  vt.finished.then(() => setChromeColor(th)).catch(() => {});
 }
 applyTheme(localStorage.getItem('theme') || 'dark');
 document.querySelectorAll('.theme-btn').forEach(b => b.addEventListener('click', () => setTheme(b.dataset.theme)));

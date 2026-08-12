@@ -35,6 +35,12 @@
     (function(){
       var t = localStorage.getItem('theme') || 'dark';
       document.documentElement.setAttribute('data-theme', t);
+
+      /* Set before the first paint, so the browser chrome never shows the wrong
+         theme for a frame. Keep these in step with --bg in styles.css. */
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (!m) { m = document.createElement('meta'); m.setAttribute('name', 'theme-color'); document.head.appendChild(m); }
+      m.setAttribute('content', t === 'light' ? '#ffffff' : '#0a0a0a');
     })();
   </script>
 

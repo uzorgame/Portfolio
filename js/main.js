@@ -5,10 +5,29 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── Theme ── */
   const currentTheme = () => document.documentElement.getAttribute('data-theme') || 'dark';
 
+  /* The browser chrome on mobile follows this tag. Left static it can only ever
+     be right in one theme, and with no tag at all Safari falls back to sampling
+     the page background whenever it feels like it, which is why the bars used
+     to disagree with the page. Keep the values in step with --bg. */
+  const CHROME = { dark: '#0a0a0a', light: '#ffffff' };
+
+  function setChromeColor(t) {
+    let m = document.querySelector('meta[name="theme-color"]');
+    if (!m) {
+      m = document.createElement('meta');
+      m.setAttribute('name', 'theme-color');
+      document.head.appendChild(m);
+    }
+    // Editing the attribute in place, rather than replacing the element, is
+    // what Safari picks up reliably.
+    m.setAttribute('content', CHROME[t] || CHROME.dark);
+  }
+
   function applyTheme(t) {
     document.documentElement.classList.add('theme-switching');
     document.documentElement.setAttribute('data-theme', t);
     localStorage.setItem('theme', t);
+    setChromeColor(t);
     document.querySelectorAll('.theme-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.theme === t);
     });
@@ -28,7 +47,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Dark falls from the top left, light returns from the bottom right, so the
     // two switches read as one motion and its reverse.
     document.documentElement.dataset.wipe = t === 'dark' ? 'tl' : 'br';
-    document.startViewTransition(() => applyTheme(t));
+    const vt = document.startViewTransition(() => applyTheme(t));
+    // An interrupted transition rejects `ready`, and with nobody listening the
+    // browser logs an InvalidStateError on every quick double switch.
+    vt.ready.catch(() => {});
+    // During the wipe the page is a composited snapshot, so a browser reading
+    // the chrome colour mid animation can catch half of the old theme. Setting
+    // it again once the transition has settled is what makes it stick.
+    vt.finished.then(() => setChromeColor(t)).catch(() => {});
   }
 
   applyTheme(currentTheme());
