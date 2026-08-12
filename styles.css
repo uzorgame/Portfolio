@@ -136,6 +136,123 @@ html.theme-switching *::after { transition: none !important; }
   ::view-transition-new(root) { animation: none; }
 }
 
+/* ═══ BOOT: departure board ═══
+   The site is hidden by class, not by opacity, so nothing of it can be read
+   through the board. The safety timeout in boot.js is what guarantees the class
+   comes off even if the script fails halfway. */
+html.booting { overflow: hidden; }
+html.booting body > *:not(.boot) { visibility: hidden; }
+
+.boot {
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  overflow: hidden;
+}
+.boot__inner { width: min(880px, 92vw); }
+
+.boot__top {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding-bottom: 12px; margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px; letter-spacing: 0.18em;
+}
+.boot__mark { color: var(--text-hero); font-weight: 500; }
+.boot__mark b { font-weight: 400; color: var(--text-3); margin-left: 1.6em; }
+.boot__clock { color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+.boot__board { font-size: clamp(9px, 1.35vw, 13px); line-height: 1.95; }
+/* The status column takes the remaining width and sits against the right edge,
+   which is what stops the board from huddling on the left of a wide screen. */
+.boot__row {
+  display: grid; grid-template-columns: 20ch 7ch 19ch 5ch 1fr;
+  gap: 0 2ch; white-space: pre;
+}
+.boot__row--head {
+  color: var(--text-3); font-size: 9px; letter-spacing: 0.16em;
+  padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid var(--border);
+  line-height: 1;
+}
+.boot__cell { color: var(--text-2); }
+.boot__cell--status { color: var(--text-3); text-align: right; }
+.boot__row:not(.boot__row--head) .boot__cell:first-child { color: var(--text-hero); }
+
+/* Rows arrive before they start flapping, so the board fills rather than
+   sitting there empty and waiting to be written into. */
+.boot__row:not(.boot__row--head) {
+  animation: boot-row-in var(--rowin-ms, 380ms) cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(var(--r) * var(--rowstep-ms, 95ms));
+}
+.boot__row[data-in] { animation: none; opacity: 1; transform: none; }
+@keyframes boot-row-in {
+  from { opacity: 0; transform: translateY(0.8em); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* A flap that has just landed flashes once, so the eye can follow the wave
+   across the board instead of watching every cell at the same time. */
+.boot__board i { font-style: normal; display: inline-block; }
+.boot__board i[data-land] { animation: boot-land 340ms ease-out; }
+@keyframes boot-land {
+  from { color: var(--text-hero); transform: translateY(-0.14em); }
+  to   { color: inherit; transform: none; }
+}
+
+.boot__foot {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+  margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--border);
+}
+.boot__counts { display: flex; gap: 48px; }
+.boot__skip {
+  font-size: 9px; letter-spacing: 0.16em; color: var(--text-3);
+  padding-bottom: 4px; text-align: right;
+}
+.boot__count b[data-bump] { animation: boot-bump 260ms cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes boot-bump {
+  from { transform: translateY(0.1em) scale(0.9); opacity: 0.45; }
+  to   { transform: none; opacity: 1; }
+}
+.boot__count b {
+  font-family: var(--font-display); font-size: clamp(26px, 4vw, 38px);
+  font-weight: 500; letter-spacing: -0.03em; color: var(--text-hero);
+  font-variant-numeric: tabular-nums; display: block; line-height: 1;
+}
+.boot__count em {
+  font-style: normal; font-size: 9px; letter-spacing: 0.16em;
+  color: var(--text-3); display: block; margin-top: 7px;
+}
+
+/* The board leaves the way the light theme arrives: the same ridge, collapsing
+   into the bottom right, so the site is uncovered from the top left. */
+.boot[data-phase="sweep"] {
+  animation: boot-sweep var(--sweep-ms, 950ms) cubic-bezier(0.5, 0, 0.75, 0) forwards;
+}
+@keyframes boot-sweep {
+  from {
+    clip-path: polygon(100% 100%,
+      -170.0% 100.0%, -159.0% 87.0%, -146.6% 74.0%, -134.6% 60.9%, -122.3% 47.7%,
+      -104.9% 36.0%, -83.6% 26.6%, -66.8% 16.6%, -59.2% 2.0%, -55.2% -16.4%,
+      -46.4% -33.1%, -32.8% -46.1%, -19.6% -59.4%, -7.7% -75.0%, 6.1% -87.8%,
+      22.5% -93.7%, 38.2% -97.7%, 50.9% -108.5%, 62.3% -126.2%, 74.3% -143.7%,
+      87.1% -157.6%, 100.0% -170.0%);
+  }
+  to {
+    clip-path: polygon(100% 100%,
+      100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+      100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+      100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+      100% 100%);
+  }
+}
+
+@media (max-width: 720px) {
+  .boot__board { font-size: 9px; }
+  .boot__row { gap: 1ch; }
+  .boot__counts { gap: 26px; }
+}
+
 /* ── Wrap ── */
 .wrap {
   max-width: 1200px;

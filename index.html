@@ -49,6 +49,18 @@
     (function(){
       var t = localStorage.getItem('theme') || 'dark';
       document.documentElement.setAttribute('data-theme', t);
+
+      /* The boot decision has to be made before the first paint, otherwise the
+         site shows for a frame and then gets covered, which reads as a glitch.
+         Once per session, and never against a reduced motion preference. */
+      var p = new URLSearchParams(location.search);
+      var force = p.get('boot');
+      if (force === '0') return;
+      if (force !== '1') {
+        if (sessionStorage.getItem('booted')) return;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      }
+      document.documentElement.classList.add('booting');
     })();
   </script>
 
@@ -746,6 +758,7 @@
   <script src="js/lenis.min.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/boot.js"></script>
   <script src="/js/track.js" data-app="site"></script>
 </body>
 </html>
