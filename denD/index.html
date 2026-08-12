@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="uk" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Monitoring — uz-or.com</title>
+<link rel="icon" href="../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root, [data-theme="dark"] {
+  --bg:#0a0a0a; --bg-alt:#111111; --text:#f0f0f0; --text-2:#8a8a8a; --text-3:#4a4a4a;
+  --text-hero:#ffffff; --border:rgba(255,255,255,0.1); --border-h:rgba(255,255,255,0.2);
+  --surface:#141414; --sel:rgba(255,255,255,0.08);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-display:'Space Grotesk','Inter',sans-serif;
+  --font-mono:'JetBrains Mono','Fira Code',monospace;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+[data-theme="light"] {
+  --bg:#ffffff; --bg-alt:#f5f5f5; --text:#111111; --text-2:#666666; --text-3:#aaaaaa;
+  --text-hero:#0a0a0a; --border:rgba(0,0,0,0.1); --border-h:rgba(0,0,0,0.2);
+  --surface:#ffffff; --sel:rgba(0,0,0,0.06);
+}
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+body {
+  background:var(--bg); color:var(--text); font-family:var(--font);
+  font-weight:300; line-height:1.5; -webkit-font-smoothing:antialiased;
+}
+.wrap { max-width:1180px; margin:0 auto; padding:0 24px; }
+
+header { border-bottom:1px solid var(--border); padding:28px 0 20px; }
+.head-row { display:flex; align-items:baseline; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+h1 { font-family:var(--font-display); font-size:clamp(22px,3vw,30px); font-weight:500; letter-spacing:-0.02em; color:var(--text-hero); }
+h1 span { color:var(--text-3); font-weight:300; }
+.head-right { display:flex; align-items:center; gap:18px; }
+.status { font-family:var(--font-mono); font-size:11px; color:var(--text-2); letter-spacing:0.04em; }
+.dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--text-3); margin-right:7px; vertical-align:middle; }
+.dot.live { background:#3ddc84; box-shadow:0 0 8px rgba(61,220,132,.6); }
+.dot.err { background:#ff5f52; }
+
+/* мова — та сама розмітка й той самий ключ, що на головній */
+.lang-switch { display:flex; gap:0; }
+.lang-btn {
+  font-family:var(--font); font-size:12px; font-weight:600; padding:6px 10px;
+  color:var(--text-3); background:none; border:none; cursor:pointer;
+  transition:color .2s; text-transform:none; letter-spacing:0;
+}
+.lang-btn:hover { color:var(--text-2); }
+.lang-btn.active { color:var(--text); }
+
+.controls { display:flex; gap:8px; align-items:center; padding:18px 0; flex-wrap:wrap; }
+button {
+  font-family:var(--font-mono); font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+  color:var(--text-2); background:transparent; border:1px solid var(--border);
+  padding:7px 14px; cursor:pointer; transition:all .25s var(--ease);
+}
+button:hover { color:var(--text); border-color:var(--border-h); }
+.spacer { flex:1; }
+
+/* ── календар ── */
+.range { position:relative; }
+#range-btn { color:var(--text-hero); border-color:var(--border-h); text-transform:none; letter-spacing:0.02em; font-size:12px; }
+.cal {
+  position:absolute; top:calc(100% + 6px); left:0; z-index:40;
+  background:var(--bg); border:1px solid var(--border-h); padding:16px; width:296px;
+  box-shadow:0 18px 50px rgba(0,0,0,.5);
+}
+[data-theme="light"] .cal { box-shadow:0 18px 50px rgba(0,0,0,.12); }
+.cal-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.cal-title { font-family:var(--font-display); font-size:13px; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--text); }
+.cal-nav { padding:4px 9px; font-size:12px; line-height:1; }
+.cal-dows, .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+.cal-dows { margin-bottom:6px; }
+.cal-dow { font-family:var(--font-mono); font-size:9px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); text-align:center; padding:4px 0; }
+.cal-day {
+  font-family:var(--font-mono); font-size:12px; text-align:center; padding:7px 0;
+  color:var(--text); cursor:pointer; border:1px solid transparent; background:none;
+  letter-spacing:0; text-transform:none; transition:background .15s, color .15s;
+}
+.cal-day:hover:not(:disabled) { border-color:var(--border-h); color:var(--text-hero); }
+.cal-day.out { color:var(--text-3); }
+.cal-day:disabled { color:var(--text-3); opacity:.35; cursor:default; }
+.cal-day.in-range { background:var(--sel); }
+.cal-day.edge { background:var(--text-hero); color:var(--bg); border-color:var(--text-hero); }
+.cal-foot { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:14px; padding-top:12px; border-top:1px solid var(--border); }
+.cal-hint { font-family:var(--font-mono); font-size:10px; color:var(--text-3); letter-spacing:.04em; }
+
+section { border-top:1px solid var(--border); padding:38px 0; }
+.sec-head { display:flex; align-items:baseline; gap:14px; margin-bottom:24px; }
+.num { font-family:var(--font-mono); font-size:11px; color:var(--text-3); letter-spacing:0.1em; }
+h2 { font-family:var(--font-display); font-size:13px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-2); }
+
+.kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); }
+.kpi { background:var(--bg); padding:22px 20px; }
+.kpi .v { font-family:var(--font-display); font-size:clamp(28px,4vw,40px); font-weight:500; letter-spacing:-0.03em; color:var(--text-hero); line-height:1.1; }
+.kpi .l { font-family:var(--font-mono); font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); margin-top:8px; }
+
+table { width:100%; border-collapse:collapse; font-size:14px; }
+th { font-family:var(--font-mono); font-size:10px; font-weight:400; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-3); text-align:left; padding:0 14px 10px 0; border-bottom:1px solid var(--border); }
+td { padding:11px 14px 11px 0; border-bottom:1px solid var(--border); color:var(--text); vertical-align:top; }
+td.mono, th.mono { font-family:var(--font-mono); font-size:12px; }
+td.num-cell { text-align:right; font-family:var(--font-mono); font-variant-numeric:tabular-nums; }
+th.num-cell { text-align:right; }
+td.dim { color:var(--text-2); }
+tr:last-child td { border-bottom:none; }
+.bar { display:block; height:2px; background:var(--text-hero); opacity:.75; margin-top:6px; }
+
+.feed { font-family:var(--font-mono); font-size:12px; }
+.feed .row { display:grid; grid-template-columns:88px 92px 1fr auto; gap:14px; padding:9px 0; border-bottom:1px solid var(--border); align-items:baseline; }
+.feed .t { color:var(--text-3); }
+.feed .app { color:var(--text-hero); }
+.feed .what { color:var(--text-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.feed .geo { color:var(--text-3); text-align:right; }
+.tag { display:inline-block; border:1px solid var(--border); padding:1px 6px; font-size:10px; letter-spacing:.06em; color:var(--text-2); }
+.kind { font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
+
+.empty { border:1px dashed var(--border); padding:40px 24px; text-align:center; color:var(--text-2); font-size:14px; }
+footer { border-top:1px solid var(--border); padding:22px 0 50px; font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; color:var(--text-3); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+a { color:var(--text-2); }
+@media (max-width:640px) {
+  .feed .row { grid-template-columns:80px 1fr; }
+  .feed .geo, .feed .what { grid-column:2; text-align:left; }
+  .cal { left:auto; right:0; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head-row">
+    <h1>Monitoring <span>/ uz-or.com</span></h1>
+    <div class="head-right">
+      <div class="status"><span id="dot" class="dot"></span><span id="status-text">…</span></div>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button class="lang-btn" data-lang="en">EN</button>
+        <button class="lang-btn" data-lang="uk">UA</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <div class="range">
+      <button id="range-btn">—</button>
+      <div class="cal" id="cal" hidden>
+        <div class="cal-head">
+          <button class="cal-nav" id="cal-prev" aria-label="prev">←</button>
+          <span class="cal-title" id="cal-title"></span>
+          <button class="cal-nav" id="cal-next" aria-label="next">→</button>
+        </div>
+        <div class="cal-dows" id="cal-dows"></div>
+        <div class="cal-grid" id="cal-grid"></div>
+        <div class="cal-foot">
+          <span class="cal-hint" id="cal-hint"></span>
+          <button id="cal-month">—</button>
+        </div>
+      </div>
+    </div>
+    <span class="spacer"></span>
+    <button id="refresh" data-i18n="refresh">Оновити</button>
+    <button id="theme" data-i18n="theme">Тема</button>
+  </div>
+
+  <section>
+    <div class="sec-head"><span class="num">01</span><h2 data-i18n="s1">Загалом</h2></div>
+    <div class="kpis" id="kpis"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">02</span><h2 data-i18n="s2">За проєктами</h2></div>
+    <div id="apps"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">03</span><h2 data-i18n="s3">Географія</h2></div>
+    <div id="geo"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">04</span><h2 data-i18n="s4">Останні події</h2></div>
+    <div id="feed"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">05</span><h2 data-i18n="s5">Звідки прийшли</h2></div>
+    <div id="sources"></div>
+  </section>
+
+  <footer>
+    <span id="served">—</span>
+    <span><a href="/">← uz-or.com</a></span>
+  </footer>
+</div>
+
+<script>
+const API = 'https://uzor-analytics.uzorplay.workers.dev';
+const APP_NAMES = { site:'uz-or.com', poster:'Poster', morse:'MorseWorld', pdf:'QuirePDF', whisper:'Whisper', converter:'Converter' };
+
+const I18N = {
+  uk: {
+    refresh:'Оновити', theme:'Тема', thisMonth:'Цей місяць',
+    s1:'Загалом', s2:'За проєктами', s3:'Географія', s4:'Останні події', s5:'Звідки прийшли',
+    kSessions:'Сесії', kEvents:'Подій', kApps:'Проєктів', kGeo:'Локацій',
+    tProject:'Проєкт', tSessions:'Сесії', tEvents:'Події', tCountry:'Країна', tCity:'Місто',
+    tSource:'Джерело', tKind:'Тип',
+    empty:'За цей період подій немає.', emptyHint:'Якщо лічильник ще не вставлений у сторінки — це очікувано.',
+    hintStart:'Обери початок періоду', hintEnd:'Обери кінець періоду',
+    loading:'завантаження…', updated:'оновлено',
+    months:['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'],
+    monthsGen:['січня','лютого','березня','квітня','травня','червня','липня','серпня','вересня','жовтня','листопада','грудня'],
+    dows:['Пн','Вт','Ср','Чт','Пт','Сб','Нд'],
+    kinds:{ direct:'Прямі', search:'Пошук', social:'Соцмережі', dev:'Розробка', internal:'Внутрішні', other:'Інше' },
+    directLabel:'Прямий захід',
+  },
+  en: {
+    refresh:'Refresh', theme:'Theme', thisMonth:'This month',
+    s1:'Overview', s2:'By project', s3:'Geography', s4:'Recent events', s5:'Traffic sources',
+    kSessions:'Sessions', kEvents:'Events', kApps:'Projects', kGeo:'Locations',
+    tProject:'Project', tSessions:'Sessions', tEvents:'Events', tCountry:'Country', tCity:'City',
+    tSource:'Source', tKind:'Kind',
+    empty:'No events in this period.', emptyHint:'Expected if the tracker is not embedded in the pages yet.',
+    hintStart:'Pick the start date', hintEnd:'Pick the end date',
+    loading:'loading…', updated:'updated',
+    months:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    monthsGen:['January','February','March','April','May','June','July','August','September','October','November','December'],
+    dows:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    kinds:{ direct:'Direct', search:'Search', social:'Social', dev:'Dev', internal:'Internal', other:'Other' },
+    directLabel:'Direct visit',
+  },
+};
+
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+let lang = localStorage.getItem('language')
+  || ((navigator.language || '').toLowerCase().startsWith('uk') ? 'uk' : 'en');
+if (!I18N[lang]) lang = 'uk';
+const t = (k) => I18N[lang][k];
+
+let last = null;                    // остання відповідь API — щоб перемальовувати без запиту
+let lastAt = null;                  // час останнього успішного запиту
+const today = startOfDay(new Date());
+let selStart = new Date(today.getFullYear(), today.getMonth(), 1);   // 1-ше число поточного місяця
+let selEnd = today;
+let picking = false;                // true = чекаємо другий клік (кінець періоду)
+let view = new Date(today.getFullYear(), today.getMonth(), 1);
+
+function startOfDay(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function endOfDay(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59); }
+function sameDay(a, b) { return a && b && a.getTime() === startOfDay(b).getTime(); }
+const unix = (d) => Math.floor(d.getTime() / 1000);
+
+/* ── мова ── */
+function applyLanguage(l) {
+  lang = I18N[l] ? l : 'uk';
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+  localStorage.setItem('language', lang);
+  renderCalendar();
+  renderRangeLabel();
+  if (last) render(last);
+  if (lastAt) setStatus(`${t('updated')} ${lastAt.toLocaleTimeString(lang === 'uk' ? 'uk-UA' : 'en-GB')}`, 'live');
+}
+document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => applyLanguage(b.dataset.lang)));
+
+/* ── тема ── */
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
+$('#theme').onclick = () => {
+  const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+};
+$('#refresh').onclick = () => load();
+
+/* ── календар ── */
+function renderRangeLabel() {
+  const m = I18N[lang].monthsGen;
+  const a = selStart, b = selEnd;
+  const label = (a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear())
+    ? `${a.getDate()} – ${b.getDate()} ${m[b.getMonth()]} ${b.getFullYear()}`
+    : `${a.getDate()} ${m[a.getMonth()]} – ${b.getDate()} ${m[b.getMonth()]} ${b.getFullYear()}`;
+  $('#range-btn').textContent = label;
+}
+
+function renderCalendar() {
+  const L = I18N[lang];
+  $('#cal-title').textContent = `${L.months[view.getMonth()]} ${view.getFullYear()}`;
+  $('#cal-hint').textContent = picking ? L.hintEnd : L.hintStart;
+  $('#cal-month').textContent = L.thisMonth;
+  $('#cal-dows').innerHTML = L.dows.map(d => `<div class="cal-dow">${d}</div>`).join('');
+
+  const first = new Date(view.getFullYear(), view.getMonth(), 1);
+  const shift = (first.getDay() + 6) % 7;             // тиждень з понеділка
+  const start = new Date(first); start.setDate(1 - shift);
+
+  let html = '';
+  for (let i = 0; i < 42; i++) {
+    const d = new Date(start.getFullYear(), start.getMonth(), start.getDate() + i);
+    const out = d.getMonth() !== view.getMonth();
+    const future = d > today;
+    const edge = sameDay(selStart, d) || sameDay(selEnd, d);
+    const inRange = !picking && d > selStart && d < selEnd;
+    const cls = ['cal-day', out ? 'out' : '', edge ? 'edge' : '', inRange ? 'in-range' : ''].filter(Boolean).join(' ');
+    html += `<button class="${cls}" data-d="${d.getFullYear()}-${d.getMonth()}-${d.getDate()}"${future ? ' disabled' : ''}>${d.getDate()}</button>`;
+  }
+  $('#cal-grid').innerHTML = html;
+
+  $('#cal-grid').querySelectorAll('.cal-day').forEach(btn => {
+    btn.onclick = () => {
+      const [y, mo, da] = btn.dataset.d.split('-').map(Number);
+      pick(new Date(y, mo, da));
+    };
+  });
+}
+
+function pick(d) {
+  if (!picking) { selStart = d; selEnd = d; picking = true; }
+  else {
+    if (d < selStart) { selEnd = selStart; selStart = d; } else { selEnd = d; }
+    picking = false;
+    $('#cal').hidden = true;
+    renderRangeLabel();
+    load();
+    return;
+  }
+  renderCalendar();
+  renderRangeLabel();
+}
+
+$('#range-btn').onclick = (e) => {
+  e.stopPropagation();
+  const c = $('#cal');
+  c.hidden = !c.hidden;
+  if (!c.hidden) { picking = false; view = new Date(selEnd.getFullYear(), selEnd.getMonth(), 1); renderCalendar(); }
+};
+$('#cal').onclick = (e) => e.stopPropagation();
+document.addEventListener('click', () => { $('#cal').hidden = true; });
+$('#cal-prev').onclick = () => { view = new Date(view.getFullYear(), view.getMonth() - 1, 1); renderCalendar(); };
+$('#cal-next').onclick = () => { view = new Date(view.getFullYear(), view.getMonth() + 1, 1); renderCalendar(); };
+$('#cal-month').onclick = () => {
+  selStart = new Date(today.getFullYear(), today.getMonth(), 1);
+  selEnd = today; picking = false;
+  view = new Date(today.getFullYear(), today.getMonth(), 1);
+  $('#cal').hidden = true;
+  renderRangeLabel(); load();
+};
+
+/* ── дані ── */
+async function load() {
+  setStatus(t('loading'), '');
+  try {
+    const r = await fetch(`${API}/stats?from=${unix(startOfDay(selStart))}&to=${unix(endOfDay(selEnd))}`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    last = await r.json();
+    lastAt = new Date();
+    render(last);
+    setStatus(`${t('updated')} ${lastAt.toLocaleTimeString(lang === 'uk' ? 'uk-UA' : 'en-GB')}`, 'live');
+  } catch (e) {
+    setStatus(String(e.message || e), 'err');
+  }
+}
+
+function setStatus(text, cls) {
+  $('#status-text').textContent = text;
+  $('#dot').className = 'dot' + (cls ? ' ' + cls : '');
+}
+
+function render(d) {
+  const L = I18N[lang];
+  const tot = d.totals || { events: 0, sessions: 0 };
+  $('#kpis').innerHTML = [
+    [L.kSessions, tot.sessions ?? 0],
+    [L.kEvents, tot.events ?? 0],
+    [L.kApps, (d.byApp || []).length],
+    [L.kGeo, (d.byCountry || []).length],
+  ].map(([l, v]) => `<div class="kpi"><div class="v">${v}</div><div class="l">${esc(l)}</div></div>`).join('');
+
+  const empty = `<div class="empty">${esc(L.empty)}<br>${esc(L.emptyHint)}</div>`;
+
+  const apps = d.byApp || [];
+  const maxA = Math.max(1, ...apps.map(a => a.sessions));
+  $('#apps').innerHTML = !apps.length ? empty : `<table>
+    <tr><th>${esc(L.tProject)}</th><th class="num-cell">${esc(L.tSessions)}</th><th class="num-cell">${esc(L.tEvents)}</th></tr>
+    ${apps.map(a => `<tr>
+      <td>${esc(APP_NAMES[a.app] || a.app)}<span class="bar" style="width:${(a.sessions / maxA * 100).toFixed(1)}%"></span></td>
+      <td class="num-cell">${a.sessions}</td><td class="num-cell dim">${a.events}</td></tr>`).join('')}
+  </table>`;
+
+  const geo = d.byCountry || [];
+  $('#geo').innerHTML = !geo.length ? empty : `<table>
+    <tr><th class="mono">${esc(L.tCountry)}</th><th>${esc(L.tCity)}</th><th class="num-cell">${esc(L.tSessions)}</th></tr>
+    ${geo.map(g => `<tr><td class="mono">${esc(g.country)}</td>
+      <td class="dim">${esc(g.city || '—')}</td>
+      <td class="num-cell">${g.sessions}</td></tr>`).join('')}
+  </table>`;
+
+  const rec = d.recent || [];
+  const tl = lang === 'uk' ? 'uk-UA' : 'en-GB';
+  $('#feed').innerHTML = !rec.length ? empty : `<div class="feed">${rec.map(e => {
+    const dt = new Date(e.ts * 1000);
+    const stamp = `${dt.toLocaleDateString(tl, { day: '2-digit', month: '2-digit' })} ${dt.toLocaleTimeString(tl, { hour: '2-digit', minute: '2-digit' })}`;
+    let what = e.path || '';
+    if (e.meta) { try { what += ' ' + Object.entries(JSON.parse(e.meta)).map(([k, v]) => `${k}=${v}`).join(' '); } catch {} }
+    if (e.ref) what += `  ← ${e.ref.replace(/^https?:\/\//, '')}`;
+    return `<div class="row">
+      <span class="t">${stamp}</span>
+      <span class="app">${esc(APP_NAMES[e.app] || e.app)}</span>
+      <span class="what"><span class="tag">${esc(e.action)}</span> ${esc(what)}</span>
+      <span class="geo">${esc([e.city, e.country].filter(Boolean).join(', ') || '—')}</span>
+    </div>`;
+  }).join('')}</div>`;
+
+  const src = d.bySource || [];
+  const maxS = Math.max(1, ...src.map(s => s.sessions));
+  $('#sources').innerHTML = !src.length ? empty : `<table>
+    <tr><th>${esc(L.tSource)}</th><th class="mono">${esc(L.tKind)}</th><th class="num-cell">${esc(L.tSessions)}</th></tr>
+    ${src.map(s => `<tr>
+      <td>${esc(s.host === 'direct' ? L.directLabel : s.host)}<span class="bar" style="width:${(s.sessions / maxS * 100).toFixed(1)}%"></span></td>
+      <td class="kind">${esc(L.kinds[s.kind] || s.kind)}</td>
+      <td class="num-cell">${s.sessions}</td></tr>`).join('')}
+  </table>`;
+
+  const sv = d.servedBy || {};
+  const fmt = (u) => new Date(u * 1000).toLocaleDateString(tl, { day: '2-digit', month: '2-digit', year: 'numeric' });
+  $('#served').textContent = [
+    sv.region ? `D1 · ${sv.region}${sv.primary ? ' · primary' : ' · replica'}` : null,
+    `${fmt(d.from)} → ${fmt(d.to)}`,
+  ].filter(Boolean).join(' · ');
+}
+
+applyLanguage(lang);
+load();
+</script>
+</body>
+</html>
