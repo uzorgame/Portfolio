@@ -35,6 +35,21 @@ header { border-bottom:1px solid var(--border); padding:28px 0 20px; }
 .head-row { display:flex; align-items:baseline; justify-content:space-between; gap:24px; flex-wrap:wrap; }
 h1 { font-family:var(--font-display); font-size:clamp(22px,3vw,30px); font-weight:500; letter-spacing:-0.02em; color:var(--text-hero); }
 h1 span { color:var(--text-3); font-weight:300; }
+h1 .home { color:inherit; text-decoration:none; transition:color .2s; }
+h1 .home:hover { color:var(--text-2); }
+
+/* тема: та сама розмітка, позиція і поведінка, що на головній */
+.theme-switcher {
+  position:fixed; bottom:24px; right:24px; z-index:100;
+  background:var(--bg); border:1px solid var(--border); display:flex; gap:0;
+}
+.theme-btn {
+  font-family:var(--font); font-size:11px; font-weight:600; padding:8px 16px;
+  color:var(--text-3); background:none; border:none; cursor:pointer;
+  transition:all .2s; text-transform:none; letter-spacing:0;
+}
+.theme-btn:hover { color:var(--text-2); }
+.theme-btn.active { background:var(--text); color:var(--bg); }
 .head-right { display:flex; align-items:center; gap:18px; }
 .status { font-family:var(--font-mono); font-size:11px; color:var(--text-2); letter-spacing:0.04em; }
 .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--text-3); margin-right:7px; vertical-align:middle; }
@@ -131,7 +146,7 @@ a { color:var(--text-2); }
 
 <header>
   <div class="wrap head-row">
-    <h1>Monitoring <span>/ uz-or.com</span></h1>
+    <h1>Monitoring <span>/ <a href="/" class="home">uz-or.com</a></span></h1>
     <div class="head-right">
       <div class="status"><span id="dot" class="dot"></span><span id="status-text">…</span></div>
       <div class="lang-switch" role="group" aria-label="Language">
@@ -162,7 +177,6 @@ a { color:var(--text-2); }
     </div>
     <span class="spacer"></span>
     <button id="refresh" data-i18n="refresh">Оновити</button>
-    <button id="theme" data-i18n="theme">Тема</button>
   </div>
 
   <section>
@@ -194,6 +208,11 @@ a { color:var(--text-2); }
     <span id="served">—</span>
     <span><a href="/">← uz-or.com</a></span>
   </footer>
+</div>
+
+<div class="theme-switcher" id="theme-switcher">
+  <button class="theme-btn" data-theme="light">Light</button>
+  <button class="theme-btn" data-theme="dark">Dark</button>
 </div>
 
 <script>
@@ -268,14 +287,15 @@ function applyLanguage(l) {
 }
 document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => applyLanguage(b.dataset.lang)));
 
-/* ── тема ── */
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) document.documentElement.setAttribute('data-theme', savedTheme);
-$('#theme').onclick = () => {
-  const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-theme', next);
-  localStorage.setItem('theme', next);
-};
+/* ── тема: та сама логіка й той самий ключ, що в js/main.js ── */
+function setTheme(th) {
+  document.documentElement.setAttribute('data-theme', th);
+  localStorage.setItem('theme', th);
+  document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === th));
+}
+setTheme(localStorage.getItem('theme') || 'dark');
+document.querySelectorAll('.theme-btn').forEach(b => b.addEventListener('click', () => setTheme(b.dataset.theme)));
+
 $('#refresh').onclick = () => load();
 
 /* ── календар ── */
