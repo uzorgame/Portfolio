@@ -22,7 +22,6 @@ const stamp = new Date().toISOString().slice(0, 10);
    own builds; only their entry point belongs here. */
 const OWN = [
   ['', 1.0, 'weekly'],
-  ['cv.html', 0.8, 'monthly'],
   ['rutalive-case-study.html', 0.7, 'monthly'],
   ['scriptor-case-study.html', 0.7, 'monthly'],
   ['poster-case-study.html', 0.7, 'monthly'],
