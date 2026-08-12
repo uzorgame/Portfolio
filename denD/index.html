@@ -179,14 +179,41 @@ td.dim { color:var(--text-2); }
 tr:last-child td { border-bottom:none; }
 .bar { display:block; height:2px; background:var(--text-hero); opacity:.75; margin-top:6px; }
 
-.feed { font-family:var(--font-mono); font-size:12px; }
-.feed .row { display:grid; grid-template-columns:88px 92px 1fr auto; gap:14px; padding:9px 0; border-bottom:1px solid var(--border); align-items:baseline; }
-.feed .t { color:var(--text-3); }
-.feed .app { color:var(--text-hero); }
-.feed .what { color:var(--text-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.feed .geo { color:var(--text-3); text-align:right; }
 .tag { display:inline-block; border:1px solid var(--border); padding:1px 6px; font-size:10px; letter-spacing:.06em; color:var(--text-2); }
 .kind { font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-3); }
+
+/* Кожен проєкт зі своєю кривою. Кольором їх не розрізнити, палітра монохромна,
+   тому порівнюємо формою і числом поруч. */
+.rank { font-family:var(--font-mono); font-size:11px; color:var(--text-3); width:2ch; }
+.spark { display:block; width:100%; height:30px; overflow:visible; }
+.spark-line { fill:none; stroke:var(--text-hero); stroke-width:1.25; vector-effect:non-scaling-stroke;
+              stroke-linejoin:round; stroke-linecap:round; }
+.spark-area { fill:var(--text-hero); opacity:.07; stroke:none; }
+.spark-dot { fill:var(--text-hero); }
+.spark-wrap { width:clamp(90px,18vw,190px); }
+.share { font-family:var(--font-mono); font-size:11px; color:var(--text-2); font-variant-numeric:tabular-nums; }
+.flat { font-family:var(--font-mono); font-size:10px; color:var(--text-3); letter-spacing:.06em; }
+
+/* Один рядок на відвідувача, а не на подію. */
+.ses { width:100%; border-collapse:collapse; font-size:13px; }
+.ses th { font-family:var(--font-mono); font-size:10px; font-weight:400; letter-spacing:.1em;
+          text-transform:uppercase; color:var(--text-3); text-align:left;
+          padding:0 12px 10px 0; border-bottom:1px solid var(--border); white-space:nowrap; }
+.ses td { padding:10px 12px 10px 0; border-bottom:1px solid var(--border); vertical-align:top; }
+.ses tr:last-child td { border-bottom:none; }
+.ses .when { font-family:var(--font-mono); font-size:12px; color:var(--text-3); white-space:nowrap; }
+.ses .lasted { font-family:var(--font-mono); font-size:12px; color:var(--text-2); white-space:nowrap; }
+.ses .apps { color:var(--text-hero); }
+.ses .apps b { font-weight:400; }
+.ses .apps span { color:var(--text-3); }
+.ses .from { color:var(--text-2); font-size:12px; }
+.ses .dev { font-family:var(--font-mono); font-size:11px; color:var(--text-3); white-space:nowrap; }
+.ses .geo { color:var(--text-2); font-size:12px; white-space:nowrap; }
+.ses .ev { font-family:var(--font-mono); font-size:12px; color:var(--text-3); text-align:right;
+           font-variant-numeric:tabular-nums; }
+@media (max-width:900px) {
+  .ses .dev, .ses .from { display:none; }
+}
 
 .empty { border:1px dashed var(--border); padding:40px 24px; text-align:center; color:var(--text-2); font-size:14px; }
 footer { border-top:1px solid var(--border); padding:22px 0 50px; font-family:var(--font-mono); font-size:10px; letter-spacing:.08em; color:var(--text-3); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; }
@@ -278,10 +305,13 @@ const APP_NAMES = { site:'uz-or.com', poster:'Poster', morse:'MorseWorld', pdf:'
 const I18N = {
   uk: {
     refresh:'Оновити', theme:'Тема', thisMonth:'Цей місяць',
-    s1:'Загалом', s2:'За проєктами', s3:'Географія', s4:'Останні події', s5:'Звідки прийшли',
+    s1:'Загалом', s2:'За проєктами', s3:'Географія', s4:'Сесії', s5:'Звідки прийшли',
     kSessions:'Сесії', kEvents:'Подій', kApps:'Проєктів', kGeo:'Локацій',
     tProject:'Проєкт', tSessions:'Сесії', tEvents:'Події', tCountry:'Країна', tCity:'Місто',
     tSource:'Джерело', tKind:'Тип',
+    tWhen:'Коли', tLasted:'Тривала', tOpened:'Відкрив', tDevice:'Пристрій', tWhere:'Звідки',
+    tShare:'Частка', tTrend:'За днями',
+    sec:'с', min:'хв', hr:'год', directShort:'прямий',
     empty:'За цей період подій немає.', emptyHint:'Якщо лічильник ще не вставлений у сторінки — це очікувано.',
     hintStart:'Обери початок періоду', hintEnd:'Обери кінець періоду',
     loading:'завантаження…', updated:'оновлено',
@@ -293,10 +323,13 @@ const I18N = {
   },
   en: {
     refresh:'Refresh', theme:'Theme', thisMonth:'This month',
-    s1:'Overview', s2:'By project', s3:'Geography', s4:'Recent events', s5:'Traffic sources',
+    s1:'Overview', s2:'By project', s3:'Geography', s4:'Sessions', s5:'Traffic sources',
     kSessions:'Sessions', kEvents:'Events', kApps:'Projects', kGeo:'Locations',
     tProject:'Project', tSessions:'Sessions', tEvents:'Events', tCountry:'Country', tCity:'City',
     tSource:'Source', tKind:'Kind',
+    tWhen:'When', tLasted:'Lasted', tOpened:'Opened', tDevice:'Device', tWhere:'From',
+    tShare:'Share', tTrend:'By day',
+    sec:'s', min:'m', hr:'h', directShort:'direct',
     empty:'No events in this period.', emptyHint:'Expected if the tracker is not embedded in the pages yet.',
     hintStart:'Pick the start date', hintEnd:'Pick the end date',
     loading:'loading…', updated:'updated',
@@ -310,6 +343,31 @@ const I18N = {
 
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* Одна крива на проєкт. Кольором тут нічого не закодуєш, палітра монохромна,
+   тому порівнюємо формою і числом поруч. Порожні дні приходять із сервера
+   нулями, а не пропусками: інакше тиша малювалась би як зростання. */
+function sparkline(values, days, L) {
+  if (!values || !values.length) return '<span class="flat">-</span>';
+  const w = 100, h = 30;
+  const n = Math.max(values.length, (days && days.length) || 0);
+  const v = values.length === n ? values : values.concat(new Array(n - values.length).fill(0));
+  const max = Math.max(1, ...v);
+  const x = (i) => (n === 1 ? w / 2 : (i / (n - 1)) * w);
+  const y = (i) => h - 1 - (v[i] / max) * (h - 3);
+  const line = n === 1
+    ? `M0,${y(0).toFixed(1)}L${w},${y(0).toFixed(1)}`
+    : v.map((_, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(i).toFixed(1)}`).join('');
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">`
+    + `<path class="spark-area" d="${line}L${w},${h}L0,${h}Z"/>`
+    + `<path class="spark-line" d="${line}"/></svg>`;
+}
+
+function dur(sec, L) {
+  if (sec < 60) return sec + L.sec;
+  if (sec < 3600) return Math.round(sec / 60) + L.min;
+  return (sec / 3600).toFixed(1) + L.hr;
+}
 
 let lang = localStorage.getItem('language')
   || ((navigator.language || '').toLowerCase().startsWith('uk') ? 'uk' : 'en');
@@ -479,12 +537,23 @@ function render(d) {
   const empty = `<div class="empty">${esc(L.empty)}<br>${esc(L.emptyHint)}</div>`;
 
   const apps = d.byApp || [];
-  const maxA = Math.max(1, ...apps.map(a => a.sessions));
+  const totalSessions = apps.reduce((s, a) => s + a.sessions, 0) || 1;
   $('#apps').innerHTML = !apps.length ? empty : `<table>
-    <tr><th>${esc(L.tProject)}</th><th class="num-cell">${esc(L.tSessions)}</th><th class="num-cell">${esc(L.tEvents)}</th></tr>
-    ${apps.map(a => `<tr>
-      <td>${esc(APP_NAMES[a.app] || a.app)}<span class="bar" style="width:${(a.sessions / maxA * 100).toFixed(1)}%"></span></td>
-      <td class="num-cell">${a.sessions}</td><td class="num-cell dim">${a.events}</td></tr>`).join('')}
+    <tr>
+      <th></th><th>${esc(L.tProject)}</th>
+      <th>${esc(L.tTrend)}</th>
+      <th class="num-cell">${esc(L.tShare)}</th>
+      <th class="num-cell">${esc(L.tSessions)}</th>
+      <th class="num-cell">${esc(L.tEvents)}</th>
+    </tr>
+    ${apps.map((a, i) => `<tr>
+      <td class="rank">${String(i + 1).padStart(2, '0')}</td>
+      <td>${esc(APP_NAMES[a.app] || a.app)}</td>
+      <td class="spark-wrap">${sparkline((d.series || {})[a.app], d.days || [], L)}</td>
+      <td class="num-cell share">${(a.sessions / totalSessions * 100).toFixed(0)}%</td>
+      <td class="num-cell">${a.sessions}</td>
+      <td class="num-cell dim">${a.events}</td>
+    </tr>`).join('')}
   </table>`;
 
   const geo = d.byCountry || [];
@@ -495,21 +564,36 @@ function render(d) {
       <td class="num-cell">${g.sessions}</td></tr>`).join('')}
   </table>`;
 
-  const rec = d.recent || [];
   const tl = lang === 'uk' ? 'uk-UA' : 'en-GB';
-  $('#feed').innerHTML = !rec.length ? empty : `<div class="feed">${rec.map(e => {
-    const dt = new Date(e.ts * 1000);
-    const stamp = `${dt.toLocaleDateString(tl, { day: '2-digit', month: '2-digit' })} ${dt.toLocaleTimeString(tl, { hour: '2-digit', minute: '2-digit' })}`;
-    let what = e.path || '';
-    if (e.meta) { try { what += ' ' + Object.entries(JSON.parse(e.meta)).map(([k, v]) => `${k}=${v}`).join(' '); } catch {} }
-    if (e.ref) what += `  ← ${e.ref.replace(/^https?:\/\//, '')}`;
-    return `<div class="row">
-      <span class="t">${stamp}</span>
-      <span class="app">${esc(APP_NAMES[e.app] || e.app)}</span>
-      <span class="what"><span class="tag">${esc(e.action)}</span> ${esc(what)}</span>
-      <span class="geo">${esc([e.city, e.country].filter(Boolean).join(', ') || '—')}</span>
-    </div>`;
-  }).join('')}</div>`;
+  const ses = d.sessions || [];
+  $('#feed').innerHTML = !ses.length ? empty : `<table class="ses">
+    <tr>
+      <th>${esc(L.tWhen)}</th><th>${esc(L.tLasted)}</th><th>${esc(L.tOpened)}</th>
+      <th>${esc(L.tWhere)}</th><th>${esc(L.tDevice)}</th><th>${esc(L.tCity)}</th>
+      <th class="num-cell">${esc(L.tEvents)}</th>
+    </tr>
+    ${ses.map(s => {
+      const st = new Date(s.started * 1000);
+      const when = `${st.toLocaleDateString(tl, { day: '2-digit', month: '2-digit' })} ${st.toLocaleTimeString(tl, { hour: '2-digit', minute: '2-digit' })}`;
+      const names = String(s.apps || '').split(',').filter(Boolean).map(a => APP_NAMES[a] || a);
+      // Перший проєкт це точка входу, решта показує, куди людина пішла далі.
+      const opened = names.length
+        ? `<b>${esc(names[0])}</b>${names.length > 1 ? ` <span>+ ${names.slice(1).map(esc).join(', ')}</span>` : ''}`
+        : '<span>-</span>';
+      const from = s.ref
+        ? esc(s.ref.replace(/^https?:\/\//, '').split('/')[0].replace(/^www\./, ''))
+        : `<span class="flat">${esc(L.directShort)}</span>`;
+      return `<tr>
+        <td class="when">${when}</td>
+        <td class="lasted">${dur(Math.max(0, s.ended - s.started), L)}</td>
+        <td class="apps">${opened}</td>
+        <td class="from">${from}</td>
+        <td class="dev">${esc([s.device, s.browser].filter(Boolean).join(' / ') || '-')}</td>
+        <td class="geo">${esc([s.city, s.country].filter(Boolean).join(', ') || '-')}</td>
+        <td class="ev">${s.events}</td>
+      </tr>`;
+    }).join('')}
+  </table>`;
 
   const src = d.bySource || [];
   const maxS = Math.max(1, ...src.map(s => s.sessions));
