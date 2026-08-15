@@ -413,10 +413,44 @@
           </article>
 
 
+          <!-- Next — animated placeholder, no product behind it yet -->
+          <article class="proj proj--next" data-reveal>
+            <div class="nx">
+              <canvas class="nx-rain" aria-hidden="true"></canvas>
+              <div class="nx-veil" aria-hidden="true"></div>
+              <div class="nx-core">
+                <div class="nx-tile">
+                  <svg class="bp" viewBox="0 0 52 52" fill="none" aria-hidden="true">
+                    <g class="bp-grid">
+                      <circle cx="12" cy="12" r="0.7"/><circle cx="26" cy="12" r="0.7"/><circle cx="40" cy="12" r="0.7"/>
+                      <circle cx="12" cy="26" r="0.7"/><circle cx="26" cy="26" r="0.7"/><circle cx="40" cy="26" r="0.7"/>
+                      <circle cx="12" cy="40" r="0.7"/><circle cx="26" cy="40" r="0.7"/><circle cx="40" cy="40" r="0.7"/>
+                    </g>
+                    <rect class="bp-s bp-s1" x="12" y="12" width="28" height="28" style="--l:112"/>
+                    <path class="bp-s bp-s2" d="M26 11 L41 39 L11 39 Z" style="--l:94"/>
+                    <circle class="bp-s bp-s3" cx="26" cy="26" r="15" style="--l:95"/>
+                    <line class="bp-scan" x1="0" y1="0" x2="52" y2="0"/>
+                  </svg>
+                </div>
+                <div class="nx-word">NEXT</div>
+              </div>
+            </div>
+          </article>
+
+
           <!-- MorseWorld -->
           <article class="proj" data-reveal>
             <div class="proj-head">
-              <div class="proj-icon"><img src="morseworld-icon.svg" alt="MorseWorld app icon" width="52" height="52"></div>
+              <div class="proj-icon icon-morse">
+                <svg viewBox="0 0 32 32" width="52" height="52" role="img" aria-label="MorseWorld app icon">
+                  <rect class="mw-tile" width="32" height="32" rx="7.5"/>
+                  <g class="mw-ink">
+                    <rect x="5" y="7" width="22" height="4.5" rx="2.25"/>
+                    <rect x="5" y="14" width="13.5" height="4.5" rx="2.25"/>
+                  </g>
+                  <circle cx="7.25" cy="23.5" r="2.25" fill="#F0410F"/>
+                </svg>
+              </div>
               <div class="proj-meta">
                 <h3 class="proj-name" data-i18n="other.morseworld.title">MorseWorld</h3>
                 <span class="proj-date" data-i18n="date.morseworld">2026</span>
@@ -767,6 +801,7 @@
   <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
   <script src="js/boot.js"></script>
+  <script src="js/next-card.js"></script>
   <script src="/js/track.js" data-app="site"></script>
 </body>
 </html>

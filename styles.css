@@ -673,6 +673,30 @@ h2 {
   border-radius: 0;
 }
 
+/* MorseWorld follows the theme like the Poster and Kora marks, but it is inlined
+   and recoloured instead of filtered. `.icon-mono` works by inverting the whole
+   element, which would flip the orange dot to cyan, and that dot is the one part
+   of the mark that must keep its colour. Inlining lets the two monochrome parts
+   read from custom properties while the dot stays a literal hex. */
+.icon-morse {
+  --mw-tile: #ededed;
+  --mw-ink: #0b0e0f;
+}
+[data-theme="light"] .icon-morse {
+  --mw-tile: #111111;
+  --mw-ink: #ffffff;
+}
+.icon-morse svg {
+  width: 100%; height: 100%;
+  display: block;
+}
+.icon-morse .mw-tile { fill: var(--mw-tile); }
+.icon-morse .mw-ink  { fill: var(--mw-ink); }
+.icon-morse .mw-tile,
+.icon-morse .mw-ink {
+  transition: fill 0.25s var(--ease);
+}
+
 .proj-meta { flex: 1; }
 
 .proj-name {
@@ -743,6 +767,149 @@ h2 {
 .proj-links a:hover,
 .proj-links button:hover {
   border-color: var(--text);
+}
+
+/* ── Next — плейсхолдер без продукту за ним ──
+   Свідомо НЕ спінер і не «coming soon». Композиція з двох шарів: у центрі
+   плитка-плоттер, яка викреслює фігуру, тримає її, стирає і починає наступну,
+   а навколо — матричний дощ із цифр у тій самій монохромній графіці.
+   Ніякого тексту, крім слова NEXT: рік чи «скоро» через півроку старіють.
+
+   Прийом на stroke-dashoffset: довжина контуру кожної фігури лежить в
+   інлайн-змінній --l, тому одні й ті самі keyframes працюють для rect,
+   path і circle без окремих правил. */
+
+.proj--next { padding: 32px 0; }
+
+/* No border and no background on purpose: the panel must dissolve into the page
+   instead of sitting in it as a box.
+ *
+ * Two linear masks intersected, not one ellipse. An ellipse sized in percent on
+ * a very wide, short element puts its 100% stop far outside the box, so the fade
+ * gets clipped halfway and every edge stays partly opaque — that is exactly what
+ * made the slab edges visible. Linear stops are measured along each axis, so
+ * "transparent 100%" lands precisely on the edge and the fade always completes. */
+.nx {
+  position: relative;
+  height: 176px;
+  overflow: hidden;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 17%, #000 83%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 17%, #000 83%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+  mask-composite: intersect;
+}
+
+/* Дощ прибираємо з центру маскою, а не накладкою. Накладка з переходом у
+   `transparent` дає сірий обідок на світлій темі (transparent — це прозорий
+   ЧОРНИЙ), маска ж чіпає лише альфу і такої проблеми не має. */
+.nx-rain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  -webkit-mask-image: radial-gradient(ellipse 44% 74% at 50% 50%, transparent 0 36%, #000 78%);
+  mask-image: radial-gradient(ellipse 44% 74% at 50% 50%, transparent 0 36%, #000 78%);
+}
+
+/* Scanlines removed: a continuous tint across the whole rect was the single
+   thing that read as a solid slab, far more than the sparse digits ever did.
+   The element stays in the markup as a hook for future texture. */
+.nx-veil { display: none; }
+
+.nx-core {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  pointer-events: none;
+}
+
+.nx-tile {
+  position: relative;
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+.nx-tile::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px rgba(128,128,128,0.28);
+}
+
+.nx-word {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  color: var(--text);
+  animation: nx-breathe 4s var(--ease) infinite;
+}
+@keyframes nx-breathe {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
+}
+
+.bp { width: 100%; height: 100%; display: block; }
+
+.bp-grid circle { fill: currentColor; opacity: 0.16; }
+
+.bp-s {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: var(--l);
+  stroke-dashoffset: var(--l);
+  opacity: 0;
+  animation: bp-draw 9s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+.bp-s1 { animation-delay: 0s; }
+.bp-s2 { animation-delay: 3s; }
+.bp-s3 { animation-delay: 6s; }
+
+@keyframes bp-draw {
+  0%   { stroke-dashoffset: var(--l);            opacity: 0; }
+  3%   {                                          opacity: 1; }
+  14%  { stroke-dashoffset: 0;                    opacity: 1; }
+  24%  { stroke-dashoffset: 0;                    opacity: 1; }
+  33%  { stroke-dashoffset: calc(var(--l) * -1);  opacity: 1; }
+  36%  {                                          opacity: 0; }
+  100% { stroke-dashoffset: calc(var(--l) * -1);  opacity: 0; }
+}
+
+/* Промінь сканера — те, що робить плитку «живою» між фігурами */
+.bp-scan {
+  stroke: currentColor;
+  stroke-width: 1;
+  opacity: 0;
+  animation: bp-scan 3s linear infinite;
+}
+@keyframes bp-scan {
+  0%   { transform: translateY(0);    opacity: 0; }
+  12%  {                              opacity: 0.28; }
+  88%  {                              opacity: 0.28; }
+  100% { transform: translateY(52px); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bp-s, .bp-scan, .nx-word { animation: none; }
+  .bp-s1 { stroke-dashoffset: 0; opacity: 1; }
+  .bp-s2, .bp-s3 { opacity: 0; }
+  .nx-word { opacity: 1; }
 }
 
 /* ── Older work, folded ──
