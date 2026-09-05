@@ -368,6 +368,24 @@ document.addEventListener('DOMContentLoaded', () => {
         { file: 'market', alt: 'Kora Market: live prices for twenty coins' },
         { file: 'chart', alt: 'Kora Market: a price chart with market statistics' }
       ]
+    },
+    // Store listing shots, 1080x1920: taller than a poster sheet, so the ratio is its own.
+    calvi: {
+      title: 'Calvi',
+      dir: 'Public/calvi/shots',
+      shape: 'tall',
+      ratio: 1080 / 1920,
+      small: 640,
+      large: 1080,
+      shots: [
+        { file: '01', alt: 'Calvi: the whole day on one screen, calories, macros and the streak' },
+        { file: '02', alt: 'Calvi: a meal logged from a few words in the chat' },
+        { file: '03', alt: 'Calvi: Nora asks only what matters, one tap to answer' },
+        { file: '04', alt: 'Calvi: every bite with its macros' },
+        { file: '05', alt: 'Calvi: a meal recognised from a photo' },
+        { file: '06', alt: 'Calvi: the week review' },
+        { file: '07', alt: 'Calvi: analytics and the weight curve' }
+      ]
     }
   };
 
@@ -382,11 +400,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Getting `sizes` right is what decides whether a phone downloads the small file or the
     // large one, and the difference on the poster set is half a megabyte per picture.
     const tall = set.shape === 'tall';
-    const small = tall ? 640 : 760;
-    const large = tall ? 1400 : 1520;
+    const small = set.small || (tall ? 640 : 760);
+    const large = set.large || (tall ? 1400 : 1520);
     // Width over height. Posters are A-series sheets at 1:1.4; the application windows are
     // 1518x924. Both sets are uniform, so one ratio per shape is enough.
-    const ratio = tall ? 640 / 896 : 1518 / 924;
+    const ratio = set.ratio || (tall ? 640 / 896 : 1518 / 924);
     const sizes = tall
       ? '(max-width: 700px) calc(92vw - 56px), 340px'
       : '(max-width: 700px) calc(92vw - 56px), 560px';

@@ -413,30 +413,36 @@
           </article>
 
 
-          <!-- Next — animated placeholder, no product behind it yet -->
-          <article class="proj proj--next" data-reveal>
-            <div class="nx">
-              <canvas class="nx-rain" aria-hidden="true"></canvas>
-              <div class="nx-veil" aria-hidden="true"></div>
-              <div class="nx-core">
-                <div class="nx-tile">
-                  <svg class="bp" viewBox="0 0 52 52" fill="none" aria-hidden="true">
-                    <g class="bp-grid">
-                      <circle cx="12" cy="12" r="0.7"/><circle cx="26" cy="12" r="0.7"/><circle cx="40" cy="12" r="0.7"/>
-                      <circle cx="12" cy="26" r="0.7"/><circle cx="26" cy="26" r="0.7"/><circle cx="40" cy="26" r="0.7"/>
-                      <circle cx="12" cy="40" r="0.7"/><circle cx="26" cy="40" r="0.7"/><circle cx="40" cy="40" r="0.7"/>
-                    </g>
-                    <rect class="bp-s bp-s1" x="12" y="12" width="28" height="28" style="--l:112"/>
-                    <path class="bp-s bp-s2" d="M26 11 L41 39 L11 39 Z" style="--l:94"/>
-                    <circle class="bp-s bp-s3" cx="26" cy="26" r="15" style="--l:95"/>
-                    <line class="bp-scan" x1="0" y1="0" x2="52" y2="0"/>
-                  </svg>
-                </div>
-                <div class="nx-word">NEXT</div>
+          <!-- Calvi -->
+          <article class="proj" data-reveal>
+            <div class="proj-head">
+              <!-- The app icon, inlined so it can follow the theme: the real mark is a
+                   white ring on a near-black tile, and the dark theme swaps the two. -->
+              <div class="proj-icon icon-calvi">
+                <svg viewBox="0 0 1024 1024" width="52" height="52" role="img" aria-label="Calvi app icon">
+                  <rect class="cv-tile" width="1024" height="1024" rx="232"/>
+                  <circle class="cv-track" cx="512" cy="512" r="280" fill="none" stroke-width="96"/>
+                  <circle class="cv-ink" cx="512" cy="512" r="280" fill="none" stroke-width="96"
+                          stroke-linecap="round" stroke-dasharray="1373.1 1759.3" transform="rotate(-90 512 512)"/>
+                </svg>
               </div>
+              <div class="proj-meta">
+                <h3 class="proj-name" data-i18n="other.calvi.title">Calvi</h3>
+                <span class="proj-date" data-i18n="date.calvi">2026</span>
+              </div>
+              <span class="proj-tag" data-i18n="other.calvi.tag">Available</span>
+            </div>
+            <p class="proj-desc" data-i18n="other.calvi.desc">A calorie tracker with an assistant, Nora: you say what you ate in your own words, by voice or with a photo, and she counts the calories and macros, keeps the diary and gives an honest review of the week. A Flutter app with its own Node.js backend.</p>
+            <div class="proj-stack">
+              <span>Flutter</span><span>Node.js</span><span>Fastify</span><span>PostgreSQL</span><span>DeepSeek</span><span>RevenueCat</span><span>Docker</span>
+            </div>
+            <div class="proj-links">
+              <a href="https://calvi.uk" target="_blank" rel="noopener" data-i18n="common.website">Website</a>
+              <a href="https://play.google.com/store/apps/details?id=com.calvi.calvi" target="_blank" rel="noopener" data-i18n="common.googlePlay">Google Play</a>
+              <button data-shots="calvi" data-i18n="common.screenshots">Screenshots</button>
+              <span class="proj-soon" data-i18n="other.calvi.ios">App Store: coming soon</span>
             </div>
           </article>
-
 
           <!-- MorseWorld -->
           <article class="proj" data-reveal>
@@ -801,7 +807,6 @@
   <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
   <script src="js/boot.js"></script>
-  <script src="js/next-card.js"></script>
   <script src="/js/track.js" data-app="site"></script>
 </body>
 </html>
