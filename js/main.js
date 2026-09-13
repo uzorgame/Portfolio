@@ -385,6 +385,7 @@ document.addEventListener('DOMContentLoaded', () => {
           { file: 'chat', alt: 'Calvi: a meal logged from one sentence in the chat with Nora' },
           { file: 'photo', alt: 'Calvi: Nora reads the dish, the weight and the macros from a photo' },
           { file: 'macros', alt: 'Calvi: every bite with its macros' },
+          { file: 'week', alt: 'Calvi: the week at a glance, every day split into protein, fat and carbs' },
           { file: 'watch', alt: 'Calvi: a meal logged by voice from the watch' }
         ],
         uk: [
@@ -392,6 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
           { file: 'chat', alt: 'Calvi: прийом їжі записаний з одного речення в чаті з Норою' },
           { file: 'photo', alt: 'Calvi: Нора впізнає страву, вагу і БЖВ за фото' },
           { file: 'macros', alt: 'Calvi: кожен шматок із БЖВ' },
+          { file: 'week', alt: 'Calvi: тиждень з одного погляду, кожен день розкладений на білки, жири і вуглеводи' },
           { file: 'watch', alt: 'Calvi: запис голосом із годинника' }
         ]
       }
