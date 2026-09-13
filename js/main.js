@@ -369,23 +369,32 @@ document.addEventListener('DOMContentLoaded', () => {
         { file: 'chart', alt: 'Kora Market: a price chart with market statistics' }
       ]
     },
-    // Store listing shots, 1080x1920: taller than a poster sheet, so the ratio is its own.
+    // App Store shots, 1320x2868: taller than a poster sheet, so the ratio is its own. The
+    // headline is printed on every picture, so there is one set per site language, each in
+    // its own folder, and only the page's language is shown.
     calvi: {
       title: 'Calvi',
       dir: 'Public/calvi/shots',
       shape: 'tall',
-      ratio: 1080 / 1920,
+      ratio: 1320 / 2868,
       small: 640,
-      large: 1080,
-      shots: [
-        { file: '01', alt: 'Calvi: the whole day on one screen, calories, macros and the streak' },
-        { file: '02', alt: 'Calvi: a meal logged from a few words in the chat' },
-        { file: '03', alt: 'Calvi: Nora asks only what matters, one tap to answer' },
-        { file: '04', alt: 'Calvi: every bite with its macros' },
-        { file: '05', alt: 'Calvi: a meal recognised from a photo' },
-        { file: '06', alt: 'Calvi: the week review' },
-        { file: '07', alt: 'Calvi: analytics and the weight curve' }
-      ]
+      large: 1320,
+      shots: {
+        en: [
+          { file: 'day', alt: 'Calvi: the whole day on one screen, calories, macros and the streak' },
+          { file: 'chat', alt: 'Calvi: a meal logged from one sentence in the chat with Nora' },
+          { file: 'photo', alt: 'Calvi: Nora reads the dish, the weight and the macros from a photo' },
+          { file: 'macros', alt: 'Calvi: every bite with its macros' },
+          { file: 'watch', alt: 'Calvi: a meal logged by voice from the watch' }
+        ],
+        uk: [
+          { file: 'day', alt: 'Calvi: весь день на одному екрані, калорії, БЖВ і серія днів' },
+          { file: 'chat', alt: 'Calvi: прийом їжі записаний з одного речення в чаті з Норою' },
+          { file: 'photo', alt: 'Calvi: Нора впізнає страву, вагу і БЖВ за фото' },
+          { file: 'macros', alt: 'Calvi: кожен шматок із БЖВ' },
+          { file: 'watch', alt: 'Calvi: запис голосом із годинника' }
+        ]
+      }
     }
   };
 
@@ -395,6 +404,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function openShots(key) {
     const set = shotSets[key];
     if (!set) return;
+
+    // A set whose pictures carry text comes as one list per language. i18n.js keeps
+    // <html lang> on the language it applied, and the dialog covers the switcher, so the
+    // language cannot change while the set is open.
+    const lang = document.documentElement.lang === 'uk' ? 'uk' : 'en';
+    const perLang = !Array.isArray(set.shots);
+    const shots = perLang ? set.shots[lang] : set.shots;
+    const dir = perLang ? set.dir + '/' + lang : set.dir;
 
     // The two widths each set was exported at, and the size each is actually rendered at.
     // Getting `sizes` right is what decides whether a phone downloads the small file or the
@@ -413,9 +430,9 @@ document.addEventListener('DOMContentLoaded', () => {
     modalTitle.textContent = set.title;
     modalBody.innerHTML =
       '<div class="shots shots--' + set.shape + '">' +
-      set.shots
+      shots
         .map((s) => {
-          const base = set.dir + '/' + s.file;
+          const base = dir + '/' + s.file;
           return (
             '<figure class="shot">' +
             '<img src="' + base + '.webp" ' +

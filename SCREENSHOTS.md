@@ -56,6 +56,26 @@ And on the project card, in the links row, between the primary link and Privacy:
 <button data-shots="poster" data-i18n="common.screenshots">Screenshots</button>
 ```
 
+## Pictures with words on them
+
+Store shots have a headline printed on them, so they come once per site language. Such a set
+puts each language in its own folder and gives `shots` one list per language:
+
+```
+Public/calvi/shots/en/day.webp
+Public/calvi/shots/uk/day.webp
+```
+
+```js
+shots: {
+  en: [{ file: 'day', alt: 'Calvi: the whole day on one screen' }],
+  uk: [{ file: 'day', alt: 'Calvi: весь день на одному екрані' }]
+}
+```
+
+The dialog reads `<html lang>`, which `i18n.js` sets, and shows only that language. Never
+both at once: every screen would be on the page twice.
+
 ## What the dialog does
 
 - **One dialog for everything.** Screenshots reuse the same `#modal` as the privacy policies.
