@@ -721,15 +721,6 @@ h2 {
   transition: fill 0.25s var(--ease), stroke 0.25s var(--ease);
 }
 
-/* «Скоро» серед посилань: той самий ряд, але не клікається і не обіцяє. */
-.proj-soon {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-2);
-  padding: 8px 0;
-  margin-right: 24px;
-}
-
 .proj-meta { flex: 1; }
 
 .proj-name {
