@@ -20,7 +20,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mykhailo Nahreba — Full-Stack Developer</title>
+  <title>Mykhailo Nahreba · Full-Stack Developer</title>
   <!-- Kept out of search on purpose. This page carried the full name in both its
        title and its h1, so for a search on that name it outranked the site it
        belongs to. `follow` is deliberate: the page stays crawlable and its links
@@ -59,7 +59,7 @@
 
     @media print {
       /* The sheet, stated rather than left to the printer. Chrome's own default
-         margin puts the last line of the CV — the languages — alone on a second
+         margin puts the last line of the CV, the languages, alone on a second
          page, and a one-line page two is worse than a slightly fuller page one.
          Declared here rather than passed to whatever prints it, so the file that
          `npm run cv` produces and the one a reader prints from the page are the
@@ -74,7 +74,7 @@
       .project { margin-bottom: 3px; }
       .no-print { display: none !important; }
       a { color: #1a1a1a !important; }
-      /* One entry should not be split across a break. A whole section may be —
+      /* One entry should not be split across a break. A whole section may be:
          keeping a section together pushes the last of them onto a page of its
          own, which is the thing being avoided in the first place. */
       .project, .job { break-inside: avoid; }
@@ -180,26 +180,23 @@
       margin-bottom: 4px;
     }
 
+    /* A native marker, not an absolutely placed ::before. A positioned <li> is
+       painted in a later layer, and Chrome writes the PDF text in paint order,
+       so every bullet used to come out after the last project when a parser
+       read the file. */
     ul.bullets {
-      list-style: none;
-      padding: 0;
+      list-style: disc outside;
+      padding-left: 12px;
     }
 
     ul.bullets li {
       font-size: 9pt;
       color: #333;
-      padding-left: 12px;
-      position: relative;
       margin-bottom: 2px;
       line-height: 1.42;
     }
 
-    ul.bullets li::before {
-      content: "\2022";
-      position: absolute;
-      left: 1px;
-      color: #999;
-    }
+    ul.bullets li::marker { color: #999; }
 
     /* --- Projects --- */
     .project { margin-bottom: 5px; }
@@ -293,20 +290,24 @@
 
     <section>
       <h2>Summary</h2>
-      <p class="summary">Full-stack developer across React, Node.js and MongoDB, with Flutter on mobile. Ten products delivered in under a year on web, iOS, Android and Windows, from the first commit to the live store listing. Co-founder and active developer of RutaLive, a courier-logistics SaaS in production against Onfleet and Track-POD. Four of the ten run entirely in the browser, with no backend at all.</p>
+      <p class="summary">Full-stack developer across TypeScript, React, Node.js, PostgreSQL and MongoDB, with Flutter on mobile and LLM features in production. Ten products delivered since September 2025 on web, iOS, Android and Windows, from the first commit to the live store listing. Co-founder and active developer of RutaLive, a courier-logistics SaaS in production against Onfleet and Track-POD, and the developer of Calvi AI: Calorie Tracker, with 475+ registered users. Four of the ten run entirely in the browser, with no backend at all.</p>
     </section>
 
     <section>
       <h2>Technical Skills</h2>
       <dl class="skills">
         <dt>Languages</dt>
-        <dd>TypeScript, JavaScript, Dart, HTML/CSS</dd>
+        <dd>TypeScript, JavaScript, Dart, Swift (watchOS), HTML/CSS</dd>
         <dt>Web</dt>
         <dd>React&nbsp;18, Vite, Astro, Canvas, WebGPU, WebAssembly, MapLibre&nbsp;/&nbsp;Mapbox GL</dd>
         <dt>Mobile</dt>
-        <dd>Flutter, Firebase, RevenueCat, App Store &amp; Google Play publishing</dd>
+        <dd>Flutter, Apple Watch, Firebase, RevenueCat, App Store &amp; Google Play publishing</dd>
         <dt>Back end &amp; infra</dt>
-        <dd>Node.js, Express, Fastify, Socket.io, MongoDB, PostgreSQL, SQLite, IndexedDB, Docker, Nginx, Codemagic CI, QuickBooks &amp; Lemon Squeezy APIs</dd>
+        <dd>Node.js, Express, Fastify, Socket.io, MongoDB, PostgreSQL (Kysely), Zod, SQLite, IndexedDB, Docker, Nginx, Codemagic CI, GitHub Actions, QuickBooks &amp; Lemon Squeezy APIs</dd>
+        <dt>AI &amp; LLM</dt>
+        <dd>LLM features in production (DeepSeek, tool calling, failover chain), evaluation benches against live models, Whisper speech-to-text, in-browser ML (transformers.js, ONNX Runtime), agentic development with Claude Code</dd>
+        <dt>Testing</dt>
+        <dd>node:test, Flutter unit, widget and golden tests</dd>
       </dl>
     </section>
 
@@ -315,16 +316,18 @@
       <div class="job">
         <div class="job-row">
           <span class="job-title">Co-Founder &amp; Full-Stack Developer</span>
-          <span class="job-date">2025 &ndash; Present</span>
+          <span class="job-date">Nov 2025 - Present</span>
         </div>
-        <p class="job-company">RutaLive<span class="proj-sep">&mdash;</span><a class="proj-link" href="https://rutalive.com/" target="_blank" rel="noopener">Link</a> &middot; Bratislava, Slovakia</p>
+        <p class="job-company">RutaLive<span class="proj-sep">&middot;</span><a class="proj-link" href="https://rutalive.com/" target="_blank" rel="noopener">rutalive.com</a> &middot; Bratislava, Slovakia</p>
         <p class="job-tagline">Multi-tenant courier logistics SaaS competing with Onfleet, Track-POD, and Digital Waybill.</p>
         <ul class="bullets">
           <li>Designed and built the full platform end-to-end: web dashboard (React&nbsp;18, Vite), mobile apps (Flutter for iOS &amp; Android), Windows desktop client, and Node.js/Express back&nbsp;end with MongoDB</li>
           <li>Implemented real-time GPS tracking and live order updates via WebSockets (Socket.io) and Mapbox, handling concurrent multi-user sessions</li>
+          <li>Made the real-time layer survive dead zones: delta updates, event de-duplication and offline-tolerant reconnection, so a courier who loses signal in a basement rejoins without losing an order event</li>
           <li>Built proof-of-delivery system supporting photo capture, digital signature, and QR-code verification at drop-off</li>
           <li>Developed a delivery-zone engine with custom pricing rules, auto-dispatch logic, and public tracking links for end-recipients</li>
           <li>Integrated QuickBooks for automated invoicing and Lemon Squeezy for subscription billing, reducing manual finance work</li>
+          <li>Exposed a versioned public REST API with JWT auth, session invalidation and rate limiting; PDF and QR generation runs in a worker pool; the interface ships in 6 languages</li>
           <li>Containerized the stack with Docker and run production behind Nginx; published and maintain the live listings on both the App Store and Google Play</li>
         </ul>
       </div>
@@ -335,31 +338,31 @@
 
       <div class="project">
         <div class="proj-row">
-          <span><span class="proj-name">Calvi</span><span class="proj-sep">&mdash;</span><a class="proj-link" href="https://calvi.uk" target="_blank" rel="noopener">Link</a></span>
-          <span class="proj-meta">Flutter, Node.js, PostgreSQL &middot; 2026</span>
+          <span><span class="proj-name">Calvi AI: Calorie Tracker</span><span class="proj-sep">&middot;</span><a class="proj-link" href="https://apps.apple.com/us/app/calvi-ai-calorie-tracker/id6804675201" target="_blank" rel="noopener">App Store</a><span class="proj-sep">&middot;</span><a class="proj-link" href="https://play.google.com/store/apps/details?id=com.calvi.calvi" target="_blank" rel="noopener">Google Play</a></span>
+          <span class="proj-meta">Flutter, Node.js, PostgreSQL, LLM &middot; 2026</span>
         </div>
-        <p class="proj-desc">Calorie tracker with an AI assistant: a meal is logged from a sentence, a voice note or a photo, and the week gets a review. Flutter app on its own Fastify and PostgreSQL back end; the diary works offline, and model keys never reach the phone. When a store webhook goes missing, the server asks RevenueCat itself, so a paid renewal is not cut off. On the App Store and Google Play.</p>
+        <p class="proj-desc">Calorie tracker with an AI assistant: a meal is logged from a sentence, a voice note or a photo, and the week gets a review. Flutter app on its own Fastify and PostgreSQL back end; the diary works offline, and model keys never reach the phone. When a store webhook goes missing, the server asks RevenueCat itself, so a paid renewal is not cut off. Text and photo requests run through a chain of LLMs (DeepSeek, with automatic failover to a backup provider), and an evaluation bench runs conversation and photo cases against the live models and measures latency. Native Apple Watch app for voice logging, 13 languages, sign-in with Apple and Google, 375 test files across server and app. 475+ registered users.</p>
       </div>
 
       <div class="project">
         <div class="proj-row">
-          <span><span class="proj-name">MorseWorld</span><span class="proj-sep">&mdash;</span><a class="proj-link" href="https://uz-or.com/MorseWorld/" target="_blank" rel="noopener">Link</a></span>
+          <span><span class="proj-name">MorseWorld</span><span class="proj-sep">&middot;</span><a class="proj-link" href="https://uz-or.com/MorseWorld/" target="_blank" rel="noopener">uz-or.com/MorseWorld</a></span>
           <span class="proj-meta">TypeScript, React, Web Audio API &middot; 2026</span>
         </div>
-        <p class="proj-desc">Morse translator, straight-key sandbox and Koch-method trainer, entirely client-side. Playback is scheduled against the audio clock, and a keyed press timed from the event rather than the handler &mdash; a dot and a dash differ by tens of milliseconds. English and Ukrainian.</p>
+        <p class="proj-desc">Morse translator, straight-key sandbox and Koch-method trainer, entirely client-side. Playback is scheduled against the audio clock, and a keyed press timed from the event rather than the handler, because a dot and a dash differ by tens of milliseconds. English and Ukrainian.</p>
       </div>
 
       <div class="project">
         <div class="proj-row">
-          <span><span class="proj-name">QuirePDF</span><span class="proj-sep">&mdash;</span><a class="proj-link" href="https://uz-or.com/quirePDF/" target="_blank" rel="noopener">Link</a></span>
+          <span><span class="proj-name">QuirePDF</span><span class="proj-sep">&middot;</span><a class="proj-link" href="https://uz-or.com/quirePDF/" target="_blank" rel="noopener">uz-or.com/quirePDF</a></span>
           <span class="proj-meta">TypeScript, pdf.js, pdf-lib &middot; 2026</span>
         </div>
-        <p class="proj-desc">PDF editor, converter and form library running entirely in the browser. Edits the text a document already contains &mdash; paragraphs are found in its text layer and reopened in its own embedded typeface. 62 conversions, 105 fillable US forms, no server.</p>
+        <p class="proj-desc">PDF editor, converter and form library running entirely in the browser. Edits the text a document already contains: paragraphs are found in its text layer and reopened in its own embedded typeface. 62 conversions, 105 fillable US forms, no server.</p>
       </div>
 
       <div class="project">
         <div class="proj-row">
-          <span><span class="proj-name">Scriptor</span><span class="proj-sep">&mdash;</span><a class="proj-link" href="https://uz-or.com/scriptor/" target="_blank" rel="noopener">Link</a></span>
+          <span><span class="proj-name">Scriptor</span><span class="proj-sep">&middot;</span><a class="proj-link" href="https://uz-or.com/scriptor/" target="_blank" rel="noopener">uz-or.com/scriptor</a></span>
           <span class="proj-meta">TypeScript, WebGPU, ONNX Runtime &middot; 2026</span>
         </div>
         <p class="proj-desc">Speech transcription on the visitor&rsquo;s own graphics card through WebGPU, with a WebAssembly fallback; audio never leaves the machine. Caching the weights in IndexedDB took a repeat run of the largest model from 143&nbsp;s to 12&nbsp;s.</p>
@@ -367,7 +370,7 @@
 
       <div class="project">
         <div class="proj-row">
-          <span><span class="proj-name">Poster</span><span class="proj-sep">&mdash;</span><a class="proj-link" href="https://uz-or.com/Poster/" target="_blank" rel="noopener">Link</a></span>
+          <span><span class="proj-name">Poster</span><span class="proj-sep">&middot;</span><a class="proj-link" href="https://uz-or.com/Poster/" target="_blank" rel="noopener">uz-or.com/Poster</a></span>
           <span class="proj-meta">TypeScript, MapLibre GL, SVG &middot; 2026</span>
         </div>
         <p class="proj-desc">Print-ready minimalist city-map posters made in a browser tab. Vector tiles are decoded on the client and drawn straight to SVG, so the file survives being scaled to a metre wide. Free, no watermark, no account.</p>
@@ -375,7 +378,7 @@
 
       <div class="project">
         <div class="proj-row">
-          <span class="proj-name">Kora Wallet</span>
+          <span><span class="proj-name">Kora Wallet</span><span class="proj-sep">&middot;</span><a class="proj-link" href="https://github.com/uzorgame/CryptoWalletKora" target="_blank" rel="noopener">github.com/uzorgame/CryptoWalletKora</a></span>
           <span class="proj-meta">Flutter, Dart, Multi-chain &middot; 2026</span>
         </div>
         <p class="proj-desc">Open-source non-custodial multi-chain wallet (BTC, ETH, SOL, TRX, BNB, LTC, DOGE): QR scan, address book, PIN lock, live market widget. Windows and Android.</p>
@@ -383,22 +386,22 @@
 
       <!-- The first three, condensed rather than folded away. A CV is read on
            paper as often as on a screen, and anything behind a toggle is simply
-           missing from the printed copy — so these are shortened to one entry
+           missing from the printed copy, so these are shortened to one entry
            instead of hidden behind one. -->
       <div class="project">
         <div class="proj-row">
           <span class="proj-name">Earlier work</span>
           <span class="proj-meta">Flutter, Dart &middot; 2025</span>
         </div>
-        <p class="proj-desc"><b>Retro Arcade</b> &mdash; arcade mini-games with pixel-perfect graphics, retro sound and haptic feedback. <b>Currency Converter+</b> &mdash; offline-first converter with daily rates, five-year charts and 24-hour caching, plus a companion web app. <b>Sudoku</b> &mdash; four modes, five difficulty levels, smart pencil marks. All three on Google Play.</p>
+        <p class="proj-desc"><b>Retro Arcade:</b> arcade mini-games with pixel-perfect graphics, retro sound and haptic feedback. <b>Currency Converter+:</b> offline-first converter with daily rates, five-year charts and 24-hour caching, plus a companion web app. <b>Sudoku:</b> four modes, five difficulty levels, smart pencil marks. All three on Google Play.</p>
       </div>
     </section>
 
     <section>
       <h2>Languages</h2>
       <div class="langs">
-        <span><strong>Ukrainian</strong> &mdash; Native</span>
-        <span><strong>English</strong> &mdash; B1 (Intermediate)</span>
+        <span><strong>Ukrainian</strong> (native)</span>
+        <span><strong>English</strong> (B1, intermediate)</span>
       </div>
     </section>
   </div>
