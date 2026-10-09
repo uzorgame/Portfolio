@@ -369,32 +369,32 @@ document.addEventListener('DOMContentLoaded', () => {
         { file: 'chart', alt: 'Kora Market: a price chart with market statistics' }
       ]
     },
-    // App Store shots, 1320x2868: taller than a poster sheet, so the ratio is its own. The
+    // App Store shots, 1284x2778: taller than a poster sheet, so the ratio is its own. The
     // headline is printed on every picture, so there is one set per site language, each in
     // its own folder, and only the page's language is shown.
     calvi: {
       title: 'Calvi',
       dir: 'Public/calvi/shots',
       shape: 'tall',
-      ratio: 1320 / 2868,
+      ratio: 1284 / 2778,
       small: 640,
-      large: 1320,
+      large: 1284,
       shots: {
         en: [
-          { file: 'day', alt: 'Calvi: the whole day on one screen, calories, macros and the streak' },
-          { file: 'chat', alt: 'Calvi: a meal logged from one sentence in the chat with Nora' },
           { file: 'photo', alt: 'Calvi: Nora reads the dish, the weight and the macros from a photo' },
-          { file: 'macros', alt: 'Calvi: every bite with its macros' },
-          { file: 'week', alt: 'Calvi: the week at a glance, every day split into protein, fat and carbs' },
-          { file: 'watch', alt: 'Calvi: a meal logged by voice from the watch' }
+          { file: 'chat', alt: 'Calvi: a meal logged from one sentence in the chat with Nora' },
+          { file: 'dietitian', alt: 'Calvi: a connected dietitian sees every meal live' },
+          { file: 'watch', alt: 'Calvi: a meal logged by voice from the watch' },
+          { file: 'day', alt: 'Calvi: the whole day on one screen, calories, macros and the streak' },
+          { file: 'report', alt: 'Calvi: a weekly PDF report sent to the dietitian in one tap' }
         ],
         uk: [
-          { file: 'day', alt: 'Calvi: весь день на одному екрані, калорії, БЖВ і серія днів' },
-          { file: 'chat', alt: 'Calvi: прийом їжі записаний з одного речення в чаті з Норою' },
           { file: 'photo', alt: 'Calvi: Нора впізнає страву, вагу і БЖВ за фото' },
-          { file: 'macros', alt: 'Calvi: кожен шматок із БЖВ' },
-          { file: 'week', alt: 'Calvi: тиждень з одного погляду, кожен день розкладений на білки, жири і вуглеводи' },
-          { file: 'watch', alt: 'Calvi: запис голосом із годинника' }
+          { file: 'chat', alt: 'Calvi: прийом їжі записаний з одного речення в чаті з Норою' },
+          { file: 'dietitian', alt: 'Calvi: підключений дієтолог бачить кожен прийом їжі наживо' },
+          { file: 'watch', alt: 'Calvi: запис голосом із годинника' },
+          { file: 'day', alt: 'Calvi: весь день на одному екрані, калорії, БЖВ і серія днів' },
+          { file: 'report', alt: 'Calvi: тижневий звіт у PDF, який одним дотиком іде дієтологу' }
         ]
       }
     }

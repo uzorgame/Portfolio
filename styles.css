@@ -697,30 +697,6 @@ h2 {
   transition: fill 0.25s var(--ease);
 }
 
-/* Calvi follows the theme the same way. The real icon is a white ring on a
-   near-black tile, so that is what the light theme shows; the dark theme swaps
-   the two and the mark stays a tile rather than a blur against the page. */
-.icon-calvi {
-  --cv-tile: #ffffff;
-  --cv-ink: #1c1c1e;
-}
-[data-theme="light"] .icon-calvi {
-  --cv-tile: #1c1c1e;
-  --cv-ink: #ffffff;
-}
-.icon-calvi svg {
-  width: 100%; height: 100%;
-  display: block;
-}
-.icon-calvi .cv-tile { fill: var(--cv-tile); }
-.icon-calvi .cv-track { stroke: var(--cv-ink); stroke-opacity: 0.16; }
-.icon-calvi .cv-ink { stroke: var(--cv-ink); }
-.icon-calvi .cv-tile,
-.icon-calvi .cv-track,
-.icon-calvi .cv-ink {
-  transition: fill 0.25s var(--ease), stroke 0.25s var(--ease);
-}
-
 .proj-meta { flex: 1; }
 
 .proj-name {
