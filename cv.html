@@ -173,6 +173,13 @@
       margin-bottom: 3px;
     }
 
+    /* The product name carries the same weight as the role above it. */
+    .job-org {
+      font-size: 10pt;
+      font-weight: 600;
+      color: #0a0a0a;
+    }
+
     .job-tagline {
       font-size: 9pt;
       color: #555;
@@ -290,7 +297,7 @@
 
     <section>
       <h2>Summary</h2>
-      <p class="summary">Full-stack developer across TypeScript, React, Node.js, PostgreSQL and MongoDB, with Flutter on mobile and LLM features in production. Ten products delivered since September 2025 on web, iOS, Android and Windows, from the first commit to the live store listing. Co-founder and active developer of RutaLive, a courier-logistics SaaS in production against Onfleet and Track-POD, and the developer of Calvi AI: Calorie Tracker, with 475+ registered users. Four of the ten run entirely in the browser, with no backend at all.</p>
+      <p class="summary">Full-stack developer across TypeScript, React, Node.js, PostgreSQL and MongoDB, with Flutter on mobile and LLM features in production. Shipping products since September 2025 on web, iOS, Android and Windows, from the first commit to the live store listing. Co-founder and active developer of RutaLive, a courier-logistics SaaS in production against Onfleet and Track-POD, and the developer of Calvi AI: Calorie Tracker, with 475+ registered users. Four of the products below run entirely in the browser, with no backend at all.</p>
     </section>
 
     <section>
@@ -318,7 +325,7 @@
           <span class="job-title">Co-Founder &amp; Full-Stack Developer</span>
           <span class="job-date">Nov 2025 - Present</span>
         </div>
-        <p class="job-company">RutaLive<span class="proj-sep">&middot;</span><a class="proj-link" href="https://rutalive.com/" target="_blank" rel="noopener">rutalive.com</a> &middot; Bratislava, Slovakia</p>
+        <p class="job-company"><span class="job-org">RutaLive</span><span class="proj-sep">&middot;</span><a class="proj-link" href="https://rutalive.com/" target="_blank" rel="noopener">rutalive.com</a> &middot; Bratislava, Slovakia</p>
         <p class="job-tagline">Multi-tenant courier logistics SaaS competing with Onfleet, Track-POD, and Digital Waybill.</p>
         <ul class="bullets">
           <li>Designed and built the full platform end-to-end: web dashboard (React&nbsp;18, Vite), mobile apps (Flutter for iOS &amp; Android), Windows desktop client, and Node.js/Express back&nbsp;end with MongoDB</li>
@@ -331,18 +338,24 @@
           <li>Containerized the stack with Docker and run production behind Nginx; published and maintain the live listings on both the App Store and Google Play</li>
         </ul>
       </div>
+
+      <div class="job">
+        <div class="job-row">
+          <span class="job-title">Founder &amp; Developer</span>
+          <span class="job-date">Aug 2026 - Present</span>
+        </div>
+        <p class="job-company"><span class="job-org">Calvi AI: Calorie Tracker</span><span class="proj-sep">&middot;</span><a class="proj-link" href="https://apps.apple.com/us/app/calvi-ai-calorie-tracker/id6804675201" target="_blank" rel="noopener">App Store</a><span class="proj-sep">&middot;</span><a class="proj-link" href="https://play.google.com/store/apps/details?id=com.calvi.calvi" target="_blank" rel="noopener">Google Play</a></p>
+        <p class="job-tagline">AI calorie tracker: a meal is logged from a sentence, a voice note or a photo. 475+ registered users.</p>
+        <ul class="bullets">
+          <li>Built the Flutter app for iOS and Android with a native Apple Watch app in Swift, on a Fastify and PostgreSQL back end; offline diary, 13 languages</li>
+          <li>LLM requests run through a DeepSeek chain with failover to a backup provider; an evaluation bench runs conversation and photo cases against the live models</li>
+          <li>Subscriptions through RevenueCat, with the server asking RevenueCat itself when a store webhook goes missing; 375 test files across server and app</li>
+        </ul>
+      </div>
     </section>
 
     <section>
       <h2>Shipped Products</h2>
-
-      <div class="project">
-        <div class="proj-row">
-          <span><span class="proj-name">Calvi AI: Calorie Tracker</span><span class="proj-sep">&middot;</span><a class="proj-link" href="https://apps.apple.com/us/app/calvi-ai-calorie-tracker/id6804675201" target="_blank" rel="noopener">App Store</a><span class="proj-sep">&middot;</span><a class="proj-link" href="https://play.google.com/store/apps/details?id=com.calvi.calvi" target="_blank" rel="noopener">Google Play</a></span>
-          <span class="proj-meta">Flutter, Node.js, PostgreSQL, LLM &middot; 2026</span>
-        </div>
-        <p class="proj-desc">Calorie tracker with an AI assistant: a meal is logged from a sentence, a voice note or a photo, and the week gets a review. Flutter app on its own Fastify and PostgreSQL back end; the diary works offline, and model keys never reach the phone. When a store webhook goes missing, the server asks RevenueCat itself, so a paid renewal is not cut off. Text and photo requests run through a chain of LLMs (DeepSeek, with automatic failover to a backup provider), and an evaluation bench runs conversation and photo cases against the live models and measures latency. Native Apple Watch app for voice logging, 13 languages, sign-in with Apple and Google, 375 test files across server and app. 475+ registered users.</p>
-      </div>
 
       <div class="project">
         <div class="proj-row">
